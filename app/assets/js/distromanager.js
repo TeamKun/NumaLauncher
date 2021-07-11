@@ -532,14 +532,11 @@ let data = null
 /**
  * @returns {Promise.<DistroIndex>}
  */
-exports.pullRemote = function(){
+exports.pullRemote = function(distroURL){
     if(DEV_MODE){
         return exports.pullLocal()
     }
     return new Promise((resolve, reject) => {
-        const distroURL = 'https://raw.githubusercontent.com/TeamKun/NumaPacks/deploy/distribution.json'
-        //const distroURL = 'http://mc.westeroscraft.com/WesterosCraftLauncher/distribution.json'
-        //const distroURL = 'https://gist.githubusercontent.com/dscalzi/53b1ba7a11d26a5c353f9d5ae484b71b/raw/'
         const opts = {
             url: distroURL,
             timeout: 2500

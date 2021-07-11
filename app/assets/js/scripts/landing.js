@@ -25,6 +25,7 @@ const user_text               = document.getElementById('user_text')
 const notion                  = document.getElementById('notion')
 
 const loggerLanding = LoggerUtil('%c[Landing]', 'color: #000668; font-weight: bold')
+const logger        = LoggerUtil('%c[NotionLoader]', 'color: #a02d2a; font-weight: bold')
 
 /* Launch Progress Wrapper Functions */
 
@@ -134,6 +135,9 @@ function updateSelectedAccount(authUser){
         }
         if(authUser.uuid != null){
             document.getElementById('avatarContainer').style.backgroundImage = `url('https://crafatar.com/renders/body/${authUser.uuid}?overlay')`
+        }
+        if (DistroManager.fetchNews !== undefined) {
+            DistroManager.fetchNews()
         }
     }
     user_text.innerHTML = username
@@ -1273,61 +1277,74 @@ document.getElementById('settingsFileSystemButton').onclick = () => {
 /**
  * Fetch Notion URL
  */
-(async function () {
-    function joinSession(uuid, accessToken, serverId) {
-        return new Promise((resolve, reject) => {
-            request.post('https://sessionserver.mojang.com/session/minecraft/join',
-                {
-                    json: true,
-                    body: {
-                        selectedProfile: uuid,
-                        accessToken,
-                        serverId
-                    }
-                },
-                function (error, response, body) {
-                    if (error) {
-                        logger.error('Error during validation.', error)
-                        reject(error)
+function joinSession(uuid, accessToken, serverId) {
+    return new Promise((resolve, reject) => {
+        request.post('https://sessionserver.mojang.com/session/minecraft/join',
+            {
+                json: true,
+                body: {
+                    selectedProfile: uuid,
+                    accessToken,
+                    serverId
+                }
+            },
+            function (error, response, body) {
+                if (error) {
+                    logger.error('Error during validation.', error)
+                    reject(error)
+                } else {
+                    if (response.statusCode === 403) {
+                        resolve(false)
                     } else {
-                        if (response.statusCode === 403) {
-                            resolve(false)
-                        } else {
-                            // 204 if valid
-                            resolve(true)
-                        }
+                        // 204 if valid
+                        resolve(true)
                     }
-                })
-        })
-    }
+                }
+            })
+    })
+}
 
-    function fetchNotionURL(uuid, username) {
-        return new Promise((resolve, reject) => {
-            request.post('https://asia-northeast1-kuncraft.cloudfunctions.net/numalauncher-news',
-                {
-                    json: true,
-                    body: {
-                        uuid,
-                        username
-                    }
-                },
-                function (error, response, body) {
-                    if (error) {
-                        logger.error('Error during validation.', error)
-                        reject(error)
-                    } else {
-                        resolve(body.url)
-                    }
-                })
-        })
-    }
+function fetchNotionURL(uuid, username) {
+    return new Promise((resolve, reject) => {
+        request.post('https://asia-northeast1-kuncraft.cloudfunctions.net/numalauncher-news',
+            {
+                json: true,
+                body: {
+                    uuid,
+                    username
+                }
+            },
+            function (error, response, body) {
+                if (error) {
+                    logger.error('Error during validation.', error)
+                    reject(error)
+                } else {
+                    resolve(body)
+                }
+            })
+    })
+}
 
+DistroManager.fetchNews = async function() {
     const serverId = 'numalauncher-news'
     const {uuid, displayName, accessToken} = ConfigManager.getSelectedAccount()
     if (await joinSession(uuid, accessToken, serverId)) {
-        notion.src = await fetchNotionURL(uuid, displayName)
+        const news = await fetchNotionURL(uuid, displayName)
+        notion.src = news.url
+
+        if (news.pack !== undefined) {
+            DistroManager.distroURL = news.pack
+            DistroManager.pullRemote(news.pack).then((data) => {
+                logger.log('Loaded custom distribution index.')
+
+                DistroManager.onDistroLoad = (data) => {}
+                DistroManager.onCustomDistroLoad(data)
+
+            })
+        }
     }
-})()
+}
+DistroManager.fetchNews()
 
 /**
  * Notion injection

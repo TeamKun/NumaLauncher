@@ -495,6 +495,8 @@ function dlAsync(login = true){
             loggerLanding.error('You must be logged into an account.')
             return
         }
+
+        validateSelectedAccount()
     }
 
     setLaunchDetails('Please wait..')

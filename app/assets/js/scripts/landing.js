@@ -22,10 +22,8 @@ const launch_details_text     = document.getElementById('launch_details_text')
 const server_selection_button = document.getElementById('server_selection_button')
 const server_selection_button_status = document.getElementById('server_selection_button_status')
 const user_text               = document.getElementById('user_text')
-const notion                  = document.getElementById('notion')
 
 const loggerLanding = LoggerUtil('%c[Landing]', 'color: #000668; font-weight: bold')
-const logger        = LoggerUtil('%c[NotionLoader]', 'color: #a02d2a; font-weight: bold')
 
 /* Launch Progress Wrapper Functions */
 
@@ -135,9 +133,6 @@ function updateSelectedAccount(authUser){
         }
         if(authUser.uuid != null){
             document.getElementById('avatarContainer').style.backgroundImage = `url('https://crafatar.com/renders/body/${authUser.uuid}?overlay')`
-        }
-        if (DistroManager.fetchNews !== undefined) {
-            DistroManager.fetchNews()
         }
     }
     user_text.innerHTML = username
@@ -1292,124 +1287,3 @@ document.getElementById('settingsFileSystemButton').onclick = () => {
     DropinModUtil.validateDir(CACHE_SETTINGS_MODS_DIR)
     shell.openPath(CACHE_SETTINGS_MODS_DIR)
 }
-
-/**
- * Fetch Notion URL
- */
-function joinSession(uuid, accessToken, serverId) {
-    return new Promise((resolve, reject) => {
-        request.post('https://sessionserver.mojang.com/session/minecraft/join',
-            {
-                json: true,
-                body: {
-                    selectedProfile: uuid,
-                    accessToken,
-                    serverId
-                }
-            },
-            function (error, response, body) {
-                if (error) {
-                    logger.error('Error during validation.', error)
-                    reject(error)
-                } else {
-                    if (response.statusCode === 403) {
-                        resolve(false)
-                    } else {
-                        // 204 if valid
-                        resolve(true)
-                    }
-                }
-            })
-    })
-}
-
-function fetchNotionURL(uuid, username) {
-    return new Promise((resolve, reject) => {
-        request.post('https://asia-northeast1-kuncraft.cloudfunctions.net/numalauncher-news',
-            {
-                json: true,
-                body: {
-                    uuid,
-                    username
-                }
-            },
-            function (error, response, body) {
-                if (error) {
-                    logger.error('Error during validation.', error)
-                    reject(error)
-                } else {
-                    resolve(body)
-                }
-            })
-    })
-}
-
-DistroManager.fetchNews = async function() {
-    const serverId = 'numalauncher-news'
-    const {uuid, displayName, accessToken} = ConfigManager.getSelectedAccount()
-    if (await joinSession(uuid, accessToken, serverId)) {
-        const news = await fetchNotionURL(uuid, displayName)
-        notion.src = news.url
-
-        if (news.pack !== undefined) {
-            DistroManager.distroURL = news.pack
-            DistroManager.pullRemote(news.pack).then((data) => {
-                logger.log('Loaded custom distribution index.')
-
-                DistroManager.onDistroLoad = (data) => {}
-                DistroManager.onCustomDistroLoad(data)
-
-            })
-        }
-    }
-}
-DistroManager.fetchNews()
-
-/**
- * Notion injection
- */
-notion.contentWindow.localStorage.setItem('theme','{"mode":"dark"}')
-notion.onload = (() => {
-    const notionDoc = notion.contentWindow.document
-
-    // CSS
-    {
-        // Create the <style> tag
-        const style = notionDoc.createElement('style')
-
-        style.innerHTML += '.notion-topbar { display: none !important; }'
-        style.innerHTML += '.notion-page-content { align-items: start !important; padding-left: 0 !important; padding-right: 0 !important; padding-bottom: 0 !important; }'
-        style.innerHTML += '.notion-frame > .notion-scroller > :not(.notion-page-content) { display: none !important; }'
-        style.innerHTML += '.notion-scroller > div > div { padding-left: 0 !important; padding-right: 0 !important; }'
-        style.innerHTML += '.notion-cursor-listener { background: transparent !important; }'
-        style.innerHTML += '.notion-frame { background: transparent !important; }'
-        style.innerHTML += '.notion-collection_view-block > div { background: transparent !important; }'
-        style.innerHTML += '.notion-collection_view-block { overflow-x: hidden !important; }'
-        style.innerHTML += '.notion-collection_view-block > .notion-scroller { overflow: hidden !important; }'
-        style.innerHTML += 'body { background: transparent !important; }'
-        style.innerHTML += '.notion-page-content { color: #ffffff !important; }'
-        style.innerHTML += '.notion-selectable { color: #ffffff !important; }'
-
-        // Add the <style> element to the page
-        notionDoc.head.appendChild(style)
-    }
-
-    function closest(elem, selector) {
-        do {
-            if(elem.matches && elem.matches(selector))
-                return elem
-            elem = elem.parentNode
-        } while(elem)
-    }
-
-    {
-        notionDoc.addEventListener('click', e => {
-            const a = closest(e.target, 'a')
-            if (a) {
-                e.preventDefault()
-                e.stopImmediatePropagation()
-                open(a.href)
-            }
-        }, true)
-    }
-})

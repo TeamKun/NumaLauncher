@@ -14,9 +14,9 @@ logger.log('Loading..')
 ConfigManager.load()
 
 // Load Strings
-LangLoader.loadLanguage('en_US')
+LangLoader.loadLanguage('ja_JP')
 
-function onDistroLoad(data){
+DistroManager.onDistroLoad = DistroManager.onCustomDistroLoad = function(data){
     if(data != null){
         
         // Resolve the selected server if its value has yet to be set.
@@ -30,10 +30,13 @@ function onDistroLoad(data){
 }
 
 // Ensure Distribution is downloaded and cached.
-DistroManager.pullRemote().then((data) => {
+DistroManager.distroURL = 'https://raw.githubusercontent.com/TeamKun/ModPacks/deploy/distribution.json'
+//DistroManager.distroURL = 'http://mc.westeroscraft.com/WesterosCraftLauncher/distribution.json'
+//DistroManager.distroURL = 'https://gist.githubusercontent.com/dscalzi/53b1ba7a11d26a5c353f9d5ae484b71b/raw/'
+DistroManager.pullRemote(DistroManager.distroURL).then((data) => {
     logger.log('Loaded distribution index.')
 
-    onDistroLoad(data)
+    DistroManager.onDistroLoad(data)
 
 }).catch((err) => {
     logger.log('Failed to load distribution index.')
@@ -44,7 +47,7 @@ DistroManager.pullRemote().then((data) => {
     DistroManager.pullLocal().then((data) => {
         logger.log('Successfully loaded an older version of the distribution index.')
 
-        onDistroLoad(data)
+        DistroManager.onDistroLoad(data)
 
 
     }).catch((err) => {
@@ -53,7 +56,7 @@ DistroManager.pullRemote().then((data) => {
         logger.log('Application cannot run.')
         logger.error(err)
 
-        onDistroLoad(null)
+        DistroManager.onDistroLoad(null)
 
     })
 

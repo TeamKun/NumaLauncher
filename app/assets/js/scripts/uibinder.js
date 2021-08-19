@@ -61,12 +61,13 @@ function showMainUI(data){
         loggerAutoUpdater.log('Initializing..')
         ipcRenderer.send('autoUpdateAction', 'initAutoUpdater', ConfigManager.getAllowPrerelease())
     }
+    ipcRenderer.send('autoUpdateAction', 'initAutoUpdater', ConfigManager.getAllowPrerelease())
 
     prepareSettings(true)
     updateSelectedServer(data.getServer(ConfigManager.getSelectedServer()))
     refreshServerStatus()
     setTimeout(() => {
-        document.getElementById('frameBar').style.backgroundColor = 'rgba(0, 0, 0, 0.5)'
+        document.getElementById('frameBar').style.backgroundColor = 'rgba(0, 0, 0, 0.85)'
         document.body.style.backgroundImage = `url('assets/images/backgrounds/${document.body.getAttribute('bkid')}.jpg')`
         $('#main').show()
 
@@ -99,9 +100,11 @@ function showMainUI(data){
         
     }, 750)
     // Disable tabbing to the news container.
+/*
     initNews().then(() => {
         $('#newsContainer *').attr('tabindex', '-1')
     })
+*/
 }
 
 function showFatalStartupError(){
@@ -109,9 +112,9 @@ function showFatalStartupError(){
         $('#loadingContainer').fadeOut(250, () => {
             document.getElementById('overlayContainer').style.background = 'none'
             setOverlayContent(
-                'Fatal Error: Unable to Load Distribution Index',
-                'A connection could not be established to our servers to download the distribution index. No local copies were available to load. <br><br>The distribution index is an essential file which provides the latest server information. The launcher is unable to start without it. Ensure you are connected to the internet and relaunch the application.',
-                'Close'
+                '致命的なエラー: Modパックリストを読み込めませんでした。',
+                'ファイルサーバーに接続できなかったため、Modパックリストをダウンロードできませんでした。キャッシュもロードできませんでした。<br><br>Modパックリストは最新のModパックの情報を提供するために必要不可欠です。これなしではランチャーは起動できません。インターネットに繋がれているか確認し、ランチャーを再起動してください。',
+                '閉じる'
             )
             setOverlayHandler(() => {
                 const window = remote.getCurrentWindow()
@@ -130,7 +133,7 @@ function showFatalStartupError(){
 function onDistroRefresh(data){
     updateSelectedServer(data.getServer(ConfigManager.getSelectedServer()))
     refreshServerStatus()
-    initNews()
+    //initNews()
     syncModConfigurations(data)
 }
 
@@ -323,10 +326,10 @@ async function validateSelectedAccount(){
             ConfigManager.save()
             const accLen = Object.keys(ConfigManager.getAuthAccounts()).length
             setOverlayContent(
-                'Failed to Refresh Login',
-                `We were unable to refresh the login for <strong>${selectedAcc.displayName}</strong>. Please ${accLen > 0 ? 'select another account or ' : ''} login again.`,
-                'Login',
-                'Select Another Account'
+                'ログアウトされました',
+                `アカウント <strong>${selectedAcc.displayName}</strong> のログイン状態が解除されました。${accLen > 0 ? '別のアカウントを選択するか' : ''} 再度ログインし直してください。`,
+                'ログイン',
+                '別のアカウントを選択'
             )
             setOverlayHandler(() => {
                 document.getElementById('loginUsername').value = selectedAcc.username

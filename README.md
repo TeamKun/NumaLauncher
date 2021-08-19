@@ -1,4 +1,4 @@
-<p align="center"><img src="./app/assets/images/SealCircle.png" width="150px" height="150px" alt="aventium softworks"></p>
+<p align="center"><img src="./app/assets/images/SealCircle.svg" width="150px" height="150px" alt="aventium softworks"></p>
 
 <h1 align="center">Helios Launcher</h1>
 
@@ -53,9 +53,9 @@ If you download from the [Releases](https://github.com/dscalzi/HeliosLauncher/re
 
 | Platform | File |
 | -------- | ---- |
-| Windows x64 | `helioslauncher-setup-VERSION.exe` |
-| macOS | `helioslauncher-VERSION.dmg` |
-| Linux x64 | `helioslauncher-VERSION-x86_64.AppImage` |
+| Windows x64 | `Helios-Launcher-setup-VERSION.exe` |
+| macOS | `Helios-Launcher-setup-VERSION.dmg` |
+| Linux x64 | `Helios-Launcher-setup-VERSION.AppImage` |
 
 ## Console
 

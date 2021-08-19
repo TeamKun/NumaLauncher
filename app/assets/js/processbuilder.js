@@ -42,7 +42,7 @@ class ProcessBuilder {
         this.setupLiteLoader()
         logger.log('Using liteloader:', this.usingLiteLoader)
         const modObj = this.resolveModConfiguration(ConfigManager.getModConfiguration(this.server.getID()).mods, this.server.getModules())
-        
+
         // Mod list below 1.13
         if(!Util.mcVersionAtLeast('1.13', this.server.getMinecraftVersion())){
             this.constructJSONModList('forge', modObj.fMods, true)
@@ -343,7 +343,7 @@ class ProcessBuilder {
 
         // Java Arguments
         if(process.platform === 'darwin'){
-            args.push('-Xdock:name=HeliosLauncher')
+            args.push('-Xdock:name=NumaLauncher')
             args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
         }
         args.push('-Xmx' + ConfigManager.getMaxRAM())
@@ -381,7 +381,7 @@ class ProcessBuilder {
 
         // Java Arguments
         if(process.platform === 'darwin'){
-            args.push('-Xdock:name=HeliosLauncher')
+            args.push('-Xdock:name=NumaLauncher')
             args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
         }
         args.push('-Xmx' + ConfigManager.getMaxRAM())
@@ -483,7 +483,7 @@ class ProcessBuilder {
                             val = args[i].replace(argDiscovery, tempNativePath)
                             break
                         case 'launcher_name':
-                            val = args[i].replace(argDiscovery, 'Helios-Launcher')
+                            val = args[i].replace(argDiscovery, 'Numa-Launcher')
                             break
                         case 'launcher_version':
                             val = args[i].replace(argDiscovery, this.launcherVersion)
@@ -759,6 +759,13 @@ class ProcessBuilder {
                         libs = {...libs, ...res}
                     }
                 }
+            } else if(type === DistroManager.Types.Forge){
+                // Forgeインストーラで生成されたライブラリを追加
+                const forgeLibs = []
+                for (const library of this.forgeData.libraries) {
+                    forgeLibs.push(path.join(ConfigManager.getCommonDirectory(), 'libraries', library.downloads.artifact.path))
+                }
+                libs = {...libs, ...forgeLibs}
             }
         }
 

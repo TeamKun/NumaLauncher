@@ -48,6 +48,13 @@ class Artifact {
     }
 
     /**
+     * @returns {string} The download url of the artifact.
+     */
+    getManual(){
+        return this.manual
+    }
+
+    /**
      * @returns {string} The artifact's destination path.
      */
     getPath(){
@@ -532,13 +539,11 @@ let data = null
 /**
  * @returns {Promise.<DistroIndex>}
  */
-exports.pullRemote = function(){
+exports.pullRemote = function(distroURL){
     if(DEV_MODE){
         return exports.pullLocal()
     }
     return new Promise((resolve, reject) => {
-        const distroURL = 'http://mc.westeroscraft.com/WesterosCraftLauncher/distribution.json'
-        //const distroURL = 'https://gist.githubusercontent.com/dscalzi/53b1ba7a11d26a5c353f9d5ae484b71b/raw/'
         const opts = {
             url: distroURL,
             timeout: 2500

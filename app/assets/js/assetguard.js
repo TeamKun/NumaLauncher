@@ -1160,6 +1160,49 @@ class AssetGuard extends EventEmitter {
     }
 
     /**
+     * Install forge with ForgeCLI.
+     *
+     * @param {string} installerExec Forge Installer path.
+     * @param {string} workDir directory which includes libraries and versions.
+     * @param {string} forgeVersion Forge version.
+     * @param {string} javaExecutable Java path.
+     * @returns {Promise.<void>} An empty promise to indicate the extraction has completed.
+     */
+    static _installForgeWithCLI(installerExec, workDir, javaExecutable){
+        console.log('[ForgeCLI] Starting')
+        return new Promise(async (resolve, reject) => {
+            // Required for the installer to function.
+            await fs.writeFile(path.join(workDir, 'launcher_profiles.json'), JSON.stringify({}))
+
+            let libPath
+            if(isDev){
+                libPath = path.join(process.cwd(), 'libraries', 'java', 'ForgeCLI.jar')
+            } else {
+                if(process.platform === 'darwin'){
+                    libPath = path.join(process.cwd(),'Contents', 'Resources', 'libraries', 'java', 'ForgeCLI.jar')
+                } else {
+                    libPath = path.join(process.cwd(), 'resources', 'libraries', 'java', 'ForgeCLI.jar')
+                }
+            }
+
+            const child = child_process.spawn(javaExecutable, ['-jar', libPath, '--installer', installerExec, '--target', workDir])
+            child.stdout.on('data', (data) => {
+                console.log('[ForgeCLI]', data.toString('utf8'))
+            })
+            child.stderr.on('data', (data) => {
+                console.log('[ForgeCLI]', data.toString('utf8'))
+            })
+            child.on('close', (code, signal) => {
+                console.log('[ForgeCLI]', 'Exited with code', code)
+                if (code === 0)
+                    resolve()
+                else
+                    reject(`ForgeCUI exited with code ${code}`)
+            })
+        })
+    }
+
+    /**
      * Function which finalizes the forge installation process. This creates a 'version'
      * instance for forge and saves its version.json file into that instance. If that
      * instance already exists, the contents of the version.json file are read and returned
@@ -1519,6 +1562,57 @@ class AssetGuard extends EventEmitter {
     }
 
     /**
+     * 手動ダウンロードのファイルをリストアップし、ユーザーにダウンロードを促します
+     *
+     * @param {string} server The Server to load Forge data for.
+     * @returns {Promise.<Object>} A promise which resolves to Forge's version.json data.
+     */
+    loadManualData(server){
+        return new Promise(async (resolve, reject) => {
+            function isModEnabled(modCfg, required = null){
+                return modCfg != null ? ((typeof modCfg === 'boolean' && modCfg) || (typeof modCfg === 'object' && (typeof modCfg.value !== 'undefined' ? modCfg.value : true))) : required != null ? required.isDefault() : true
+            }
+
+            // 有効化されているかチェックするために必要
+            const modCfg = ConfigManager.getModConfiguration(server.getID()).mods
+            const mdls = server.getModules()
+
+            // 手動ダウンロードMod候補
+            let manualModsCandidate = []
+            // ON以外の手動Modは除外する
+            let removeCandidate = []
+            mdls.forEach((mdl, index, object) => {
+                const artifact = mdl.getArtifact()
+                const manual = artifact.getManual()
+                // 手動Modかどうか
+                if (manual !== undefined) {
+                    // ONかどうか
+                    const o = !mdl.getRequired().isRequired()
+                    const e = isModEnabled(modCfg[mdl.getVersionlessID()], mdl.getRequired())
+                    if(!o || (o && e)) {
+                        manualModsCandidate.push(mdl)
+                    } else {
+                        removeCandidate.push(index)
+                    }
+                }
+            })
+            // 除外された手動Modはリストから削除
+            for (let i = removeCandidate.length -1; i >= 0; i--)
+                mdls.splice(removeCandidate[i],1)
+
+            // 手動候補のModは存在を確認し、手動Modリストに追加
+            let manualMods = []
+            for (const mdl of manualModsCandidate) {
+                const artifact = mdl.getArtifact()
+                if (!(await fs.pathExists(artifact.getPath()))) {
+                    manualMods.push(artifact)
+                }
+            }
+            resolve(manualMods)
+        })
+    }
+
+    /**
      * Loads Forge's version.json data into memory for the specified server id.
      * 
      * @param {string} server The Server to load Forge data for.
@@ -1530,7 +1624,28 @@ class AssetGuard extends EventEmitter {
             const modules = server.getModules()
             for(let ob of modules){
                 const type = ob.getType()
-                if(type === DistroManager.Types.ForgeHosted || type === DistroManager.Types.Forge){
+                if(type === DistroManager.Types.Forge) {
+                    if(Util.isForgeGradle3(server.getMinecraftVersion(), ob.getVersion())) {
+                        const forgeVer = ob.getVersion().split('-')
+                        const forgeVersion = `${forgeVer[0]}-forge-${forgeVer[1]}`
+                        const forgeManifest = path.join(self.commonPath, 'versions', forgeVersion, `${forgeVersion}.json`)
+                        if (fs.existsSync(forgeManifest)) {
+                            resolve(JSON.parse(fs.readFileSync(forgeManifest, 'utf-8')))
+                            return
+                        } else {
+                            self.emit('validate', 'install', 1, 1)
+                            await AssetGuard._installForgeWithCLI(ob.getArtifact().getPath(), self.commonPath, self.javaexec)
+                            self.emit('complete', 'install')
+                            if (fs.existsSync(forgeManifest)) {
+                                resolve(JSON.parse(fs.readFileSync(forgeManifest, 'utf-8')))
+                                return
+                            }
+                        }
+
+                        reject('No forge version manifest found!')
+                        return
+                    }
+                } else if(type === DistroManager.Types.ForgeHosted){
                     if(Util.isForgeGradle3(server.getMinecraftVersion(), ob.getVersion())){
                         // Read Manifest
                         for(let sub of ob.getSubModules()){
@@ -1908,7 +2023,17 @@ class AssetGuard extends EventEmitter {
             const server = dI.getServer(serverid)
     
             // Validate Everything
-    
+            this.emit('validate', 'manual')
+            const manualData = await this.loadManualData(server)
+            if (manualData.length > 0) {
+                return {
+                    versionData: null,
+                    forgeData: null,
+                    manualData,
+                    error: 'Manual Installation Required'
+                }
+            }
+
             await this.validateDistribution(server)
             this.emit('validate', 'distribution')
             const versionData = await this.loadVersionData(server.getMinecraftVersion())

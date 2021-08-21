@@ -1414,7 +1414,7 @@ class AssetGuard extends EventEmitter {
      * queue for the 'libraries' identifier.
      * 
      * @param {Object} versionData The version data for the assets.
-     * @returns {Promise.<void>} An empty promise to indicate the async processing has completed.
+     * @returns {Promise.<DLTracker>} An DLTracker for download queue.
      */
     validateLibraries(versionData){
         const self = this
@@ -1438,8 +1438,7 @@ class AssetGuard extends EventEmitter {
                 }
                 cb()
             }, (err) => {
-                self.libraries = new DLTracker(libDlQueue, dlSize)
-                resolve()
+                resolve(new DLTracker(libDlQueue, dlSize))
             })
         })
     }
@@ -1630,16 +1629,20 @@ class AssetGuard extends EventEmitter {
                         const forgeVersion = `${forgeVer[0]}-forge-${forgeVer[1]}`
                         const forgeManifest = path.join(self.commonPath, 'versions', forgeVersion, `${forgeVersion}.json`)
                         if (fs.existsSync(forgeManifest)) {
-                            resolve(JSON.parse(fs.readFileSync(forgeManifest, 'utf-8')))
-                            return
-                        } else {
-                            self.emit('validate', 'install', 1, 1)
-                            await AssetGuard._installForgeWithCLI(ob.getArtifact().getPath(), self.commonPath, self.javaexec)
-                            self.emit('complete', 'install')
-                            if (fs.existsSync(forgeManifest)) {
-                                resolve(JSON.parse(fs.readFileSync(forgeManifest, 'utf-8')))
+                            const manifest = JSON.parse(fs.readFileSync(forgeManifest, 'utf-8'))
+                            const dlTracker = await this.validateLibraries(manifest)
+                            if (dlTracker.dlqueue.length === 0) {
+                                resolve(manifest)
                                 return
                             }
+                        }
+
+                        self.emit('validate', 'install', 1, 1)
+                        await AssetGuard._installForgeWithCLI(ob.getArtifact().getPath(), self.commonPath, self.javaexec)
+                        self.emit('complete', 'install')
+                        if (fs.existsSync(forgeManifest)) {
+                            resolve(JSON.parse(fs.readFileSync(forgeManifest, 'utf-8')))
+                            return
                         }
 
                         reject('No forge version manifest found!')
@@ -2040,7 +2043,7 @@ class AssetGuard extends EventEmitter {
             this.emit('validate', 'version')
             await this.validateAssets(versionData)
             this.emit('validate', 'assets')
-            await this.validateLibraries(versionData)
+            this.libraries = await this.validateLibraries(versionData)
             this.emit('validate', 'libraries')
             await this.validateMiscellaneous(versionData)
             this.emit('validate', 'files')

@@ -112,12 +112,11 @@ exports.addAccount = async function (username, password) {
 exports.removeAccount = async function (uuid) {
     try {
         const authAcc = ConfigManager.getAuthAccount(uuid)
-        if (authAcc.type === 'microsoft') {
-            ConfigManager.removeAuthAccount(uuid)
-            ConfigManager.save()
+        if (authAcc === undefined) {
             return Promise.resolve()
+        } else if (authAcc.type !== 'microsoft') {
+            await Mojang.invalidate(authAcc.accessToken, ConfigManager.getClientToken())
         }
-        await Mojang.invalidate(authAcc.accessToken, ConfigManager.getClientToken())
         ConfigManager.removeAuthAccount(uuid)
         ConfigManager.save()
         return Promise.resolve()

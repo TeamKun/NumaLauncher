@@ -384,9 +384,9 @@ $('.selectSkin__Wrap').on('click', '.useSelectSkin', function () {
 
     fetch(skinURL)
         .then((res) => res.blob())
-        .then((blob) => {
+        .then(async (blob) => {
             const file = new File([blob], name, { type: 'image/png' })
-            skinFunc.uploadSkin(variant, file)
+            await skinFunc.uploadSkin(variant, file)
         })
     setTimeout(function () {
         $('.changeSkin__overlay').fadeOut()

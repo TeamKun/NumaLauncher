@@ -10,8 +10,6 @@ function setCamera(camera) {
     camera.position.z = 54.956618794277766
 }
 
-const selectedUUID = ConfigManager.getSelectedAccount().uuid
-
 const axiosBase = require('axios')
 const axios = axiosBase.create({
     headers: {
@@ -28,7 +26,7 @@ APIへの反映 GET
 async function getNowSkin() {
     try {
         const response = await axios.get(
-            `https://sessionserver.mojang.com/session/minecraft/profile/${selectedUUID}`
+            `https://sessionserver.mojang.com/session/minecraft/profile/${ConfigManager.getSelectedAccount().uuid}`
         )
         let base64Textures = ''
         response.data.properties.forEach((element) => {
@@ -56,7 +54,7 @@ async function getTextureID() {
     let textureID = null
     try {
         const response = await axios.get(
-            `https://sessionserver.mojang.com/session/minecraft/profile/${selectedUUID}`
+            `https://sessionserver.mojang.com/session/minecraft/profile/${ConfigManager.getSelectedAccount().uuid}`
         )
         console.log(response)
         let base64Textures = ''
@@ -88,11 +86,12 @@ APIへの反映 PUT
 // 編集・追加したスキンに着替えるAPI
 async function uploadSkin(variant, file) {
     await AuthManager.validateSelected()
+    const account = ConfigManager.getAuthAccount(ConfigManager.getSelectedAccount().uuid)
     const config = {
         headers: {
             Authorization:
                 'Bearer ' +
-                ConfigManager.getAuthAccount(selectedUUID).accessToken,
+                account.accessToken,
         },
     }
     try {
@@ -113,14 +112,15 @@ async function uploadSkin(variant, file) {
     }
 
     const param = new FormData()
-    if (variant == 'slim') {
-        param.append('model', variant)
+    console.log('file', file)
+    if (variant === 'slim') {
+        param.append('variant', variant)
     } else {
-        param.append('model', '')
+        param.append('variant', 'classic')
     }
-    param.append('file', file)
-    axios.put(
-        `https://api.mojang.com/user/profile/${selectedUUID}/skin`,
+    param.append('file', file, 'skin.png')
+    await axios.post(
+        'https://api.minecraftservices.com/minecraft/profile/skins',
         param,
         config
     )
@@ -748,7 +748,6 @@ function populateAuthAccounts(){
     if(authKeys.length === 0){
         return
     }
-    const selectedUUID = ConfigManager.getSelectedAccount().uuid
 
     let authAccountStr = ''
 
@@ -770,7 +769,7 @@ function populateAuthAccounts(){
                     </div>
                 </div>
                 <div class="settingsAuthAccountActions">
-                    <button class="settingsAuthAccountSelect" ${selectedUUID === acc.uuid ? 'selected>選択中のアカウント &#10004;' : '>このアカウントを選択する'}</button>
+                    <button class="settingsAuthAccountSelect" ${ConfigManager.getSelectedAccount().uuid === acc.uuid ? 'selected>選択中のアカウント &#10004;' : '>このアカウントを選択する'}</button>
                     <div class="settingsAuthAccountWrapper">
                         <button class="settingsAuthAccountLogOut">ログアウト</button>
                     </div>

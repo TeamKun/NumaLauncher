@@ -410,6 +410,7 @@ function processLogOut(val, isLastAccount, skip = false) {
             updateSelectedAccount(selAcc)
             validateSelectedAccount()
         }
+        toggleOverlay(false)
     })
     $(parent).fadeOut(250, () => {
         parent.remove()

@@ -271,7 +271,7 @@ loginButton.addEventListener('click', () => {
         setTimeout(() => {
             switchView(VIEWS.login, loginViewOnSuccess, 500, 500, () => {
                 // Temporary workaround
-                if(loginViewOnSuccess === VIEWS.settings){
+                if (loginViewOnSuccess === VIEWS.settings){
                     prepareSettings()
                 }
                 loginViewOnSuccess = VIEWS.landing // Reset this for good measure.
@@ -284,6 +284,7 @@ loginButton.addEventListener('click', () => {
                 loginLoading(false)
                 loginButton.innerHTML = loginButton.innerHTML.replace(Lang.queryJS('login.success'), Lang.queryJS('login.login'))
                 formDisabled(false)
+                toggleOverlay(false)
             })
         }, 1000)
     }).catch((err) => {
@@ -377,6 +378,7 @@ ipcRenderer.on('MSALoginWindowReply', (event, ...args) => {
                 loginLoading(false)
                 loginButton.innerHTML = loginButton.innerHTML.replace(Lang.queryJS('login.success'), Lang.queryJS('login.login'))
                 formDisabled(false)
+                toggleOverlay(false)
             })
         }, 1000)
     }).catch(error => {

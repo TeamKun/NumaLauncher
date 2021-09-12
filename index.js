@@ -321,6 +321,10 @@ ipcMain.on('openMSALogoutWindow', (ipcEvent, args) => {
             }, 5000)
 
         })
+        MSALogoutWindow.on('closed', () => {
+
+            MSALogoutWindow = null
+        })
     }
 })
 

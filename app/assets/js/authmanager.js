@@ -44,22 +44,21 @@ async function validateSelectedMicrosoft() {
     try {
         const current = ConfigManager.getSelectedAccount()
         const now = new Date().getTime()
+
         const MCExpiresAt = Date.parse(current.expiresAt)
         const MCExpired = now > MCExpiresAt
-
         if (MCExpired) {
-            const MSExpiresAt = Date.parse(current.microsoft.expires_at)
-            const MSExpired = now > MSExpiresAt
-
-            if (MSExpired) {
+            if (current.microsoft.expires_at === undefined || now > Date.parse(current.microsoft.expires_at)) {
+                console.log('RefreshToken', current.microsoft.refresh_token)
                 const newAccessToken = await Microsoft.refreshAccessToken(current.microsoft.refresh_token)
                 const newMCAccessToken = await Microsoft.authMinecraft(newAccessToken.access_token)
-                ConfigManager.updateAuthAccountWithMicrosoft(current.uuid, newMCAccessToken.access_token, newAccessToken.expires_at)
+                ConfigManager.updateAuthAccountWithMicrosoft(current.uuid, newMCAccessToken.access_token, newAccessToken.access_token, newAccessToken.refresh_token, newMCAccessToken.expires_at, undefined)
                 ConfigManager.save()
                 return true
             }
+
             const newMCAccessToken = await Microsoft.authMinecraft(current.microsoft.access_token)
-            ConfigManager.updateAuthAccountWithMicrosoft(current.uuid, newMCAccessToken.access_token, current.microsoft.access_token, current.microsoft.expires_at, newMCAccessToken.expires_at)
+            ConfigManager.updateAuthAccountWithMicrosoft(current.uuid, newMCAccessToken.access_token, current.microsoft.access_token, current.microsoft.refresh_token, newMCAccessToken.expires_at, undefined)
             ConfigManager.save()
 
             return true
@@ -158,7 +157,7 @@ exports.addMSAccount = async authCode => {
                 message: 'You didn\'t buy Minecraft! Please use another Microsoft account or buy Minecraft.'
             })
         const MCProfile = await Microsoft.getMCProfile(MCAccessToken.access_token)
-        const ret = ConfigManager.addMsAuthAccount(MCProfile.id, MCAccessToken.access_token, MCProfile.name, MCAccessToken.expires_at, accessToken.access_token, accessToken.refresh_token)
+        const ret = ConfigManager.addMsAuthAccount(MCProfile.id, MCAccessToken.access_token, MCProfile.name, MCAccessToken.expires_at, accessToken.access_token, accessToken.refresh_token, undefined)
         ConfigManager.save()
 
         return ret

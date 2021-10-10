@@ -403,12 +403,12 @@ function processLogOut(val, isLastAccount, skip = false) {
         }
     }
     const prevSelAcc = ConfigManager.getSelectedAccount()
-    AuthManager.removeAccount(uuid).then(() => {
+    AuthManager.removeAccount(uuid).then(async () => {
         if (!isLastAccount && uuid === prevSelAcc.uuid) {
             const selAcc = ConfigManager.getSelectedAccount()
             refreshAuthAccountSelected(selAcc.uuid)
             updateSelectedAccount(selAcc)
-            validateSelectedAccount()
+            await validateSelectedAccount()
         }
         toggleOverlay(false)
     })

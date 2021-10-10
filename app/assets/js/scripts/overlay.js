@@ -190,7 +190,7 @@ document.getElementById('serverSelectConfirm').addEventListener('click', () => {
     }
 })
 
-document.getElementById('accountSelectConfirm').addEventListener('click', () => {
+document.getElementById('accountSelectConfirm').addEventListener('click', async () => {
     const listings = document.getElementsByClassName('accountListing')
     for (let i = 0; i < listings.length; i++) {
         if (listings[i].hasAttribute('selected')) {
@@ -198,7 +198,7 @@ document.getElementById('accountSelectConfirm').addEventListener('click', () => 
             ConfigManager.save()
             updateSelectedAccount(authAcc)
             toggleOverlay(false)
-            validateSelectedAccount()
+            await validateSelectedAccount()
             return
         }
     }
@@ -208,7 +208,7 @@ document.getElementById('accountSelectConfirm').addEventListener('click', () => 
         ConfigManager.save()
         updateSelectedAccount(authAcc)
         toggleOverlay(false)
-        validateSelectedAccount()
+        await validateSelectedAccount()
     }
 })
 

@@ -484,7 +484,7 @@ let forgeData
 
 let progressListener
 
-function dlAsync(login = true){
+async function dlAsync(login = true){
 
     // Login parameter is temporary for debug purposes. Allows testing the validation/downloads without
     // launching the game.
@@ -495,7 +495,7 @@ function dlAsync(login = true){
             return
         }
 
-        validateSelectedAccount()
+        await validateSelectedAccount()
     }
 
     setLaunchDetails('Please wait..')

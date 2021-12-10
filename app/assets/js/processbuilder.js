@@ -341,7 +341,9 @@ class ProcessBuilder {
         args.push('-cp')
         args.push(this.classpathArg(mods, tempNativePath).join(process.platform === 'win32' ? ';' : ':'))
 
-        // Java Arguments
+        args.push('-Dlog4j2.formatMsgNoLookups=true')
+
+       // Java Arguments
         if(process.platform === 'darwin'){
             args.push('-Xdock:name=NumaLauncher')
             args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
@@ -378,6 +380,7 @@ class ProcessBuilder {
         let args = this.versionData.arguments.jvm
 
         //args.push('-Dlog4j.configurationFile=D:\\WesterosCraft\\game\\common\\assets\\log_configs\\client-1.12.xml')
+        args.push('-Dlog4j2.formatMsgNoLookups=true')
 
         // Java Arguments
         if(process.platform === 'darwin'){

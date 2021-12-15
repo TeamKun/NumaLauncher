@@ -320,7 +320,11 @@ function refreshDistributionIndex(remote, onSuccess, onError){
 async function validateSelectedAccount(){
     const selectedAcc = ConfigManager.getSelectedAccount()
     if(selectedAcc != null){
-        const val = await AuthManager.validateSelected()
+        let val
+        try {
+            val = await AuthManager.validateSelected()
+        } catch(error) {
+        }
         if(!val){
             ConfigManager.removeAuthAccount(selectedAcc.uuid)
             ConfigManager.save()
@@ -363,6 +367,7 @@ async function validateSelectedAccount(){
                 }
             })
             toggleOverlay(true, accLen > 0)
+            return false
         } else {
             return true
         }

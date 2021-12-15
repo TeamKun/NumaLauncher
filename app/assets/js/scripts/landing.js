@@ -492,10 +492,15 @@ async function dlAsync(login = true){
     if(login) {
         if(ConfigManager.getSelectedAccount() == null){
             loggerLanding.error('You must be logged into an account.')
+            toggleLaunchArea(false)
             return
         }
 
-        await validateSelectedAccount()
+        if (!await validateSelectedAccount()) {
+            loggerLanding.error('Login failed.')
+            toggleLaunchArea(false)
+            return
+        }
     }
 
     setLaunchDetails('Please wait..')

@@ -47,8 +47,8 @@ async function validateSelectedMicrosoft() {
 
         const MCExpiresAt = Date.parse(current.expiresAt)
         const MCExpired = now > MCExpiresAt
-        if (MCExpired) {
-            if (current.microsoft.expires_at === undefined || now > Date.parse(current.microsoft.expires_at)) {
+        if (current.expiresAt === undefined || MCExpired) {
+            if (current.microsoft.refresh_token !== undefined && (current.microsoft.expires_at === undefined || now > Date.parse(current.microsoft.expires_at))) {
                 console.log('RefreshToken', current.microsoft.refresh_token)
                 const newAccessToken = await Microsoft.refreshAccessToken(current.microsoft.refresh_token)
                 const newMCAccessToken = await Microsoft.authMinecraft(newAccessToken.access_token)
@@ -57,11 +57,14 @@ async function validateSelectedMicrosoft() {
                 return true
             }
 
-            const newMCAccessToken = await Microsoft.authMinecraft(current.microsoft.access_token)
-            ConfigManager.updateAuthAccountWithMicrosoft(current.uuid, newMCAccessToken.access_token, current.microsoft.access_token, current.microsoft.refresh_token, newMCAccessToken.expires_at, undefined)
-            ConfigManager.save()
+            if (current.microsoft.access_token !== undefined) {
+                const newMCAccessToken = await Microsoft.authMinecraft(current.microsoft.access_token)
+                ConfigManager.updateAuthAccountWithMicrosoft(current.uuid, newMCAccessToken.access_token, current.microsoft.access_token, current.microsoft.refresh_token, newMCAccessToken.expires_at, undefined)
+                ConfigManager.save()
+                return true
+            }
 
-            return true
+            return false
         } else {
             return true
         }

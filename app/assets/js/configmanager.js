@@ -342,12 +342,12 @@ exports.updateAuthAccount = function(uuid, accessToken){
  * 
  * @returns {Object} The authenticated account object created by this action.
  */
-exports.updateAuthAccountWithMicrosoft = function(uuid, accessToken, msAccessToken, msRefreshToken, msExpires, mcExpires){
-    config.authenticationDatabase[uuid].accessToken = accessToken
+exports.updateAuthAccountWithMicrosoft = function(uuid, mcAccessToken, msAccessToken, msRefreshToken, msExpires, mcExpires){
+    config.authenticationDatabase[uuid].accessToken = mcAccessToken
     config.authenticationDatabase[uuid].expiresAt = mcExpires
     config.authenticationDatabase[uuid].microsoft.access_token = msAccessToken
     config.authenticationDatabase[uuid].microsoft.refresh_token = msRefreshToken
-    config.authenticationDatabase[uuid].microsoft.expires_at = msRefreshToken
+    config.authenticationDatabase[uuid].microsoft.expires_at = msExpires
     return config.authenticationDatabase[uuid]
 }
 

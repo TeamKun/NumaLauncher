@@ -44,24 +44,30 @@ async function validateSelectedMicrosoft() {
     try {
         const current = ConfigManager.getSelectedAccount()
         const now = new Date().getTime()
-
         const MCExpiresAt = Date.parse(current.expiresAt)
         const MCExpired = now > MCExpiresAt
-        if (MCExpired) {
-            if (current.microsoft.expires_at === undefined || now > Date.parse(current.microsoft.expires_at)) {
+
+        if (current.expiresAt === undefined || MCExpired) {
+            const MSExpiresAt = Date.parse(current.microsoft.expires_at)
+            const MSExpired = now > MSExpiresAt
+
+            if (current.microsoft.expires_at === undefined || MSExpired) {
                 console.log('RefreshToken', current.microsoft.refresh_token)
-                const newAccessToken = await Microsoft.refreshAccessToken(current.microsoft.refresh_token)
-                const newMCAccessToken = await Microsoft.authMinecraft(newAccessToken.access_token)
-                ConfigManager.updateAuthAccountWithMicrosoft(current.uuid, newMCAccessToken.access_token, newAccessToken.access_token, newAccessToken.refresh_token, newMCAccessToken.expires_at, undefined)
+                const newMSAccessToken = await Microsoft.refreshAccessToken(current.microsoft.refresh_token)
+                const newMCAccessToken = await Microsoft.authMinecraft(newMSAccessToken.access_token)
+                ConfigManager.updateAuthAccountWithMicrosoft(current.uuid, newMCAccessToken.access_token, newMSAccessToken.access_token, current.microsoft.refresh_token, newMCAccessToken.expires_at, newMCAccessToken.expires_at)
                 ConfigManager.save()
                 return true
             }
 
-            const newMCAccessToken = await Microsoft.authMinecraft(current.microsoft.access_token)
-            ConfigManager.updateAuthAccountWithMicrosoft(current.uuid, newMCAccessToken.access_token, current.microsoft.access_token, current.microsoft.refresh_token, newMCAccessToken.expires_at, undefined)
-            ConfigManager.save()
+            if (current.microsoft.access_token !== undefined) {
+                const newMCAccessToken = await Microsoft.authMinecraft(current.microsoft.access_token)
+                ConfigManager.updateAuthAccountWithMicrosoft(current.uuid, newMCAccessToken.access_token, current.microsoft.access_token, current.microsoft.refresh_token, newMCAccessToken.expires_at, newMCAccessToken.expires_at)
+                ConfigManager.save()
+                return true
+            }
 
-            return true
+            return false
         } else {
             return true
         }
@@ -149,15 +155,15 @@ exports.validateSelected = async function () {
 
 exports.addMSAccount = async authCode => {
     try {
-        const accessToken = await Microsoft.getAccessToken(authCode)
-        const MCAccessToken = await Microsoft.authMinecraft(accessToken.access_token)
+        const MSAccessToken = await Microsoft.getAccessToken(authCode)
+        const MCAccessToken = await Microsoft.authMinecraft(MSAccessToken.access_token)
         const minecraftBuyed = await Microsoft.checkMCStore(MCAccessToken.access_token)
         if (!minecraftBuyed)
             return Promise.reject({
                 message: 'You didn\'t buy Minecraft! Please use another Microsoft account or buy Minecraft.'
             })
         const MCProfile = await Microsoft.getMCProfile(MCAccessToken.access_token)
-        const ret = ConfigManager.addMsAuthAccount(MCProfile.id, MCAccessToken.access_token, MCProfile.name, MCAccessToken.expires_at, accessToken.access_token, accessToken.refresh_token, undefined)
+        const ret = ConfigManager.addMsAuthAccount(MCProfile.id, MCAccessToken.access_token, MCProfile.name, MCAccessToken.expires_at, MSAccessToken.access_token, MSAccessToken.refresh_token, MSAccessToken.expires_at)
         ConfigManager.save()
 
         return ret

@@ -4,8 +4,8 @@
 // Requirements
 const cp                      = require('child_process')
 const crypto                  = require('crypto')
-const request                 = require('request')
-const {URL}                   = require('url')
+const { URL }                 = require('url')
+const { getServerStatus }     = require('helios-core')
 
 // Internal Requirements
 const DiscordWrapper          = require('./assets/js/discordwrapper')
@@ -132,7 +132,7 @@ function updateSelectedAccount(authUser){
             username = authUser.displayName
         }
         if(authUser.uuid != null){
-            document.getElementById('avatarContainer').style.backgroundImage = `url('https://crafatar.com/renders/body/${authUser.uuid}?overlay')`
+            document.getElementById('avatarContainer').style.backgroundImage = `url('https://mc-heads.net/body/${authUser.uuid}/right')`
         }
     }
     user_text.innerHTML = username
@@ -174,11 +174,6 @@ const refreshMojangStatuses = async function(){
 
         for(let i=0; i<statuses.length; i++){
             const service = statuses[i]
-
-            // Mojang API is broken for sessionserver. https://bugs.mojang.com/browse/WEB-2303
-            if(service.service === 'sessionserver.mojang.com') {
-                service.status = 'green'
-            }
 
             if(service.essential){
                 tooltipEssentialHTML += `<div class="mojangStatusContainer">
@@ -232,11 +227,11 @@ const refreshServerStatus = async function(fade = false){
 
     try {
         const serverURL = new URL('my://' + serv.getAddress())
-        const servStat = await ServerStatus.getStatus(serverURL.hostname, serverURL.port)
-        if(servStat.online){
-            pLabel = 'プレイヤー'
-            pVal = servStat.onlinePlayers + '/' + servStat.maxPlayers
-        }
+
+        const servStat = await getServerStatus(47, serverURL.hostname, Number(serverURL.port))
+        console.log(servStat)
+        pLabel = 'プレイヤー'
+        pVal = servStat.players.online + '/' + servStat.players.max
 
     } catch (err) {
         loggerLanding.warn('Unable to refresh server status, assuming offline.')

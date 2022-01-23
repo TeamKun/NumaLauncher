@@ -1,15 +1,18 @@
 require('dotenv').config()
 
+const remoteMain = require('@electron/remote/main')
+remoteMain.initialize()
+
 // Requirements
-const { app, BrowserWindow, ipcMain, Menu, shell, session } = require('electron')
-const autoUpdater = require('electron-updater').autoUpdater
-const ejse = require('ejs-electron')
-const fs = require('fs')
+const { app, BrowserWindow, ipcMain, Menu } = require('electron')
+const autoUpdater                   = require('electron-updater').autoUpdater
+const ejse                          = require('ejs-electron')
+const fs                            = require('fs')
+const isDev                         = require('./app/assets/js/isdev')
+const path                          = require('path')
+const semver                        = require('semver')
+const { pathToFileURL }             = require('url')
 const fsExtra = require('fs-extra')
-const isDev = require('./app/assets/js/isdev')
-const path = require('path')
-const semver = require('semver')
-const url = require('url')
 const crypto = require('crypto')
 
 const redirectUriPrefix = 'https://login.microsoftonline.com/common/oauth2/nativeclient?'
@@ -348,21 +351,16 @@ function createWindow() {
         webPreferences: {
             preload: path.join(__dirname, 'app', 'assets', 'js', 'preloader.js'),
             nodeIntegration: true,
-            contextIsolation: false,
-            enableRemoteModule: true,
-            worldSafeExecuteJavaScript: true
+            contextIsolation: false
         },
         backgroundColor: '#171614'
     })
+    remoteMain.enable(win.webContents)
 
     ejse.data('bkid', Math.floor((Math.random() * fs.readdirSync(path.join(__dirname, 'app', 'assets', 'images', 'backgrounds')).length)))
     ejse.data('appver', app.getVersion())
 
-    win.loadURL(url.format({
-        pathname: path.join(__dirname, 'app', 'app.ejs'),
-        protocol: 'file:',
-        slashes: true
-    }))
+    win.loadURL(pathToFileURL(path.join(__dirname, 'app', 'app.ejs')).toString())
 
     /*win.once('ready-to-show', () => {
         win.show()

@@ -61,7 +61,10 @@ class ProcessBuilder {
 
         logger.log('Launch Arguments:', args)
 
-        const child = child_process.spawn(ConfigManager.getJavaExecutable(), args, {
+        // Javaバージョン
+        const javaVersion = Util.getJavaVersionFromMcVersion(this.server.getMinecraftVersion())
+
+        const child = child_process.spawn(ConfigManager.getJavaExecutable(javaVersion), args, {
             cwd: this.gameDir,
             detached: ConfigManager.getLaunchDetached()
         })

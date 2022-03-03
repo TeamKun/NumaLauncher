@@ -167,6 +167,15 @@ class Util {
         return true
     }
 
+    /**
+     * マイクラのバージョンからJavaのバージョンを取得する
+     * 
+     * @returns Javaのバージョンナンバー
+     */
+    static getJavaVersionFromMcVersion(mcVersion){
+        return Util.mcVersionAtLeast('1.17', mcVersion) ? '17' : '8'
+    }
+
     static isForgeGradle3(mcVersion, forgeVersion) {
 
         if(Util.mcVersionAtLeast('1.13', mcVersion)) {
@@ -806,7 +815,7 @@ class JavaGuard extends EventEmitter {
      * @returns {Promise.<string>} A Promise which resolves to the executable path of a valid 
      * x64 Java installation. If none are found, null is returned.
      */
-    async _win32JavaValidate(dataDir){
+    async _win32JavaValidate(dataDir, version){
 
         // Get possible paths from the registry.
         let pathSet1 = await JavaGuard._scanRegistry()
@@ -821,7 +830,7 @@ class JavaGuard extends EventEmitter {
         }
 
         // Get possible paths from the data directory.
-        const pathSet2 = await JavaGuard._scanFileSystem(path.join(dataDir, 'runtime', 'x64'))
+        const pathSet2 = await JavaGuard._scanFileSystem(path.join(dataDir, 'runtime', version, 'x64'))
 
         // Merge the results.
         const uberSet = new Set([...pathSet1, ...pathSet2])
@@ -856,10 +865,10 @@ class JavaGuard extends EventEmitter {
      * @returns {Promise.<string>} A Promise which resolves to the executable path of a valid 
      * x64 Java installation. If none are found, null is returned.
      */
-    async _darwinJavaValidate(dataDir){
+    async _darwinJavaValidate(dataDir, version){
 
         const pathSet1 = await JavaGuard._scanFileSystem('/Library/Java/JavaVirtualMachines')
-        const pathSet2 = await JavaGuard._scanFileSystem(path.join(dataDir, 'runtime', 'x64'))
+        const pathSet2 = await JavaGuard._scanFileSystem(path.join(dataDir, 'runtime', version, 'x64'))
 
         const uberSet = new Set([...pathSet1, ...pathSet2])
 
@@ -901,10 +910,10 @@ class JavaGuard extends EventEmitter {
      * @returns {Promise.<string>} A Promise which resolves to the executable path of a valid 
      * x64 Java installation. If none are found, null is returned.
      */
-    async _linuxJavaValidate(dataDir){
+    async _linuxJavaValidate(dataDir, version){
 
         const pathSet1 = await JavaGuard._scanFileSystem('/usr/lib/jvm')
-        const pathSet2 = await JavaGuard._scanFileSystem(path.join(dataDir, 'runtime', 'x64'))
+        const pathSet2 = await JavaGuard._scanFileSystem(path.join(dataDir, 'runtime', version, 'x64'))
         
         const uberSet = new Set([...pathSet1, ...pathSet2])
 
@@ -930,8 +939,8 @@ class JavaGuard extends EventEmitter {
      * @param {string} dataDir The base launcher directory.
      * @returns {string} A path to a valid x64 Java installation, null if none found.
      */
-    async validateJava(dataDir){
-        return await this['_' + process.platform + 'JavaValidate'](dataDir)
+    async validateJava(dataDir, version){
+        return await this['_' + process.platform + 'JavaValidate'](dataDir, version)
     }
 
 }
@@ -1667,12 +1676,12 @@ class AssetGuard extends EventEmitter {
     // Java (Category=''') Validation (download) Functions
     // #region
 
-    _enqueueOpenJDK(dataDir){
+    _enqueueOpenJDK(dataDir, version){
         return new Promise((resolve, reject) => {
-            JavaGuard._latestOpenJDK('8').then(verData => {
+            JavaGuard._latestOpenJDK(version).then(verData => {
                 if(verData != null){
 
-                    dataDir = path.join(dataDir, 'runtime', 'x64')
+                    dataDir = path.join(dataDir, 'runtime', version, 'x64')
                     const fDir = path.join(dataDir, verData.name)
                     const jre = new Asset(verData.name, null, verData.size, verData.uri, fDir)
                     this.java = new DLTracker([jre], jre.size, (a, self) => {

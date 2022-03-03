@@ -45,6 +45,7 @@ function bindFileSelectors() {
 
         ele.onclick = async e => {
             const isJavaExecSel = ele.id === 'settingsJavaExecSel'
+            const isJavaExecSel17 = ele.id === 'settingsJavaExecSel17'
             const directoryDialog = ele.hasAttribute('dialogDirectory') && ele.getAttribute('dialogDirectory') == 'true'
             const properties = directoryDialog ? ['openDirectory', 'createDirectory'] : ['openFile']
 
@@ -56,7 +57,7 @@ function bindFileSelectors() {
                 options.title = ele.getAttribute('dialogTitle')
             }
 
-            if (isJavaExecSel && process.platform === 'win32') {
+            if ((isJavaExecSel || isJavaExecSel17) && process.platform === 'win32') {
                 options.filters = [
                     { name: '実行可能ファイル', extensions: ['exe'] },
                     { name: 'すべてのファイル', extensions: ['*'] }
@@ -67,7 +68,10 @@ function bindFileSelectors() {
             if (!res.canceled) {
                 ele.previousElementSibling.value = res.filePaths[0]
                 if (isJavaExecSel) {
-                    populateJavaExecDetails(ele.previousElementSibling.value)
+                    populateJavaExecDetails(ele.previousElementSibling.value, '8')
+                }
+                if (isJavaExecSel17) {
+                    populateJavaExecDetails(ele.previousElementSibling.value, '17')
                 }
             }
         }
@@ -131,8 +135,11 @@ function initSettingsValues() {
                 if (v.type === 'number' || v.type === 'text') {
                     // Special Conditions
                     if (cVal === 'JavaExecutable') {
-                        populateJavaExecDetails(v.value)
-                        v.value = gFn()
+                        populateJavaExecDetails(v.value, '8')
+                        v.value = gFn('8')
+                    } else if (cVal === 'JavaExecutable17') {
+                        populateJavaExecDetails(v.value, '17')
+                        v.value = gFn('17')
                     } else if (cVal === 'DataDirectory') {
                         v.value = gFn()
                     } else if (cVal === 'JVMOptions') {
@@ -179,6 +186,10 @@ function saveSettingsValues() {
                     // Special Conditions
                     if (cVal === 'JVMOptions') {
                         sFn(v.value.split(' '))
+                    } else if (cVal === 'JavaExecutable') {
+                        sFn(v.value, '8')
+                    } else if (cVal === 'JavaExecutable17') {
+                        sFn(v.value, '17')
                     } else {
                         sFn(v.value)
                     }
@@ -961,7 +972,10 @@ const settingsMaxRAMLabel = document.getElementById('settingsMaxRAMLabel')
 const settingsMinRAMLabel = document.getElementById('settingsMinRAMLabel')
 const settingsMemoryTotal = document.getElementById('settingsMemoryTotal')
 const settingsMemoryAvail = document.getElementById('settingsMemoryAvail')
-const settingsJavaExecDetails = document.getElementById('settingsJavaExecDetails')
+const settingsJavaExecDetails = {
+    '8': document.getElementById('settingsJavaExecDetails'),
+    '17': document.getElementById('settingsJavaExecDetails17'),
+}
 const settingsOptionStandardize = document.getElementById('settingsOptionStandardize')
 
 // Store maximum memory values.
@@ -1159,18 +1173,18 @@ function populateMemoryStatus() {
  * 
  * @param {string} execPath The executable path to populate against.
  */
-function populateJavaExecDetails(execPath) {
+function populateJavaExecDetails(execPath, version) {
     const jg = new JavaGuard(DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer()).getMinecraftVersion())
     jg._validateJavaBinary(execPath).then(v => {
         if (v.valid) {
             const vendor = v.vendor != null ? ` (${v.vendor})` : ''
             if (v.version.major < 9) {
-                settingsJavaExecDetails.innerHTML = `Selected: Java ${v.version.major} Update ${v.version.update} (x${v.arch})${vendor}`
+                settingsJavaExecDetails[version].innerHTML = `Selected: Java ${v.version.major} Update ${v.version.update} (x${v.arch})${vendor}`
             } else {
-                settingsJavaExecDetails.innerHTML = `Selected: Java ${v.version.major}.${v.version.minor}.${v.version.revision} (x${v.arch})${vendor}`
+                settingsJavaExecDetails[version].innerHTML = `Selected: Java ${v.version.major}.${v.version.minor}.${v.version.revision} (x${v.arch})${vendor}`
             }
         } else {
-            settingsJavaExecDetails.innerHTML = '無効なJava'
+            settingsJavaExecDetails[version].innerHTML = '無効なJava'
         }
     })
 }

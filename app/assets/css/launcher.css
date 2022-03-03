@@ -1946,6 +1946,13 @@ input:checked + .toggleSwitchSlider:before {
     font-size: 12px;
 }
 
+/* Status text which displays details on the selected executable. */
+#settingsJavaExecDetails17 {
+    font-weight: bold;
+    color: grey;
+    font-size: 12px;
+}
+
 /* Main container for the JVM options setting. */
 #settingsJVMOptsContainer {
     width: 75%;

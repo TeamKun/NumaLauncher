@@ -12,6 +12,7 @@ const DiscordWrapper = require('./assets/js/discordwrapper')
 const Mojang = require('./assets/js/mojang')
 const ProcessBuilder = require('./assets/js/processbuilder')
 const ServerStatus = require('./assets/js/serverstatus')
+const Util = require('./assets/js/util')
 
 // Launch Elements
 const launch_content = document.getElementById('launch_content')

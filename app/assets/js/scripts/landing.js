@@ -24,7 +24,6 @@ const server_selection_button_status = document.getElementById('server_selection
 const user_text = document.getElementById('user_text')
 
 const loggerLanding = LoggerUtil('%c[Landing]', 'color: #000668; font-weight: bold')
-const loggerDebug = LoggerUtil('%c[DEBUG]', 'color: #000668; font-weight: bold')
     /* Launch Progress Wrapper Functions */
 
 /**
@@ -92,8 +91,7 @@ document.getElementById('launch_button').addEventListener('click', function(e) {
     ConfigManager.setJavaExecutable("C:\\develop\\kunlab\\NumaLauncher\\java\\jdk-18.0.2.1\\bin\\javaw.exe")
     const mcVersion = DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer()).getMinecraftVersion()
     const jExe = ConfigManager.getJavaExecutable()
-    loggerDebug.log(mcVersion)
-    loggerDebug.log(jExe)
+
     if (jExe == null) {
         asyncSystemScan(mcVersion)
     } else {

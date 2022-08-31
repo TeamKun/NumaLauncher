@@ -400,8 +400,6 @@ class JavaGuard extends EventEmitter {
      * @returns {boolean} True if the path points to a Java executable, otherwise false.
      */
     static isJavaExecPath(pth) {
-        console.log("typeof(pth)")
-        console.log(path.join('bin', 'javaw.exe'))
         if (process.platform === 'win32') {
             return pth.endsWith(path.join('bin', 'javaw.exe'))
         } else if (process.platform === 'darwin') {
@@ -502,8 +500,6 @@ class JavaGuard extends EventEmitter {
         let checksum = 0
 
         const meta = {}
-        console.log("props")
-        console.log(props)
 
         for (let i = 0; i < props.length; i++) {
             if (props[i].indexOf('sun.arch.data.model') > -1) {
@@ -521,11 +517,6 @@ class JavaGuard extends EventEmitter {
                 let verString = props[i].split('=')[1].trim()
                 console.log(props[i].trim())
                 const verOb = JavaGuard.parseJavaRuntimeVersion(verString)
-                console.log("verOb")
-                console.log(verString)
-                console.log(verOb)
-                console.log("this.mcVersion")
-                console.log(this.mcVersion)
                 if (verOb.major < 9) {
                     // Java 8
                     if (verOb.major === 8 && verOb.update > 52) {
@@ -572,19 +563,12 @@ class JavaGuard extends EventEmitter {
      * The validity is stored inside the `valid` property.
      */
     _validateJavaBinary(binaryExecPath) {
-        console.log("binaryExecPath")
-        console.log(binaryExecPath)
-        console.log("binaryExecPath")
         return new Promise((resolve, reject) => {
             if (!JavaGuard.isJavaExecPath(binaryExecPath)) {
-                console.log("if (!JavaGuard.isJavaExecPath(binaryExecPath)")
                 resolve({ valid: false })
             } else if (fs.existsSync(binaryExecPath)) {
-                console.log("else if (fs.existsSync(binaryExecPath))")
-                    // Workaround (javaw.exe no longer outputs this information.)
-                console.log(typeof binaryExecPath)
+                // Workaround (javaw.exe no longer outputs this information.)
                 if (binaryExecPath.indexOf('javaw.exe') > -1) {
-                    console.log("if (binaryExecPath.indexOf('javaw.exe') > -1) {")
                     binaryExecPath.replace('javaw.exe', 'java.exe')
                 }
                 child_process.exec('"' + binaryExecPath + '" -XshowSettings:properties', (err, stdout, stderr) => {
@@ -1795,113 +1779,6 @@ class AssetGuard extends EventEmitter {
         })
 
     }
-
-    // _enqueueOracleJRE(dataDir){
-    //     return new Promise((resolve, reject) => {
-    //         JavaGuard._latestJREOracle().then(verData => {
-    //             if(verData != null){
-
-    //                 const combined = verData.uri + PLATFORM_MAP[process.platform]
-
-    //                 const opts = {
-    //                     url: combined,
-    //                     headers: {
-    //                         'Cookie': 'oraclelicense=accept-securebackup-cookie'
-    //                     }
-    //                 }
-
-    //                 request.head(opts, (err, resp, body) => {
-    //                     if(err){
-    //                         resolve(false)
-    //                     } else {
-    //                         dataDir = path.join(dataDir, 'runtime', 'x64')
-    //                         const name = combined.substring(combined.lastIndexOf('/')+1)
-    //                         const fDir = path.join(dataDir, name)
-    //                         const jre = new Asset(name, null, parseInt(resp.headers['content-length']), opts, fDir)
-    //                         this.java = new DLTracker([jre], jre.size, (a, self) => {
-    //                             let h = null
-    //                             fs.createReadStream(a.to)
-    //                                 .on('error', err => console.log(err))
-    //                                 .pipe(zlib.createGunzip())
-    //                                 .on('error', err => console.log(err))
-    //                                 .pipe(tar.extract(dataDir, {
-    //                                     map: (header) => {
-    //                                         if(h == null){
-    //                                             h = header.name
-    //                                         }
-    //                                     }
-    //                                 }))
-    //                                 .on('error', err => console.log(err))
-    //                                 .on('finish', () => {
-    //                                     fs.unlink(a.to, err => {
-    //                                         if(err){
-    //                                             console.log(err)
-    //                                         }
-    //                                         if(h.indexOf('/') > -1){
-    //                                             h = h.substring(0, h.indexOf('/'))
-    //                                         }
-    //                                         const pos = path.join(dataDir, h)
-    //                                         self.emit('complete', 'java', JavaGuard.javaExecFromRoot(pos))
-    //                                     })
-    //                                 })
-
-    //                         })
-    //                         resolve(true)
-    //                     }
-    //                 })
-
-    //             } else {
-    //                 resolve(false)
-    //             }
-    //         })
-    //     })
-
-    // }
-
-    // _enqueueMojangJRE(dir){
-    //     return new Promise((resolve, reject) => {
-    //         // Mojang does not host the JRE for linux.
-    //         if(process.platform === 'linux'){
-    //             resolve(false)
-    //         }
-    //         AssetGuard.loadMojangLauncherData().then(data => {
-    //             if(data != null) {
-
-    //                 try {
-    //                     const mJRE = data[Library.mojangFriendlyOS()]['64'].jre
-    //                     const url = mJRE.url
-
-    //                     request.head(url, (err, resp, body) => {
-    //                         if(err){
-    //                             resolve(false)
-    //                         } else {
-    //                             const name = url.substring(url.lastIndexOf('/')+1)
-    //                             const fDir = path.join(dir, name)
-    //                             const jre = new Asset('jre' + mJRE.version, mJRE.sha1, resp.headers['content-length'], url, fDir)
-    //                             this.java = new DLTracker([jre], jre.size, a => {
-    //                                 fs.readFile(a.to, (err, data) => {
-    //                                     // Data buffer needs to be decompressed from lzma,
-    //                                     // not really possible using node.js
-    //                                 })
-    //                             })
-    //                         }
-    //                     })
-    //                 } catch (err){
-    //                     resolve(false)
-    //                 }
-
-    //             }
-    //         })
-    //     })
-    // }
-
-
-    // #endregion
-
-    // #endregion
-
-    // Control Flow Functions
-    // #region
 
     /**
      * Initiate an async download process for an AssetGuard DLTracker.

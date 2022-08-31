@@ -89,10 +89,9 @@ function setLaunchEnabled(val) {
 document.getElementById('launch_button').addEventListener('click', function(e) {
     loggerLanding.log('Launching game..')
 
-    ConfigManager.setJavaExecutable("C:\\develop\\kunlab\\NumaLauncher\\java\\jdk-18.0.2.1\\bin\\javaw.exe")
     const mcVersion = DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer()).getMinecraftVersion()
-    const jExe = ConfigManager.getJavaExecutable()
-
+    const jExe = Util.getJDKPath()
+    Util.getJDKPath(mcVersion)
     if (jExe == null) {
         asyncSystemScan(mcVersion)
     } else {
@@ -530,7 +529,7 @@ async function dlAsync(login = true) {
     aEx = cp.fork(path.join(__dirname, 'assets', 'js', 'assetexec.js'), [
             'AssetGuard',
             ConfigManager.getCommonDirectory(),
-            ConfigManager.getJavaExecutable()
+            Util.getJDKPath()
         ], {
             env: forkEnv,
             stdio: 'pipe'

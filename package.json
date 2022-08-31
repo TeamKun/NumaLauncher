@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "adm-zip": "^0.5.1",
+    "app-root-path": "^3.1.0",
     "async": "^3.2.0",
     "axios": "^0.21.1",
     "discord-rpc": "^3.1.4",

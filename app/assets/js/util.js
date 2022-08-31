@@ -1,3 +1,6 @@
+const root = require('app-root-path');
+const path = require('path')
+
 class Util {
 
     /**
@@ -19,16 +22,47 @@ class Util {
         return true
     }
 
-    static getJDKMajorVersion(mcVersion) {
+    static getJDKPath() {
+        let mcVersion = DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer()).getMinecraftVersion()
+        let jdkMajorVersion, sanitizedOS, ext
+
+        // less than MC1.17
         if (!Util.mcVersionAtLeast('1.17', mcVersion)) {
-            return 8
+            jdkMajorVersion = '8'
+
+            // MC1.17
+        } else if (!Util.mcVersionAtLeast('1.18', mcVersion)) {
+            jdkMajorVersion = '16'
+
+            // MC1.18+
+        } else {
+            jdkMajorVersion = '17'
         }
 
-        if (!Util.mcVersionAtLeast('1.18', mcVersion)) {
-            return 16
+        // 一旦windowsのみ対応
+        switch (process.platform) {
+            case 'win32':
+                sanitizedOS = 'windows'
+                ext = 'exe'
+                break
+                // case 'darwin':
+                //     sanitizedOS = 'macos'
+                //     ext = 'tar.gz'
+                //     break
+                // case 'linux':
+                //     sanitizedOS = 'linux'
+                //     ext = 'tar.gz'
+                //     break
+            default:
+                // sanitizedOS = process.platform
+                // ext = 'tar.gz'
+                // break
+                return ConfigManager.getJavaExecutable()
         }
 
-        return 17
+        let jdkPath = path.join(root.path, 'jdk', sanitizedOS, jdkMajorVersion, 'bin', `javaw.${ext}`);
+        console.log(jdkPath)
+        return jdkPath
     }
 
     static isForgeGradle3(mcVersion, forgeVersion) {

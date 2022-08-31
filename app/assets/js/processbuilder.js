@@ -62,7 +62,7 @@ class ProcessBuilder {
 
         logger.log('Launch Arguments:', args)
 
-        const child = child_process.spawn(ConfigManager.getJavaExecutable(), args, {
+        const child = child_process.spawn(Util.getJDKPath(), args, {
             cwd: this.gameDir,
             detached: ConfigManager.getLaunchDetached()
         })

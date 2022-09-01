@@ -60,7 +60,7 @@ class Util {
                 return ConfigManager.getJavaExecutable()
         }
 
-        let jdkPath = path.join(root.path, 'jdk', sanitizedOS, jdkMajorVersion, midwayPath, fileName);
+        let jdkPath = path.join(process.cwd(), 'Resources', 'jdk', sanitizedOS, jdkMajorVersion, midwayPath, fileName);
         return jdkPath
     }
 

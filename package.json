@@ -15,7 +15,7 @@
         "start": "electron .",
         "cilinux": "node ./build/jdkdownloader.js && node build.js WINDOWS && node build.js LINUX",
         "cidarwin": "node ./build/jdkdownloader.js && node build.js MAC",
-        "dist": "cross-env ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES=true node build.js",
+        "dist": "node ./build/jdkdownloader.js && cross-env ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES=true node build.js",
         "dist:win": "npm run dist -- WINDOWS",
         "dist:mac": "npm run dist -- MAC",
         "dist:linux": "npm run dist -- LINUX",

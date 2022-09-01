@@ -55,7 +55,8 @@ builder.build({
             '!{dist,.gitignore,.vscode,docs,dev-app-update.yml,.travis.yml,.nvmrc,.eslintrc.json,build.js,numa_skins.json,skinSetting.json}'
         ],
         extraResources: [
-            'libraries,jdk'
+            'libraries',
+            'jdk'
         ],
         asar: true
     }

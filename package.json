@@ -1,57 +1,57 @@
 {
-  "name": "numalauncher",
-  "version": "2.0.5",
-  "productName": "NumaLauncher",
-  "description": "沼でも使えるMinecraftランチャー",
-  "author": "Daniel Scalzi (https://github.com/dscalzi/), Kamesuta (https://github.com/Kamesuta/)",
-  "license": "UNLICENSED",
-  "homepage": "https://github.com/TeamKun/NumaLauncher",
-  "bugs": {
-    "url": "https://github.com/TeamKun/NumaLauncher/issues"
-  },
-  "private": true,
-  "main": "index.js",
-  "scripts": {
-    "start": "electron .",
-    "cilinux": "node build.js WINDOWS && node build.js LINUX",
-    "cidarwin": "node build.js MAC",
-    "dist": "cross-env ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES=true node build.js",
-    "dist:win": "npm run dist -- WINDOWS",
-    "dist:mac": "npm run dist -- MAC",
-    "dist:linux": "npm run dist -- LINUX",
-    "lint": "eslint --config .eslintrc.json ."
-  },
-  "engines": {
-    "node": "12.x.x"
-  },
-  "dependencies": {
-    "adm-zip": "^0.5.1",
-    "async": "^3.2.0",
-    "axios": "^0.21.1",
-    "discord-rpc": "^3.1.4",
-    "dotenv": "^8.2.0",
-    "ejs": "^3.1.5",
-    "ejs-electron": "^2.1.1",
-    "electron-updater": "^4.3.9",
-    "fs-extra": "^9.0.1",
-    "github-syntax-dark": "^0.5.0",
-    "jquery": "^3.6.0",
-    "request": "^2.88.2",
-    "semver": "^7.3.4",
-    "skinview3d": "^2.0.0-beta.1",
-    "slick-carousel": "^1.8.1",
-    "sweetalert2": "^11.1.2",
-    "tar-fs": "^2.1.1",
-    "winreg": "^1.2.4"
-  },
-  "devDependencies": {
-    "cross-env": "^7.0.3",
-    "electron": "^13.1.8",
-    "electron-builder": "^22.11.7",
-    "eslint": "^7.15.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/TeamKun/NumaLauncher.git"
-  }
+    "name": "numalauncher",
+    "version": "3.0.0",
+    "productName": "NumaLauncher",
+    "description": "沼でも使えるMinecraftランチャー",
+    "author": "Daniel Scalzi (https://github.com/dscalzi/), Kamesuta (https://github.com/Kamesuta/)",
+    "license": "UNLICENSED",
+    "homepage": "https://github.com/TeamKun/NumaLauncher",
+    "bugs": {
+        "url": "https://github.com/TeamKun/NumaLauncher/issues"
+    },
+    "private": true,
+    "main": "index.js",
+    "scripts": {
+        "start": "electron .",
+        "cilinux": "node build.js WINDOWS && node build.js LINUX",
+        "cidarwin": "node build.js MAC",
+        "dist": "cross-env ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES=true node build.js",
+        "dist:win": "npm run dist -- WINDOWS",
+        "dist:mac": "npm run dist -- MAC",
+        "dist:linux": "npm run dist -- LINUX",
+        "lint": "eslint --config .eslintrc.json ."
+    },
+    "engines": {
+        "node": "12.x.x"
+    },
+    "dependencies": {
+        "adm-zip": "^0.5.1",
+        "async": "^3.2.0",
+        "axios": "^0.21.1",
+        "discord-rpc": "^3.1.4",
+        "dotenv": "^8.2.0",
+        "ejs": "^3.1.5",
+        "ejs-electron": "^2.1.1",
+        "electron-updater": "^4.3.9",
+        "fs-extra": "^9.0.1",
+        "github-syntax-dark": "^0.5.0",
+        "jquery": "^3.6.0",
+        "request": "^2.88.2",
+        "semver": "^7.3.4",
+        "skinview3d": "^2.0.0-beta.1",
+        "slick-carousel": "^1.8.1",
+        "sweetalert2": "^11.1.2",
+        "tar-fs": "^2.1.1",
+        "winreg": "^1.2.4"
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.3",
+        "electron": "^13.1.8",
+        "electron-builder": "^22.11.7",
+        "eslint": "^7.15.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/TeamKun/NumaLauncher.git"
+    }
 }

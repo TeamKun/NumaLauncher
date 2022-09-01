@@ -66,9 +66,6 @@ class ProcessBuilder {
             cwd: this.gameDir,
             detached: ConfigManager.getLaunchDetached()
         })
-        console.log("child")
-        console.log(child)
-        console.log("child")
 
         if (ConfigManager.getLaunchDetached()) {
             child.unref()

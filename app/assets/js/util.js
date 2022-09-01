@@ -24,7 +24,7 @@ class Util {
 
     static getJDKPath() {
         let mcVersion = DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer()).getMinecraftVersion()
-        let jdkMajorVersion, sanitizedOS, ext
+        let jdkMajorVersion, sanitizedOS, midwayPath, fileName
 
         // less than MC1.17
         if (!Util.mcVersionAtLeast('1.17', mcVersion)) {
@@ -43,25 +43,24 @@ class Util {
         switch (process.platform) {
             case 'win32':
                 sanitizedOS = 'windows'
-                ext = 'exe'
+                midwayPath = 'bin'
+                fileName = 'javaw.exe'
                 break
-                // case 'darwin':
-                //     sanitizedOS = 'macos'
-                //     ext = 'tar.gz'
-                //     break
-                // case 'linux':
-                //     sanitizedOS = 'linux'
-                //     ext = 'tar.gz'
-                //     break
+            case 'darwin':
+                sanitizedOS = 'mac'
+                midwayPath = path.join('Contents', 'Home', 'bin')
+                fileName = 'java'
+                break
+            case 'linux':
+                sanitizedOS = 'linux'
+                midwayPath = 'bin'
+                fileName = 'java'
+                break
             default:
-                // sanitizedOS = process.platform
-                // ext = 'tar.gz'
-                // break
                 return ConfigManager.getJavaExecutable()
         }
 
-        let jdkPath = path.join(root.path, 'jdk', sanitizedOS, jdkMajorVersion, 'bin', `javaw.${ext}`);
-        console.log(jdkPath)
+        let jdkPath = path.join(root.path, 'jdk', sanitizedOS, jdkMajorVersion, midwayPath, fileName);
         return jdkPath
     }
 

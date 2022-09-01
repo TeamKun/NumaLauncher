@@ -1,8 +1,8 @@
 const builder = require('electron-builder')
 const Platform = builder.Platform
 
-function getCurrentPlatform(){
-    switch(process.platform){
+function getCurrentPlatform() {
+    switch (process.platform) {
         case 'win32':
             return Platform.WINDOWS
         case 'darwin':
@@ -21,18 +21,16 @@ builder.build({
         appId: 'numalauncher',
         productName: 'NumaLauncher',
         artifactName: '${productName}-setup-${version}.${ext}',
-        copyright: 'Copyright © 2018-2020 Daniel Scalzi, 2020 Kamesuta',
+        copyright: 'Copyright © 2018-2020 Daniel Scalzi, 2020 TeamKUN',
         directories: {
             buildResources: 'build',
             output: 'dist'
         },
         win: {
-            target: [
-                {
-                    target: 'nsis',
-                    arch: 'x64'
-                }
-            ]
+            target: [{
+                target: 'nsis',
+                arch: 'x64'
+            }]
         },
         nsis: {
             oneClick: false,
@@ -47,7 +45,7 @@ builder.build({
         linux: {
             target: 'AppImage',
             maintainer: 'Daniel Scalzi, Kamesuta',
-            vendor: 'Daniel Scalzi, Kamesuta',
+            vendor: 'Daniel Scalzi, TeamKUN',
             synopsis: '沼でも使えるMinecraftランチャー',
             description: '参加型に参加するためのすべてがここに。Mod、コンフィグ、アップデートが全自動で揃います。',
             category: 'Game'
@@ -57,7 +55,7 @@ builder.build({
             '!{dist,.gitignore,.vscode,docs,dev-app-update.yml,.travis.yml,.nvmrc,.eslintrc.json,build.js,numa_skins.json,skinSetting.json}'
         ],
         extraResources: [
-            'libraries'
+            'libraries,jdk'
         ],
         asar: true
     }

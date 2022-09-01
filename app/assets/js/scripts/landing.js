@@ -100,16 +100,13 @@ document.getElementById('launch_button').addEventListener('click', function(e) {
         toggleLaunchArea(true)
         setLaunchPercentage(0, 100)
 
-        // TODO こいつをどうにかする
+        // TODO 動的にJDKVersionを切り替えるのでJavaGuardいらないかも
         const jg = new JavaGuard(mcVersion)
-
-        // TODO ここでのバージョン判定を変える
         jg._validateJavaBinary(jExe).then((v) => {
             loggerLanding.log('Java version meta', v)
             if (v.valid) {
                 dlAsync()
             } else {
-                // TODO 取得するバージョン分岐を変える
                 asyncSystemScan(mcVersion)
             }
         })

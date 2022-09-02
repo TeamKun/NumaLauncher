@@ -51,70 +51,70 @@ function initAutoUpdater(event, data) {
 
 // Open channel to listen for update actions.
 ipcMain.on('autoUpdateAction', (event, arg, data) => {
-    switch (arg) {
-        case 'initAutoUpdater':
-            console.log('Initializing auto updater.')
-            initAutoUpdater(event, data)
-            event.sender.send('autoUpdateNotification', 'ready')
-            break
-        case 'checkForUpdate':
-            autoUpdater.checkForUpdates()
-                .catch(err => {
-                    event.sender.send('autoUpdateNotification', 'realerror', err)
-                })
-            break
-        case 'allowPrereleaseChange':
-            if (!data) {
-                const preRelComp = semver.prerelease(app.getVersion())
-                if (preRelComp != null && preRelComp.length > 0) {
-                    autoUpdater.allowPrerelease = true
+        switch (arg) {
+            case 'initAutoUpdater':
+                console.log('Initializing auto updater.')
+                initAutoUpdater(event, data)
+                event.sender.send('autoUpdateNotification', 'ready')
+                break
+            case 'checkForUpdate':
+                autoUpdater.checkForUpdates()
+                    .catch(err => {
+                        event.sender.send('autoUpdateNotification', 'realerror', err)
+                    })
+                break
+            case 'allowPrereleaseChange':
+                if (!data) {
+                    const preRelComp = semver.prerelease(app.getVersion())
+                    if (preRelComp != null && preRelComp.length > 0) {
+                        autoUpdater.allowPrerelease = true
+                    } else {
+                        autoUpdater.allowPrerelease = data
+                    }
                 } else {
                     autoUpdater.allowPrerelease = data
                 }
-            } else {
-                autoUpdater.allowPrerelease = data
-            }
-            break
-        case 'installUpdateNow':
-            autoUpdater.quitAndInstall()
-            break
-        default:
-            console.log('Unknown argument', arg)
-            break
-    }
-})
-// Redirect distribution index event from preloader to renderer.
+                break
+            case 'installUpdateNow':
+                autoUpdater.quitAndInstall()
+                break
+            default:
+                console.log('Unknown argument', arg)
+                break
+        }
+    })
+    // Redirect distribution index event from preloader to renderer.
 ipcMain.on('distributionIndexDone', (event, res) => {
     event.sender.send('distributionIndexDone', res)
 })
 
 // 手動ダウンロード画面
-!function () {
+! function() {
     // ウィンドウID管理
     let manualWindowIndex = 0
     let manualWindows = []
-    // ダウンロードID管理
+        // ダウンロードID管理
     let downloadIndex = 0
-    // ダウンロードフォルダ
+        // ダウンロードフォルダ
     const downloadDirectory = path.join(app.getPath('temp'), 'NumaLauncher', 'ManualDownloads')
-    // IDでウィンドウを閉じる
+        // IDでウィンドウを閉じる
     ipcMain.on('closeManualWindow', (ipcEvent, index) => {
-        // IDを探してウィンドウを閉じる
-        const window = manualWindows[index]
-        if (window !== undefined) {
-            window.win.close()
-            manualWindows[index] = undefined
-        }
-    })
-    // IDでウィンドウを閉じる
+            // IDを探してウィンドウを閉じる
+            const window = manualWindows[index]
+            if (window !== undefined) {
+                window.win.close()
+                manualWindows[index] = undefined
+            }
+        })
+        // IDでウィンドウを閉じる
     ipcMain.on('preventManualWindowRedirect', (ipcEvent, index, prevent) => {
-        // IDを探してリダイレクト可否フラグ変更
-        const window = manualWindows[index]
-        if (window !== undefined) {
-            window.preventRedirect = prevent
-        }
-    })
-    // 手動ダウンロード用のウィンドウを開く
+            // IDを探してリダイレクト可否フラグ変更
+            const window = manualWindows[index]
+            if (window !== undefined) {
+                window.preventRedirect = prevent
+            }
+        })
+        // 手動ダウンロード用のウィンドウを開く
     ipcMain.on('openManualWindow', (ipcEvent, result) => {
         // ハッシュチェック
         function validateLocal(filePath, algo, hash) {
@@ -151,95 +151,95 @@ ipcMain.on('distributionIndexDone', (event, res) => {
                 manual,
                 preventRedirect: false,
             }
-            
+
             // セキュリティポリシー無効化
             win.webContents.session.webRequest.onHeadersReceived((d, c) => {
-                if(d.responseHeaders['Content-Security-Policy']){
+                if (d.responseHeaders['Content-Security-Policy']) {
                     delete d.responseHeaders['Content-Security-Policy']
-                } else if(d.responseHeaders['content-security-policy']) {
+                } else if (d.responseHeaders['content-security-policy']) {
                     delete d.responseHeaders['content-security-policy']
                 }
 
-                c({cancel: false, responseHeaders: d.responseHeaders})
+                c({ cancel: false, responseHeaders: d.responseHeaders })
             })
 
 
             // ウィンドウ開いた直後(ページ遷移時を除く)のみ最初のダイアログ表示
             win.webContents.send('manual-first')
-            // ロードが終わったら案内情報のデータをレンダープロセスに送る
+                // ロードが終わったら案内情報のデータをレンダープロセスに送る
             win.webContents.on('dom-ready', (event, args) => {
-                if (win.isDestroyed())
-                    return
-                win.webContents.send('manual-data', manual, index)
-            })
-            // リダイレクトキャンセル
+                    if (win.isDestroyed())
+                        return
+                    win.webContents.send('manual-data', manual, index)
+                })
+                // リダイレクトキャンセル
             win.webContents.on('will-navigate', (event, args) => {
-                if (win.isDestroyed())
-                    return
-                const window = manualWindows[index]
-                if (window !== undefined) {
-                    if (window.preventRedirect)
-                        event.preventDefault()
-                }
-            })
-            // ダウンロードされたらファイル名をすり替え、ハッシュチェックする
-            win.webContents.session.on('will-download', (event, item, webContents) => {
-                if (win.isDestroyed())
-                    return
-
-                downloadIndex++
-
-                // 一時フォルダに保存
-                item.setSavePath(path.join(downloadDirectory, item.getFilename()))
-
-                // 進捗を送信 (開始)
-                win.webContents.send('download-start', {
-                    index: downloadIndex,
-                    name: manual.manual.name,
-                    received: item.getReceivedBytes(),
-                    total: item.getTotalBytes(),
-                })
-                // 進捗を送信 (進行中)
-                item.on('updated', (event, state) => {
                     if (win.isDestroyed())
                         return
-                    win.webContents.send('download-progress', {
-                        index: downloadIndex,
-                        name: manual.manual.name,
-                        received: item.getReceivedBytes(),
-                        total: item.getTotalBytes(),
-                    })
-                })
-                // 進捗を送信 (完了)
-                item.once('done', (event, state) => {
-                    if (win.isDestroyed())
-                        return
-                    // ファイルが正しいかチェックする
-                    const v = item.getTotalBytes() === manual.size
-                        && validateLocal(item.getSavePath(), 'md5', manual.MD5)
-                    if (!v) {
-                        // 違うファイルをダウンロードしてしまった場合
-                        win.webContents.send('download-end', {
-                            index: downloadIndex,
-                            name: manual.manual.name,
-                            state: 'hash-failed',
-                        })
-                    } else if (fsExtra.existsSync(manual.path)) {
-                        // ファイルが既にあったら閉じる
-                        win.close()
-                    } else {
-                        // ファイルを正しい位置に移動
-                        fsExtra.moveSync(item.getSavePath(), manual.path)
-                        // 完了を通知
-                        win.webContents.send('download-end', {
-                            index: downloadIndex,
-                            name: manual.manual.name,
-                            state,
-                        })
+                    const window = manualWindows[index]
+                    if (window !== undefined) {
+                        if (window.preventRedirect)
+                            event.preventDefault()
                     }
                 })
-            })
-            // ダウンロードサイトを表示
+                // ダウンロードされたらファイル名をすり替え、ハッシュチェックする
+            win.webContents.session.on('will-download', (event, item, webContents) => {
+                    if (win.isDestroyed())
+                        return
+
+                    downloadIndex++
+
+                    // 一時フォルダに保存
+                    item.setSavePath(path.join(downloadDirectory, item.getFilename()))
+
+                    // 進捗を送信 (開始)
+                    win.webContents.send('download-start', {
+                            index: downloadIndex,
+                            name: manual.manual.name,
+                            received: item.getReceivedBytes(),
+                            total: item.getTotalBytes(),
+                        })
+                        // 進捗を送信 (進行中)
+                    item.on('updated', (event, state) => {
+                            if (win.isDestroyed())
+                                return
+                            win.webContents.send('download-progress', {
+                                index: downloadIndex,
+                                name: manual.manual.name,
+                                received: item.getReceivedBytes(),
+                                total: item.getTotalBytes(),
+                            })
+                        })
+                        // 進捗を送信 (完了)
+                    item.once('done', (event, state) => {
+                        if (win.isDestroyed())
+                            return
+                            // ファイルが正しいかチェックする
+                        const v = item.getTotalBytes() === manual.size &&
+                            validateLocal(item.getSavePath(), 'md5', manual.MD5)
+                        if (!v) {
+                            // 違うファイルをダウンロードしてしまった場合
+                            win.webContents.send('download-end', {
+                                index: downloadIndex,
+                                name: manual.manual.name,
+                                state: 'hash-failed',
+                            })
+                        } else if (fsExtra.existsSync(manual.path)) {
+                            // ファイルが既にあったら閉じる
+                            win.close()
+                        } else {
+                            // ファイルを正しい位置に移動
+                            fsExtra.moveSync(item.getSavePath(), manual.path)
+                                // 完了を通知
+                            win.webContents.send('download-end', {
+                                index: downloadIndex,
+                                name: manual.manual.name,
+                                state,
+                            })
+                        }
+                    })
+                })
+                // ダウンロードサイトを表示
             win.loadURL(manual.manual.url)
         }
     })
@@ -281,6 +281,8 @@ ipcMain.on('openMSALoginWindow', (ipcEvent, args) => {
     })
 
     MSALoginWindow.webContents.on('did-navigate', (event, uri, responseCode, statusText) => {
+        console.log("++++++++++++++++++++++++++++++++++++++++++++++")
+        console.log(uri)
         if (uri.startsWith(redirectUriPrefix)) {
             let querys = uri.substring(redirectUriPrefix.length).split('#', 1).toString().split('&')
             let queryMap = new Map()
@@ -298,7 +300,6 @@ ipcMain.on('openMSALoginWindow', (ipcEvent, args) => {
     })
 
     MSALoginWindow.removeMenu()
-    console.log(clientID)
     MSALoginWindow.loadURL('https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?prompt=consent&client_id=' + clientID + '&response_type=code&scope=XboxLive.signin%20offline_access&redirect_uri=https://login.microsoftonline.com/common/oauth2/nativeclient')
 })
 
@@ -377,8 +378,8 @@ function createWindow() {
     })
 
     // Open web browser on new window
-    const handleRedirect = async (e, url) => {
-        if(url !== win.webContents.getURL()) {
+    const handleRedirect = async(e, url) => {
+        if (url !== win.webContents.getURL()) {
             e.preventDefault()
             await shell.openExternal(url)
         }

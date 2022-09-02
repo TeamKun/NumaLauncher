@@ -82,12 +82,12 @@ bindFileSelectors()
  */
 
 /**
-  * Bind value validators to the settings UI elements. These will
-  * validate against the criteria defined in the ConfigManager (if
-  * and). If the value is invalid, the UI will reflect this and saving
-  * will be disabled until the value is corrected. This is an automated
-  * process. More complex UI may need to be bound separately.
-  */
+ * Bind value validators to the settings UI elements. These will
+ * validate against the criteria defined in the ConfigManager (if
+ * and). If the value is invalid, the UI will reflect this and saving
+ * will be disabled until the value is corrected. This is an automated
+ * process. More complex UI may need to be bound separately.
+ */
 function initSettingsValidators() {
     const sEls = document.getElementById('settingsContainer').querySelectorAll('[cValue]')
     Array.from(sEls).map((v, index, arr) => {
@@ -184,7 +184,7 @@ function saveSettingsValues() {
                     }
                 } else if (v.type === 'checkbox') {
                     sFn(v.checked)
-                    // Special Conditions
+                        // Special Conditions
                     if (cVal === 'AllowPrerelease') {
                         changeAllowPrerelease(v.checked)
                     }
@@ -380,7 +380,7 @@ function bindAuthAccountLogOut() {
     })
 }
 
-let  data = null
+let data = null
 
 /**
  * Process a log out.
@@ -403,7 +403,7 @@ function processLogOut(val, isLastAccount, skip = false) {
         }
     }
     const prevSelAcc = ConfigManager.getSelectedAccount()
-    AuthManager.removeAccount(uuid).then(async () => {
+    AuthManager.removeAccount(uuid).then(async() => {
         if (!isLastAccount && uuid === prevSelAcc.uuid) {
             const selAcc = ConfigManager.getSelectedAccount()
             refreshAuthAccountSelected(selAcc.uuid)
@@ -502,8 +502,8 @@ function prepareAccountsTab() {
  */
 
 /**
-  * Disable decimals, negative signs, and scientific notation.
-  */
+ * Disable decimals, negative signs, and scientific notation.
+ */
 document.getElementById('settingsGameWidth').addEventListener('keydown', (e) => {
     if (/^[-.eE]$/.test(e.key)) {
         e.preventDefault()

@@ -5272,6 +5272,80 @@ form[name='submitSecretQuestion'] p {
 
 /* Content container for a server listing. */
 
+.altIconContainer {
+    margin: 0px 10px 0px 5px;
+    border: 1px solid #fff;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.altIcon {
+    width: 85%;
+    height: 85%;
+    transform: rotate(-3deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.altIconChar {
+    width: 85%;
+    height: 85%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(3deg);
+    font-size: 28px;
+    font-weight: bolder;
+    color: white
+}
+
+
+/** icon colers*/
+
+.iconColor0 {
+    background: linear-gradient(rgb(0, 0, 255), rgb(255, 0, 0));
+}
+
+.iconColor1 {
+    background: linear-gradient(rgb(0, 128, 0), rgb(255, 255, 0));
+}
+
+.iconColor2 {
+    background: linear-gradient(rgb(255, 35, 108), rgb(208, 255, 115));
+}
+
+.iconColor3 {
+    background: linear-gradient(rgb(16, 205, 226), rgb(137, 67, 184));
+}
+
+.iconColor4 {
+    background: linear-gradient(rgb(232, 234, 83), rgb(255, 140, 0));
+}
+
+.iconColor5 {
+    background: linear-gradient(rgb(255, 0, 0), rgb(0, 0, 255));
+}
+
+.iconColor6 {
+    background: linear-gradient(rgb(255, 255, 0), rgb(0, 128, 0));
+}
+
+.iconColor7 {
+    background: linear-gradient(rgb(208, 255, 115), rgb(255, 35, 108));
+}
+
+.iconColor8 {
+    background: linear-gradient(rgb(137, 67, 184), rgb(16, 205, 226));
+}
+
+.iconColor9 {
+    background: linear-gradient(rgb(255, 140, 0), rgb(232, 234, 83));
+}
+
 .serverListing {
     border: none;
     padding: 0px;

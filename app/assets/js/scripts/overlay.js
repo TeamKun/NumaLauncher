@@ -268,17 +268,8 @@ function populateServerListings() {
 
     let htmlString = ''
     for (const serv of servers) {
-        let serverIcon
-        let iconImage = serv.getIcon()
-
-        if (iconImage) {
-            serverIcon = `<img class="serverListingImg" src="${serv.getIcon()}"/>`
-        } else {
-            serverIcon = `<div class="serverListingImg">${serv.getName()}</div>`
-        }
-
         htmlString += `<button class="serverListing" servid="${serv.getID()}" ${serv.getID() === giaSel ? 'selected' : ''}>
-            ${serverIcon}
+            ${genelateIcon(serv.getIcon(), serv.getName())}
             <div class="serverListingDetails">
                 <span class="serverListingName">${serv.getName()}</span>
                 <span class="serverListingDescription">${serv.getDescription()}</span>
@@ -301,6 +292,26 @@ function populateServerListings() {
     }
     document.getElementById('serverSelectListScrollable').innerHTML = htmlString
 
+}
+
+/**
+ * サーバー情報をもとにアイコンのHTMLタグを生成する
+ * */
+function genelateIcon(iconPath, packName) {
+    let colorNumber = String(packName.length).slice(-1)
+    let colorClass = `iconColor${colorNumber}`
+    if (iconPath) {
+        return `<img class="serverListingImg" src="${iconPath}"/>`
+    } else {
+        let iconChar = packName.charAt(0)
+        return `<div class="altIconContainer">
+            <div class="altIcon ${colorClass}">
+                <div class="altIconChar">
+                        ${iconChar}
+                </div>
+            </div>
+        </div>`
+    }
 }
 
 function populateAccountListings() {

@@ -76,7 +76,7 @@ function toggleOverlay(toggleState, dismissable = false, content = 'overlayConte
     bindOverlayKeys(toggleState, content, dismissable)
     if (toggleState) {
         document.getElementById('main').setAttribute('overlay', true)
-        // Make things untabbable.
+            // Make things untabbable.
         $('#main *').attr('tabindex', '-1')
         $('#' + content).parent().children().hide()
         $('#' + content).show()
@@ -95,7 +95,7 @@ function toggleOverlay(toggleState, dismissable = false, content = 'overlayConte
         })
     } else {
         document.getElementById('main').removeAttribute('overlay')
-        // Make things tabbable.
+            // Make things tabbable.
         $('#main *').removeAttr('tabindex')
         $('#overlayContainer').fadeOut({
             duration: 250,
@@ -190,7 +190,7 @@ document.getElementById('serverSelectConfirm').addEventListener('click', () => {
     }
 })
 
-document.getElementById('accountSelectConfirm').addEventListener('click', async () => {
+document.getElementById('accountSelectConfirm').addEventListener('click', async() => {
     const listings = document.getElementsByClassName('accountListing')
     for (let i = 0; i < listings.length; i++) {
         if (listings[i].hasAttribute('selected')) {
@@ -265,10 +265,20 @@ function populateServerListings() {
     const distro = DistroManager.getDistribution()
     const giaSel = ConfigManager.getSelectedServer()
     const servers = distro.getServers()
+
     let htmlString = ''
     for (const serv of servers) {
+        let serverIcon
+        let iconImage = serv.getIcon()
+
+        if (iconImage) {
+            serverIcon = `<img class="serverListingImg" src="${serv.getIcon()}"/>`
+        } else {
+            serverIcon = `<div class="serverListingImg">${serv.getName()}</div>`
+        }
+
         htmlString += `<button class="serverListing" servid="${serv.getID()}" ${serv.getID() === giaSel ? 'selected' : ''}>
-            <img class="serverListingImg" src="${serv.getIcon()}"/>
+            ${serverIcon}
             <div class="serverListingDetails">
                 <span class="serverListingName">${serv.getName()}</span>
                 <span class="serverListingDescription">${serv.getDescription()}</span>

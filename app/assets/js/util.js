@@ -24,7 +24,7 @@ class Util {
 
     static getJDKPath() {
         let mcVersion = DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer()).getMinecraftVersion()
-        let jdkMajorVersion, sanitizedOS, midwayPath, fileName
+        let basePath, jdkMajorVersion, sanitizedOS, midwayPath, fileName
 
         // less than MC1.17
         if (!Util.mcVersionAtLeast('1.17', mcVersion)) {
@@ -45,22 +45,27 @@ class Util {
                 sanitizedOS = 'windows'
                 midwayPath = 'bin'
                 fileName = 'javaw.exe'
+                basePath = path.join(process.cwd(), 'Resources', 'jdk')
                 break
             case 'darwin':
                 sanitizedOS = 'mac'
                 midwayPath = path.join('Contents', 'Home', 'bin')
                 fileName = 'java'
+                // process.cwdでは正常にパスが取得できないので__dirnameで対応
+                // exp: /Applications/NumaLauncher.app/Contents/Resources/jdk/mac/16/Contents/Home/bin/java
+                basePath = path.join(__dirname, '../../../..', 'jdk')
                 break
             case 'linux':
                 sanitizedOS = 'linux'
                 midwayPath = 'bin'
                 fileName = 'java'
+                basePath = path.join(process.cwd(), 'resources', 'jdk')
                 break
             default:
                 return ConfigManager.getJavaExecutable()
         }
 
-        let jdkPath = path.join(process.cwd(), 'Resources', 'jdk', sanitizedOS, jdkMajorVersion, midwayPath, fileName);
+        let jdkPath = path.join(basePath, sanitizedOS, jdkMajorVersion, midwayPath, fileName);
         return jdkPath
     }
 

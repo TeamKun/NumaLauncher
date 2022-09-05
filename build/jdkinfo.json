@@ -1,0 +1,54 @@
+{
+    "windows": {
+        "8": {
+            "url": "https://github.com/ojdkbuild/ojdkbuild/releases/download/java-1.8.0-openjdk-1.8.0.292-1.b10/java-1.8.0-openjdk-1.8.0.292-1.b10.ojdkbuild.windows.x86_64.zip",
+            "compressedFileName": "java-1.8.0-openjdk-1.8.0.292-1.b10.ojdkbuild.windows.x86_64.zip",
+            "extractedFileName": "java-1.8.0-openjdk-1.8.0.292-1.b10.ojdkbuild.windows.x86_64"
+
+        },
+        "16": {
+            "url": "https://github.com/adoptium/temurin16-binaries/releases/download/jdk-16.0.2%2B7/OpenJDK16U-jdk_x64_windows_hotspot_16.0.2_7.zip",
+            "compressedFileName": "OpenJDK16U-jdk_x64_windows_hotspot_16.0.2_7.zip",
+            "extractedFileName": "jdk-16.0.2+7"
+        },
+        "17": {
+            "url": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.4.1%2B1/OpenJDK17U-jdk_x64_windows_hotspot_17.0.4.1_1.zip",
+            "compressedFileName": "OpenJDK17U-jdk_x64_windows_hotspot_17.0.4.1_1.zip",
+            "extractedFileName": "jdk-17.0.4.1+1"
+        }
+    },
+    "mac": {
+        "8": {
+            "url": "",
+            "compressedFileName": "",
+            "extractedFileName": ""
+        },
+        "16": {
+            "url": "https://github.com/adoptium/temurin16-binaries/releases/download/jdk-16.0.2%2B7/OpenJDK16U-jdk_x64_mac_hotspot_16.0.2_7.tar.gz",
+            "compressedFileName": "OpenJDK16U-jdk_x64_mac_hotspot_16.0.2_7.tar.gz",
+            "extractedFileName": "jdk-16.0.2+7"
+        },
+        "17": {
+            "url": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.4.1%2B1/OpenJDK17U-jdk_x64_mac_hotspot_17.0.4.1_1.tar.gz",
+            "compressedFileName": "OpenJDK17U-jdk_x64_mac_hotspot_17.0.4.1_1.tar.gz",
+            "extractedFileName": "jdk-17.0.4.1+1"
+        }
+    },
+    "linux": {
+        "8": {
+            "url": "",
+            "compressedFileName": "",
+            "extractedFileName": ""
+        },
+        "16": {
+            "url": "https://github.com/adoptium/temurin16-binaries/releases/download/jdk-16.0.2%2B7/OpenJDK16U-jdk_x64_linux_hotspot_16.0.2_7.tar.gz",
+            "compressedFileName": "OpenJDK16U-jdk_x64_linux_hotspot_16.0.2_7.tar.gz",
+            "extractedFileName": "jdk-16.0.2+7"
+        },
+        "17": {
+            "url": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.4.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.4.1_1.tar.gz",
+            "compressedFileName": "OpenJDK17U-jdk_x64_linux_hotspot_17.0.4.1_1.tar.gz",
+            "extractedFileName": "jdk-17.0.4.1+1"
+        }
+    }
+}

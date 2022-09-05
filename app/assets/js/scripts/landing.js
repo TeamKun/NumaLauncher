@@ -2,38 +2,38 @@
  * Script for landing.ejs
  */
 // Requirements
-const cp                      = require('child_process')
-const crypto                  = require('crypto')
-const request                 = require('request')
-const {URL}                   = require('url')
+const cp = require('child_process')
+const crypto = require('crypto')
+const request = require('request')
+const { URL } = require('url')
 
 // Internal Requirements
-const DiscordWrapper          = require('./assets/js/discordwrapper')
-const Mojang                  = require('./assets/js/mojang')
-const ProcessBuilder          = require('./assets/js/processbuilder')
-const ServerStatus            = require('./assets/js/serverstatus')
+const DiscordWrapper = require('./assets/js/discordwrapper')
+const Mojang = require('./assets/js/mojang')
+const ProcessBuilder = require('./assets/js/processbuilder')
+const ServerStatus = require('./assets/js/serverstatus')
+const Util = require('./assets/js/util')
 
 // Launch Elements
-const launch_content          = document.getElementById('launch_content')
-const launch_details          = document.getElementById('launch_details')
-const launch_progress         = document.getElementById('launch_progress')
-const launch_progress_label   = document.getElementById('launch_progress_label')
-const launch_details_text     = document.getElementById('launch_details_text')
+const launch_content = document.getElementById('launch_content')
+const launch_details = document.getElementById('launch_details')
+const launch_progress = document.getElementById('launch_progress')
+const launch_progress_label = document.getElementById('launch_progress_label')
+const launch_details_text = document.getElementById('launch_details_text')
 const server_selection_button = document.getElementById('server_selection_button')
 const server_selection_button_status = document.getElementById('server_selection_button_status')
-const user_text               = document.getElementById('user_text')
+const user_text = document.getElementById('user_text')
 
 const loggerLanding = LoggerUtil('%c[Landing]', 'color: #000668; font-weight: bold')
-
-/* Launch Progress Wrapper Functions */
+    /* Launch Progress Wrapper Functions */
 
 /**
  * Show/hide the loading area.
  * 
  * @param {boolean} loading True if the loading area should be shown, otherwise false.
  */
-function toggleLaunchArea(loading){
-    if(loading){
+function toggleLaunchArea(loading) {
+    if (loading) {
         launch_details.style.display = 'flex'
         launch_content.style.display = 'none'
     } else {
@@ -47,7 +47,7 @@ function toggleLaunchArea(loading){
  * 
  * @param {string} details The new text for the loading details.
  */
-function setLaunchDetails(details){
+function setLaunchDetails(details) {
     launch_details_text.innerHTML = details
 }
 
@@ -58,7 +58,7 @@ function setLaunchDetails(details){
  * @param {number} max The total size.
  * @param {number|string} percent Optional. The percentage to display on the progress label.
  */
-function setLaunchPercentage(value, max, percent = ((value/max)*100)){
+function setLaunchPercentage(value, max, percent = ((value / max) * 100)) {
     launch_progress.setAttribute('max', max)
     launch_progress.setAttribute('value', value)
     launch_progress_label.innerHTML = percent + '%'
@@ -71,8 +71,8 @@ function setLaunchPercentage(value, max, percent = ((value/max)*100)){
  * @param {number} max The total download size.
  * @param {number|string} percent Optional. The percentage to display on the progress label.
  */
-function setDownloadPercentage(value, max, percent = ((value/max)*100)){
-    remote.getCurrentWindow().setProgressBar(value/max)
+function setDownloadPercentage(value, max, percent = ((value / max) * 100)) {
+    remote.getCurrentWindow().setProgressBar(value / max)
     setLaunchPercentage(value, max, percent)
 }
 
@@ -81,16 +81,18 @@ function setDownloadPercentage(value, max, percent = ((value/max)*100)){
  * 
  * @param {boolean} val True to enable, false to disable.
  */
-function setLaunchEnabled(val){
+function setLaunchEnabled(val) {
     document.getElementById('launch_button').disabled = !val
 }
 
 // Bind launch button
-document.getElementById('launch_button').addEventListener('click', function(e){
+document.getElementById('launch_button').addEventListener('click', function(e) {
     loggerLanding.log('Launching game..')
+
     const mcVersion = DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer()).getMinecraftVersion()
-    const jExe = ConfigManager.getJavaExecutable()
-    if(jExe == null){
+    const jExe = Util.getJDKPath()
+    Util.getJDKPath(mcVersion)
+    if (jExe == null) {
         asyncSystemScan(mcVersion)
     } else {
 
@@ -98,10 +100,11 @@ document.getElementById('launch_button').addEventListener('click', function(e){
         toggleLaunchArea(true)
         setLaunchPercentage(0, 100)
 
+        // TODO 動的にJDKVersionを切り替えるのでJavaGuardいらないかも
         const jg = new JavaGuard(mcVersion)
         jg._validateJavaBinary(jExe).then((v) => {
             loggerLanding.log('Java version meta', v)
-            if(v.valid){
+            if (v.valid) {
                 dlAsync()
             } else {
                 asyncSystemScan(mcVersion)
@@ -125,13 +128,13 @@ document.getElementById('avatarOverlay').onclick = (e) => {
 }
 
 // Bind selected account
-function updateSelectedAccount(authUser){
+function updateSelectedAccount(authUser) {
     let username = 'No Account Selected'
-    if(authUser != null){
-        if(authUser.displayName != null){
+    if (authUser != null) {
+        if (authUser.displayName != null) {
             username = authUser.displayName
         }
-        if(authUser.uuid != null){
+        if (authUser.uuid != null) {
             document.getElementById('avatarContainer').style.backgroundImage = `url('https://crafatar.com/renders/body/${authUser.uuid}?overlay')`
         }
     }
@@ -140,14 +143,14 @@ function updateSelectedAccount(authUser){
 updateSelectedAccount(ConfigManager.getSelectedAccount())
 
 // Bind selected server
-function updateSelectedServer(serv){
-    if(getCurrentView() === VIEWS.settings){
+function updateSelectedServer(serv) {
+    if (getCurrentView() === VIEWS.settings) {
         saveAllModConfigurations()
     }
     ConfigManager.setSelectedServer(serv != null ? serv.getID() : null)
     ConfigManager.save()
     server_selection_button_status.innerHTML = '\u2022 ' + (serv != null ? serv.getName() : 'Modパックが選択されていません')
-    if(getCurrentView() === VIEWS.settings){
+    if (getCurrentView() === VIEWS.settings) {
         animateModsTabRefresh()
     }
     setLaunchEnabled(serv != null)
@@ -160,7 +163,7 @@ server_selection_button.onclick = (e) => {
 }
 
 // Update Mojang Status Color
-const refreshMojangStatuses = async function(){
+const refreshMojangStatuses = async function() {
     loggerLanding.log('Refreshing Mojang Statuses..')
 
     let status = 'grey'
@@ -172,15 +175,15 @@ const refreshMojangStatuses = async function(){
         greenCount = 0
         greyCount = 0
 
-        for(let i=0; i<statuses.length; i++){
+        for (let i = 0; i < statuses.length; i++) {
             const service = statuses[i]
 
             // Mojang API is broken for sessionserver. https://bugs.mojang.com/browse/WEB-2303
-            if(service.service === 'sessionserver.mojang.com') {
+            if (service.service === 'sessionserver.mojang.com') {
                 service.status = 'green'
             }
 
-            if(service.essential){
+            if (service.essential) {
                 tooltipEssentialHTML += `<div class="mojangStatusContainer">
                     <span class="mojangStatusIcon" style="color: ${Mojang.statusToHex(service.status)};">&#8226;</span>
                     <span class="mojangStatusName">${service.name}</span>
@@ -192,12 +195,12 @@ const refreshMojangStatuses = async function(){
                 </div>`
             }
 
-            if(service.status === 'yellow' && status !== 'red'){
+            if (service.status === 'yellow' && status !== 'red') {
                 status = 'yellow'
-            } else if(service.status === 'red'){
+            } else if (service.status === 'red') {
                 status = 'red'
             } else {
-                if(service.status === 'grey'){
+                if (service.status === 'grey') {
                     ++greyCount
                 }
                 ++greenCount
@@ -205,8 +208,8 @@ const refreshMojangStatuses = async function(){
 
         }
 
-        if(greenCount === statuses.length){
-            if(greyCount === statuses.length){
+        if (greenCount === statuses.length) {
+            if (greyCount === statuses.length) {
                 status = 'grey'
             } else {
                 status = 'green'
@@ -217,13 +220,13 @@ const refreshMojangStatuses = async function(){
         loggerLanding.warn('Unable to refresh Mojang service status.')
         loggerLanding.debug(err)
     }
-    
+
     document.getElementById('mojangStatusEssentialContainer').innerHTML = tooltipEssentialHTML
     document.getElementById('mojangStatusNonEssentialContainer').innerHTML = tooltipNonEssentialHTML
     document.getElementById('mojang_status_icon').style.color = Mojang.statusToHex(status)
 }
 
-const refreshServerStatus = async function(fade = false){
+const refreshServerStatus = async function(fade = false) {
     loggerLanding.log('Refreshing Server Status')
     const serv = DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer())
 
@@ -233,7 +236,7 @@ const refreshServerStatus = async function(fade = false){
     try {
         const serverURL = new URL('my://' + serv.getAddress())
         const servStat = await ServerStatus.getStatus(serverURL.hostname, serverURL.port)
-        if(servStat.online){
+        if (servStat.online) {
             pLabel = 'プレイヤー'
             pVal = servStat.onlinePlayers + '/' + servStat.maxPlayers
         }
@@ -242,7 +245,7 @@ const refreshServerStatus = async function(fade = false){
         loggerLanding.warn('Unable to refresh server status, assuming offline.')
         loggerLanding.debug(err)
     }
-    if(fade){
+    if (fade) {
         $('#server_status_wrapper').fadeOut(250, () => {
             document.getElementById('landingPlayerLabel').innerHTML = pLabel
             document.getElementById('player_count').innerHTML = pVal
@@ -252,11 +255,11 @@ const refreshServerStatus = async function(fade = false){
         document.getElementById('landingPlayerLabel').innerHTML = pLabel
         document.getElementById('player_count').innerHTML = pVal
     }
-    
+
 }
 
 refreshMojangStatuses()
-// Server Status is refreshed in uibinder.js on distributionIndexDone.
+    // Server Status is refreshed in uibinder.js on distributionIndexDone.
 
 // Set refresh rate to once every 5 minutes.
 let mojangStatusListener = setInterval(() => refreshMojangStatuses(true), 300000)
@@ -268,7 +271,7 @@ let serverStatusListener = setInterval(() => refreshServerStatus(true), 300000)
  * @param {string} title The overlay title.
  * @param {string} desc The overlay description.
  */
-function showLaunchFailure(title, desc){
+function showLaunchFailure(title, desc) {
     setOverlayContent(
         title,
         desc,
@@ -292,12 +295,11 @@ let extractListener
  * @param {string} mcVersion The Minecraft version we are scanning for.
  * @param {boolean} launchAfter Whether we should begin to launch after scanning. 
  */
-function asyncSystemScan(mcVersion, launchAfter = true){
+function asyncSystemScan(mcVersion, launchAfter = true) {
 
     setLaunchDetails('しばらくお待ち下さい..')
     toggleLaunchArea(true)
     setLaunchPercentage(0, 100)
-
     const loggerSysAEx = LoggerUtil('%c[SysAEx]', 'color: #353232; font-weight: bold')
 
     const forkEnv = JSON.parse(JSON.stringify(process.env))
@@ -305,27 +307,27 @@ function asyncSystemScan(mcVersion, launchAfter = true){
 
     // Fork a process to run validations.
     sysAEx = cp.fork(path.join(__dirname, 'assets', 'js', 'assetexec.js'), [
-        'JavaGuard',
-        mcVersion
-    ], {
-        env: forkEnv,
-        stdio: 'pipe'
-    })
-    // Stdout
+            'JavaGuard',
+            mcVersion
+        ], {
+            env: forkEnv,
+            stdio: 'pipe'
+        })
+        // Stdout
     sysAEx.stdio[1].setEncoding('utf8')
     sysAEx.stdio[1].on('data', (data) => {
-        loggerSysAEx.log(data)
-    })
-    // Stderr
+            loggerSysAEx.log(data)
+        })
+        // Stderr
     sysAEx.stdio[2].setEncoding('utf8')
     sysAEx.stdio[2].on('data', (data) => {
         loggerSysAEx.log(data)
     })
-    
+
     sysAEx.on('message', (m) => {
 
-        if(m.context === 'validateJava'){
-            if(m.result == null){
+        if (m.context === 'validateJava') {
+            if (m.result == null) {
                 // If the result is null, no valid Java installation was found.
                 // Show this information to the user.
                 setOverlayContent(
@@ -336,8 +338,8 @@ function asyncSystemScan(mcVersion, launchAfter = true){
                 )
                 setOverlayHandler(() => {
                     setLaunchDetails('Javaダウンロードの準備中..')
-                    sysAEx.send({task: 'changeContext', class: 'AssetGuard', args: [ConfigManager.getCommonDirectory(),ConfigManager.getJavaExecutable()]})
-                    sysAEx.send({task: 'execute', function: '_enqueueOpenJDK', argsArr: [ConfigManager.getDataDirectory()]})
+                    sysAEx.send({ task: 'changeContext', class: 'AssetGuard', args: [ConfigManager.getCommonDirectory(), ConfigManager.getJavaExecutable()] })
+                    sysAEx.send({ task: 'execute', function: '_enqueueOpenJDK', argsArr: [ConfigManager.getDataDirectory()] })
                     toggleOverlay(false)
                 })
                 setDismissHandler(() => {
@@ -372,18 +374,24 @@ function asyncSystemScan(mcVersion, launchAfter = true){
                 settingsJavaExecVal.value = m.result
                 populateJavaExecDetails(settingsJavaExecVal.value)
 
-                if(launchAfter){
+                if (launchAfter) {
                     dlAsync()
                 }
                 sysAEx.disconnect()
             }
-        } else if(m.context === '_enqueueOpenJDK'){
+        } else if (m.context === '_enqueueOpenJDK') {
 
-            if(m.result === true){
+            if (m.result === true) {
 
                 // Oracle JRE enqueued successfully, begin download.
                 setLaunchDetails('Javaをダウンロード中..')
-                sysAEx.send({task: 'execute', function: 'processDlQueues', argsArr: [[{id:'java', limit:1}]]})
+                sysAEx.send({
+                    task: 'execute',
+                    function: 'processDlQueues',
+                    argsArr: [
+                        [{ id: 'java', limit: 1 }]
+                    ]
+                })
 
             } else {
 
@@ -403,52 +411,53 @@ function asyncSystemScan(mcVersion, launchAfter = true){
 
             }
 
-        } else if(m.context === 'progress'){
+        } else if (m.context === 'progress') {
 
-            switch(m.data){
+            switch (m.data) {
                 case 'download':
                     // Downloading..
                     setDownloadPercentage(m.value, m.total, m.percent)
                     break
             }
 
-        } else if(m.context === 'complete'){
+        } else if (m.context === 'complete') {
 
-            switch(m.data){
-                case 'download': {
-                    // Show installing progress bar.
-                    remote.getCurrentWindow().setProgressBar(2)
+            switch (m.data) {
+                case 'download':
+                    {
+                        // Show installing progress bar.
+                        remote.getCurrentWindow().setProgressBar(2)
 
-                    // Wait for extration to complete.
-                    const eLStr = '展開中'
-                    let dotStr = ''
-                    setLaunchDetails(eLStr)
-                    extractListener = setInterval(() => {
-                        if(dotStr.length >= 3){
-                            dotStr = ''
-                        } else {
-                            dotStr += '.'
-                        }
-                        setLaunchDetails(eLStr + dotStr)
-                    }, 750)
-                    break
-                }
+                        // Wait for extration to complete.
+                        const eLStr = '展開中'
+                        let dotStr = ''
+                        setLaunchDetails(eLStr)
+                        extractListener = setInterval(() => {
+                            if (dotStr.length >= 3) {
+                                dotStr = ''
+                            } else {
+                                dotStr += '.'
+                            }
+                            setLaunchDetails(eLStr + dotStr)
+                        }, 750)
+                        break
+                    }
                 case 'java':
-                // Download & extraction complete, remove the loading from the OS progress bar.
+                    // Download & extraction complete, remove the loading from the OS progress bar.
                     remote.getCurrentWindow().setProgressBar(-1)
 
                     // Extraction completed successfully.
                     ConfigManager.setJavaExecutable(m.args[0])
                     ConfigManager.save()
 
-                    if(extractListener != null){
+                    if (extractListener != null) {
                         clearInterval(extractListener)
                         extractListener = null
                     }
 
                     setLaunchDetails('Javaのインストール完了!')
 
-                    if(launchAfter){
+                    if (launchAfter) {
                         dlAsync()
                     }
 
@@ -456,23 +465,23 @@ function asyncSystemScan(mcVersion, launchAfter = true){
                     break
             }
 
-        } else if(m.context === 'error'){
+        } else if (m.context === 'error') {
             console.log(m.error)
         }
     })
 
     // Begin system Java scan.
     setLaunchDetails('システムをスキャン中..')
-    sysAEx.send({task: 'execute', function: 'validateJava', argsArr: [ConfigManager.getDataDirectory()]})
+    sysAEx.send({ task: 'execute', function: 'validateJava', argsArr: [ConfigManager.getDataDirectory()] })
 
 }
 
 // Keep reference to Minecraft Process
 let proc
-// Is DiscordRPC enabled
+    // Is DiscordRPC enabled
 let hasRPC = false
-// Joined server regex
-// Change this if your server uses something different.
+    // Joined server regex
+    // Change this if your server uses something different.
 const GAME_JOINED_REGEX = /\[.+\]: Sound engine started/
 const GAME_LAUNCH_REGEX = /^\[.+\]: (?:MinecraftForge .+ Initialized|ModLauncher .+ starting: .+)$/
 const MIN_LINGER = 5000
@@ -484,13 +493,13 @@ let forgeData
 
 let progressListener
 
-async function dlAsync(login = true){
+async function dlAsync(login = true) {
 
     // Login parameter is temporary for debug purposes. Allows testing the validation/downloads without
     // launching the game.
 
-    if(login) {
-        if(ConfigManager.getSelectedAccount() == null){
+    if (login) {
+        if (ConfigManager.getSelectedAccount() == null) {
             loggerLanding.error('You must be logged into an account.')
             toggleLaunchArea(false)
             return
@@ -515,19 +524,19 @@ async function dlAsync(login = true){
 
     // Start AssetExec to run validations and downloads in a forked process.
     aEx = cp.fork(path.join(__dirname, 'assets', 'js', 'assetexec.js'), [
-        'AssetGuard',
-        ConfigManager.getCommonDirectory(),
-        ConfigManager.getJavaExecutable()
-    ], {
-        env: forkEnv,
-        stdio: 'pipe'
-    })
-    // Stdout
+            'AssetGuard',
+            ConfigManager.getCommonDirectory(),
+            Util.getJDKPath()
+        ], {
+            env: forkEnv,
+            stdio: 'pipe'
+        })
+        // Stdout
     aEx.stdio[1].setEncoding('utf8')
     aEx.stdio[1].on('data', (data) => {
-        loggerAEx.log(data)
-    })
-    // Stderr
+            loggerAEx.log(data)
+        })
+        // Stderr
     aEx.stdio[2].setEncoding('utf8')
     aEx.stdio[2].on('data', (data) => {
         loggerAEx.log(data)
@@ -537,7 +546,7 @@ async function dlAsync(login = true){
         showLaunchFailure('起動中に問題が発生しました', err.message || '(CTRL + Shift + i) でコンソールを開けば何かがわかるかもしれません。')
     })
     aEx.on('close', (code, signal) => {
-        if(code !== 0){
+        if (code !== 0) {
             loggerLaunchSuite.error(`AssetExec exited with code ${code}, assuming error.`)
             showLaunchFailure('起動中に問題が発生しました', '(CTRL + Shift + i) でコンソールを開けば何かがわかるかもしれません。')
         }
@@ -546,8 +555,8 @@ async function dlAsync(login = true){
     // Establish communications between the AssetExec and current process.
     aEx.on('message', (m) => {
 
-        if(m.context === 'validate'){
-            switch(m.data){
+        if (m.context === 'validate') {
+            switch (m.data) {
                 case 'distribution':
                     setLaunchPercentage(10, 100)
                     loggerLaunchSuite.log('Validated distibution index.')
@@ -579,42 +588,44 @@ async function dlAsync(login = true){
                     setLaunchDetails('Forgeをインストール中..')
                     break
             }
-        } else if(m.context === 'progress'){
-            switch(m.data){
-                case 'assets': {
-                    const perc = (m.value/m.total)*20
-                    setLaunchPercentage(40+perc, 100, parseInt(40+perc))
-                    break
-                }
+        } else if (m.context === 'progress') {
+            switch (m.data) {
+                case 'assets':
+                    {
+                        const perc = (m.value / m.total) * 20
+                        setLaunchPercentage(40 + perc, 100, parseInt(40 + perc))
+                        break
+                    }
                 case 'download':
                     setDownloadPercentage(m.value, m.total, m.percent)
                     break
-                case 'extract': {
-                    // Show installing progress bar.
-                    remote.getCurrentWindow().setProgressBar(2)
+                case 'extract':
+                    {
+                        // Show installing progress bar.
+                        remote.getCurrentWindow().setProgressBar(2)
 
-                    // Download done, extracting.
-                    const eLStr = 'ライブラリを展開中'
-                    let dotStr = ''
-                    setLaunchDetails(eLStr)
-                    progressListener = setInterval(() => {
-                        if(dotStr.length >= 3){
-                            dotStr = ''
-                        } else {
-                            dotStr += '.'
-                        }
-                        setLaunchDetails(eLStr + dotStr)
-                    }, 750)
-                    break
-                }
+                        // Download done, extracting.
+                        const eLStr = 'ライブラリを展開中'
+                        let dotStr = ''
+                        setLaunchDetails(eLStr)
+                        progressListener = setInterval(() => {
+                            if (dotStr.length >= 3) {
+                                dotStr = ''
+                            } else {
+                                dotStr += '.'
+                            }
+                            setLaunchDetails(eLStr + dotStr)
+                        }, 750)
+                        break
+                    }
             }
-        } else if(m.context === 'complete'){
-            switch(m.data){
+        } else if (m.context === 'complete') {
+            switch (m.data) {
                 case 'download':
                 case 'install':
                     // Download and extraction complete, remove the loading from the OS progress bar.
                     remote.getCurrentWindow().setProgressBar(-1)
-                    if(progressListener != null){
+                    if (progressListener != null) {
                         clearInterval(progressListener)
                         progressListener = null
                     }
@@ -622,12 +633,12 @@ async function dlAsync(login = true){
                     setLaunchDetails('起動の準備中..')
                     break
             }
-        } else if(m.context === 'error'){
-            switch(m.data){
+        } else if (m.context === 'error') {
+            switch (m.data) {
                 case 'download':
                     loggerLaunchSuite.error('Error while downloading:', m.error)
-                    
-                    if(m.error.code === 'ENOENT'){
+
+                    if (m.error.code === 'ENOENT') {
                         showLaunchFailure(
                             'ダウンロードエラー',
                             'ファイルサーバーに接続できません。インターネットに繋がれているか確認し、もう一度お試しください。'
@@ -645,22 +656,22 @@ async function dlAsync(login = true){
                     aEx.disconnect()
                     break
             }
-        } else if(m.context === 'validateEverything'){
+        } else if (m.context === 'validateEverything') {
 
             let allGood = true
 
             setLaunchPercentage(100, 100)
 
             // If these properties are not defined it's likely an error.
-            if(m.result.forgeData == null || m.result.versionData == null){
-                if (m.result.manualData !== undefined){
+            if (m.result.forgeData == null || m.result.versionData == null) {
+                if (m.result.manualData !== undefined) {
                     loggerLaunchSuite.info('Manual mode:', m.result)
 
                     loggerLaunchSuite.info('Manual Installation', m.result.manualData)
                     showLaunchFailure('手動でのインストールが必要です', '開かれたウィンドウのMODをすべてダウンロードし、再度PLAYボタンを押してください。')
 
                     ipcRenderer.send('openManualWindow', m.result)
-                } else{
+                } else {
                     loggerLaunchSuite.error('Error during validation:', m.result)
 
                     loggerLaunchSuite.error('Error during launch', m.result.error)
@@ -672,7 +683,7 @@ async function dlAsync(login = true){
             forgeData = m.result.forgeData
             versionData = m.result.versionData
 
-            if(login && allGood) {
+            if (login && allGood) {
                 const authUser = ConfigManager.getSelectedAccount()
                 loggerLaunchSuite.log(`Sending selected account (${authUser.displayName}) to ProcessBuilder.`)
                 let pb = new ProcessBuilder(serv, versionData, forgeData, authUser, remote.app.getVersion())
@@ -683,7 +694,7 @@ async function dlAsync(login = true){
 
                 const onLoadComplete = () => {
                     toggleLaunchArea(false)
-                    if(hasRPC){
+                    if (hasRPC) {
                         DiscordWrapper.updateDetails('ゲームをロード中..')
                     }
                     proc.stdout.on('data', gameStateChange)
@@ -696,11 +707,11 @@ async function dlAsync(login = true){
                 // Will wait for a certain bit of text meaning that
                 // the client application has started, and we can hide
                 // the progress bar stuff.
-                const tempListener = function(data){
-                    if(GAME_LAUNCH_REGEX.test(data.trim())){
-                        const diff = Date.now()-start
-                        if(diff < MIN_LINGER) {
-                            setTimeout(onLoadComplete, MIN_LINGER-diff)
+                const tempListener = function(data) {
+                    if (GAME_LAUNCH_REGEX.test(data.trim())) {
+                        const diff = Date.now() - start
+                        if (diff < MIN_LINGER) {
+                            setTimeout(onLoadComplete, MIN_LINGER - diff)
                         } else {
                             onLoadComplete()
                         }
@@ -708,18 +719,18 @@ async function dlAsync(login = true){
                 }
 
                 // Listener for Discord RPC.
-                const gameStateChange = function(data){
+                const gameStateChange = function(data) {
                     data = data.trim()
-                    if(SERVER_JOINED_REGEX.test(data)){
+                    if (SERVER_JOINED_REGEX.test(data)) {
                         DiscordWrapper.updateDetails('50人クラフトに参加中!')
-                    } else if(GAME_JOINED_REGEX.test(data)){
+                    } else if (GAME_JOINED_REGEX.test(data)) {
                         DiscordWrapper.updateDetails('マインクラフトをプレイ中!')
                     }
                 }
 
-                const gameErrorListener = function(data){
+                const gameErrorListener = function(data) {
                     data = data.trim()
-                    if(data.indexOf('Could not find or load main class net.minecraft.launchwrapper.Launch') > -1){
+                    if (data.indexOf('Could not find or load main class net.minecraft.launchwrapper.Launch') > -1) {
                         loggerLaunchSuite.error('Game launch failed, LaunchWrapper was not downloaded properly.')
                         showLaunchFailure('起動中に問題が発生しました', '重要なファイルであるLaunchWrapperのダウンロードに失敗したため、ゲームを起動できません。<br><br>このエラーを直すためには一旦、ウィルス対策ソフトを無効にして起動し直してみてください。')
                     }
@@ -735,18 +746,18 @@ async function dlAsync(login = true){
                     const fs = require('fs')
                     const filenames = fs.readdirSync(ConfigManager.getInstanceDirectory())
                     const path = require('path')
-                    //共通化のオプションがオンの時かつコピー先オプションファイルが存在しないときコピーを実行する
-                    if (ConfigManager.getoptionStandardize() && !fs.existsSync(path.join(pb.gameDir,'options.txt'))){
+                        //共通化のオプションがオンの時かつコピー先オプションファイルが存在しないときコピーを実行する
+                    if (ConfigManager.getoptionStandardize() && !fs.existsSync(path.join(pb.gameDir, 'options.txt'))) {
                         //最新のoptions.txtを取得する
                         let maxMtime = null
                         let optionfilepath = ''
                         filenames.forEach((filename) => {
 
-                            const optionPath = path.join(ConfigManager.getInstanceDirectory(),filename,'options.txt')
+                            const optionPath = path.join(ConfigManager.getInstanceDirectory(), filename, 'options.txt')
 
-                            if(fs.existsSync(optionPath) ){
+                            if (fs.existsSync(optionPath)) {
                                 const stats = fs.statSync(optionPath)
-                                if(maxMtime == null || stats.mtime >maxMtime){
+                                if (maxMtime == null || stats.mtime > maxMtime) {
                                     maxMtime = stats.mtime
                                     optionfilepath = optionPath
                                 }
@@ -755,10 +766,10 @@ async function dlAsync(login = true){
                         })
 
                         //コピー元ファイルが存在するときコピーを実行する
-                        if (maxMtime != null){
-                            console.log('options.txtコピー実行 コピー元:'+optionfilepath)
+                        if (maxMtime != null) {
+                            console.log('options.txtコピー実行 コピー元:' + optionfilepath)
                             const copy = require('./assets/js/optionscopy')
-                            copy.copy(optionfilepath,path.join(pb.gameDir,'options.txt'))
+                            copy.copy(optionfilepath, path.join(pb.gameDir, 'options.txt'))
                         }
                     }
 
@@ -776,7 +787,7 @@ async function dlAsync(login = true){
 
                     // Init Discord Hook
                     const distro = DistroManager.getDistribution()
-                    if(distro.discord != null && serv.discord != null){
+                    if (distro.discord != null && serv.discord != null) {
                         DiscordWrapper.initRPC(distro.discord, serv.discord)
                         hasRPC = true
                         proc.on('close', (code, signal) => {
@@ -787,7 +798,7 @@ async function dlAsync(login = true){
                         })
                     }
 
-                } catch(err) {
+                } catch (err) {
 
                     loggerLaunchSuite.error('Error during launch', err)
                     showLaunchFailure('起動中に問題が発生しました', '(CTRL + Shift + i) でコンソールを開けば何かがわかるかもしれません。')
@@ -809,23 +820,23 @@ async function dlAsync(login = true){
     refreshDistributionIndex(true, (data) => {
         onDistroRefresh(data)
         serv = data.getServer(ConfigManager.getSelectedServer())
-        aEx.send({task: 'execute', function: 'validateEverything', argsArr: [ConfigManager.getSelectedServer(), DistroManager.isDevMode()]})
+        aEx.send({ task: 'execute', function: 'validateEverything', argsArr: [ConfigManager.getSelectedServer(), DistroManager.isDevMode()] })
     }, (err) => {
         loggerLaunchSuite.log('Error while fetching a fresh copy of the distribution index.', err)
         refreshDistributionIndex(false, (data) => {
             onDistroRefresh(data)
             serv = data.getServer(ConfigManager.getSelectedServer())
-            aEx.send({task: 'execute', function: 'validateEverything', argsArr: [ConfigManager.getSelectedServer(), DistroManager.isDevMode()]})
+            aEx.send({ task: 'execute', function: 'validateEverything', argsArr: [ConfigManager.getSelectedServer(), DistroManager.isDevMode()] })
         }, (err) => {
             loggerLaunchSuite.error('Unable to refresh distribution index.', err)
-            if(DistroManager.getDistribution() == null){
+            if (DistroManager.getDistribution() == null) {
                 showLaunchFailure('致命的なエラー', '配布マニフェストの読み込みに失敗したため失敗しました。(CTRL + Shift + i) でコンソールを開けば何かがわかるかもしれません。')
 
                 // Disconnect from AssetExec
                 aEx.disconnect()
             } else {
                 serv = data.getServer(ConfigManager.getSelectedServer())
-                aEx.send({task: 'execute', function: 'validateEverything', argsArr: [ConfigManager.getSelectedServer(), DistroManager.isDevMode()]})
+                aEx.send({ task: 'execute', function: 'validateEverything', argsArr: [ConfigManager.getSelectedServer(), DistroManager.isDevMode()] })
             }
         })
     })
@@ -840,7 +851,7 @@ let newsGlideCount = 0
  *
  * @param {boolean} up True to slide up, otherwise false.
  */
-function slide_(up){
+function slide_(up) {
     const lCUpper = document.querySelector('#landingContainer > #upper')
     const lCLLeft = document.querySelector('#landingContainer > #lower > #left')
     const lCLCenter = document.querySelector('#landingContainer > #lower > #center')
@@ -851,18 +862,18 @@ function slide_(up){
 
     newsGlideCount++
 
-    if(up){
+    if (up) {
         lCUpper.style.top = '-200vh'
         lCLLeft.style.top = '-200vh'
         lCLCenter.style.top = '-200vh'
         lCLRight.style.top = '-200vh'
         newsBtn.style.top = '130vh'
         newsContainer.style.top = '0px'
-        //date.toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric'})
-        //landingContainer.style.background = 'rgba(29, 29, 29, 0.55)'
+            //date.toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric'})
+            //landingContainer.style.background = 'rgba(29, 29, 29, 0.55)'
         landingContainer.style.background = 'rgba(0, 0, 0, 0.50)'
         setTimeout(() => {
-            if(newsGlideCount === 1){
+            if (newsGlideCount === 1) {
                 lCLCenter.style.transition = 'none'
                 newsBtn.style.transition = 'none'
             }
@@ -887,7 +898,7 @@ function slide_(up){
 // Bind news button.
 document.getElementById('newsButton').onclick = () => {
     // Toggle tabbing.
-    if(newsActive){
+    if (newsActive) {
         $('#landingContainer *').removeAttr('tabindex')
         $('#newsContainer *').attr('tabindex', '-1')
     } else {

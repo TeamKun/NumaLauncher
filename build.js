@@ -45,7 +45,7 @@ builder.build({
         linux: {
             target: 'AppImage',
             maintainer: 'Daniel Scalzi, TeamKUN',
-            vendor: 'Daniel Scalzi, Kamesuta',
+            vendor: 'Daniel Scalzi, TeamKUN',
             synopsis: '沼でも使えるMinecraftランチャー',
             description: '参加型に参加するためのすべてがここに。Mod、コンフィグ、アップデートが全自動で揃います。',
             category: 'Game'
@@ -55,7 +55,8 @@ builder.build({
             '!{dist,.gitignore,.vscode,docs,dev-app-update.yml,.travis.yml,.nvmrc,.eslintrc.json,build.js,numa_skins.json,skinSetting.json}'
         ],
         extraResources: [
-            'libraries'
+            'libraries',
+            'jdk'
         ],
         asar: true
     }

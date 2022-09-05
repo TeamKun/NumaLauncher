@@ -1,5 +1,6 @@
 const root = require('app-root-path');
 const path = require('path')
+const isDev = require('./isdev')
 
 class Util {
 
@@ -24,7 +25,7 @@ class Util {
 
     static getJDKPath() {
         let mcVersion = DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer()).getMinecraftVersion()
-        let basePath, jdkMajorVersion, sanitizedOS, midwayPath, fileName
+        let basePath, jdkMajorVersion, sanitizedOS, midwayPath, fileName, jdkPath
 
         // less than MC1.17
         if (!Util.mcVersionAtLeast('1.17', mcVersion)) {
@@ -38,8 +39,6 @@ class Util {
         } else {
             jdkMajorVersion = '17'
         }
-
-        // 一旦windowsのみ対応
         switch (process.platform) {
             case 'win32':
                 sanitizedOS = 'windows'
@@ -51,7 +50,7 @@ class Util {
                 sanitizedOS = 'mac'
                 midwayPath = path.join('Contents', 'Home', 'bin')
                 fileName = 'java'
-                // process.cwdでは正常にパスが取得できないので__dirnameで対応
+                    // process.cwdでは正常にパスが取得できないので__dirnameで対応
                 basePath = path.join(__dirname, '../../../..', 'jdk')
                 break
             case 'linux':
@@ -64,7 +63,11 @@ class Util {
                 return ConfigManager.getJavaExecutable()
         }
 
-        let jdkPath = path.join(basePath, sanitizedOS, jdkMajorVersion, midwayPath, fileName);
+        if (isDev) {
+            jdkPath = path.join(process.cwd(), 'jdk', sanitizedOS, jdkMajorVersion, midwayPath, fileName)
+        } else {
+            jdkPath = path.join(basePath, sanitizedOS, jdkMajorVersion, midwayPath, fileName)
+        }
         return jdkPath
     }
 

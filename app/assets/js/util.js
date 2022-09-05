@@ -52,7 +52,6 @@ class Util {
                 midwayPath = path.join('Contents', 'Home', 'bin')
                 fileName = 'java'
                 // process.cwdでは正常にパスが取得できないので__dirnameで対応
-                // exp: /Applications/NumaLauncher.app/Contents/Resources/jdk/mac/16/Contents/Home/bin/java
                 basePath = path.join(__dirname, '../../../..', 'jdk')
                 break
             case 'linux':

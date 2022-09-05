@@ -783,7 +783,7 @@ async function dlAsync(login = true) {
                     // 一定時間経ったらLoading表示を解除
                     setTimeout(() => { toggleLaunchArea(false) }, 10000)
 
-                    setLaunchDetails('準備OK。参加勢集合！')
+                    setLaunchDetails('準備OK。参加勢集合!!!')
 
                     // Init Discord Hook
                     const distro = DistroManager.getDistribution()

@@ -1131,7 +1131,8 @@ class AssetGuard extends EventEmitter {
                 libPath = path.join(process.cwd(), 'libraries', 'java', 'ForgeCLI.jar')
             } else {
                 if (process.platform === 'darwin') {
-                    libPath = path.join(process.cwd(), 'Contents', 'Resources', 'libraries', 'java', 'ForgeCLI.jar')
+                    // process.cwdでは正常にパスが取得できないので__dirnameで対応
+                    libPath = path.join(__dirname, '../../../..', 'libraries', 'java', 'ForgeCLI.jar')
                 } else {
                     libPath = path.join(process.cwd(), 'resources', 'libraries', 'java', 'ForgeCLI.jar')
                 }

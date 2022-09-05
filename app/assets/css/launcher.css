@@ -1043,32 +1043,48 @@ button {
 
 #loginMSButton {
     background: none;
-    background-color: rgb(100, 100, 100, 0.7);
+    background-color: rgb(255, 255, 255, 0);
     border: none;
     margin-top: 20px;
     margin-bottom: 20px;
-    font-size: 26px;
+    font-size: 23px;
     padding: 5px 0;
-    border: 2px solid rgb(100, 100, 100, 0.8);
-    border-radius: 2px;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 30px;
     width: 100%;
+    transition: ease 0.6s;
+    position: relative;
+    z-index: 2;
 }
 
-#loginMSButton:disabled {
-    color: rgba(255, 255, 255, 0.75);
-    pointer-events: none;
-}
-
-#loginMSButton:hover,
-#loginMSButton:focus {
+#loginMSButton:hover {
     text-shadow: 0px 0px 100px #fff;
-    background-color: rgba(90, 90, 90, 0.7);
+    background-color: rgba(255, 255, 255, 0.8);
+    color: rgba(0, 0, 0, 0.7);
     outline: none;
+    font-weight: bold;
 }
 
 #loginMSButton:active {
-    color: #c7c7c7;
-    text-shadow: 0px 0px 20px #c7c7c7;
+    color: rgba(255, 255, 255, 0.8);
+    background-color: rgb(255, 255, 255, 0);
+}
+
+#loginMSButtonGuid {
+    color: rgba(255, 255, 255, 0.8);
+    animation: upDown 1s ease-in-out infinite alternate;
+    z-index: 1;
+    position: absolute;
+}
+
+@keyframes upDown {
+    0% {
+        margin-top: 0;
+    }
+    100% {
+        margin-top: 10px;
+    }
 }
 
 

@@ -44,7 +44,11 @@ class Util {
                 sanitizedOS = 'windows'
                 midwayPath = 'bin'
                 fileName = 'javaw.exe'
-                basePath = path.join(process.cwd(), 'Resources', 'jdk')
+                if (isDev) {
+                    basePath = path.join(process.cwd(), 'jdk')
+                } else {
+                    basePath = path.join(process.cwd(), 'Resources', 'jdk')
+                }
                 break
             case 'darwin':
                 sanitizedOS = 'mac'
@@ -52,6 +56,11 @@ class Util {
                 fileName = 'java'
                     // process.cwdでは正常にパスが取得できないので__dirnameで対応
                 basePath = path.join(__dirname, '../../../..', 'jdk')
+                if (isDev) {
+                    basePath = path.join(__dirname, '../../..', 'jdk')
+                } else {
+                    basePath = path.join(__dirname, '../../../..', 'jdk')
+                }
                 break
             case 'linux':
                 sanitizedOS = 'linux'
@@ -63,11 +72,9 @@ class Util {
                 return ConfigManager.getJavaExecutable()
         }
 
-        if (isDev) {
-            jdkPath = path.join(process.cwd(), 'jdk', sanitizedOS, jdkMajorVersion, midwayPath, fileName)
-        } else {
-            jdkPath = path.join(basePath, sanitizedOS, jdkMajorVersion, midwayPath, fileName)
-        }
+        jdkPath = path.join(basePath, sanitizedOS, jdkMajorVersion, midwayPath, fileName)
+        
+        console.log(jdkPath)
         return jdkPath
     }
 

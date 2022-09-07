@@ -1,6 +1,7 @@
 const root = require('app-root-path');
 const path = require('path')
 const isDev = require('./isdev')
+const os = require('os')
 
 class Util {
 
@@ -47,10 +48,16 @@ class Util {
                 basePath = path.join(process.cwd(), 'Resources', 'jdk')
                 break
             case 'darwin':
-                sanitizedOS = 'mac'
+                if (isAappleSilicon()) {
+                    sanitizedOS = 'mac-apple'
+                } else {
+                    sanitizedOS = 'mac-intel'
+                }
+
                 midwayPath = path.join('Contents', 'Home', 'bin')
                 fileName = 'java'
-                    // process.cwdでは正常にパスが取得できないので__dirnameで対応
+
+                // process.cwdでは正常にパスが取得できないので__dirnameで対応
                 basePath = path.join(__dirname, '../../../..', 'jdk')
                 break
             case 'linux':
@@ -117,6 +124,16 @@ class Util {
         return false
     }
 
+    static isAappleSilicon() {
+        const reg = /^Apple/
+        os.cpus()
+
+        if (reg.test(os.cpus()[0].model)) {
+            return true
+        }
+
+        return false
+    }
 }
 
 module.exports = Util

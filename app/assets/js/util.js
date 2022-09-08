@@ -52,7 +52,7 @@ class Util {
                 }
                 break
             case 'darwin':
-                if (isAappleSilicon()) {
+                if (Util.isAappleSilicon()) {
                     sanitizedOS = 'mac-apple'
                 } else {
                     sanitizedOS = 'mac-intel'
@@ -140,6 +140,31 @@ class Util {
         }
 
         return false
+    }
+
+    static varidatePlatform() {
+        const MC_VERSION = DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer()).getMinecraftVersion()
+        const IS_APPLE_SILICON = Util.isAappleSilicon()
+
+        if (!IS_APPLE_SILICON) {
+            return null
+        }
+
+        // 1.12-
+        if (!Util.mcVersionAtLeast('1.13',MC_VERSION)) {
+            return null
+        }
+
+        // 1.16 ~ 1.18
+        if (!Util.mcVersionAtLeast('1.19', MC_VERSION)) {
+            return {
+                title: 'SORRY!!',
+                disc: `沼ランチャーでは現在、AppleSiliconプロセッサで</br>MC${MC_VERSION}</br>を起動することができません。`,
+            }
+        }
+
+        // 1.19+
+        return null
     }
 }
 

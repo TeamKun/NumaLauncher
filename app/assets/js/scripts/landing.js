@@ -85,32 +85,20 @@ function setLaunchEnabled(val) {
     document.getElementById('launch_button').disabled = !val
 }
 
-// Bind launch button
+// ゲーム起動ボタン押下
 document.getElementById('launch_button').addEventListener('click', function(e) {
     loggerLanding.log('Launching game..')
 
-    const mcVersion = DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer()).getMinecraftVersion()
-    const jExe = Util.getJDKPath()
-    Util.getJDKPath(mcVersion)
-    if (jExe == null) {
-        asyncSystemScan(mcVersion)
-    } else {
+    // OS,　プロセッサ, MCverionから起動できるか判定
+    let validationResult = Util.varidatePlatform()
 
-        setLaunchDetails(Lang.queryJS('landing.launch.pleaseWait'))
-        toggleLaunchArea(true)
-        setLaunchPercentage(0, 100)
-
-        // TODO 動的にJDKVersionを切り替えるのでJavaGuardいらないかも
-        const jg = new JavaGuard(mcVersion)
-        jg._validateJavaBinary(jExe).then((v) => {
-            loggerLanding.log('Java version meta', v)
-            if (v.valid) {
-                dlAsync()
-            } else {
-                asyncSystemScan(mcVersion)
-            }
-        })
+    if (validationResult) {
+        showLaunchFailure(validationResult.title,validationResult.disc)
+        return
     }
+
+    // 起動
+    dlAsync()
 })
 
 // Bind settings button

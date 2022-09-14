@@ -29,7 +29,16 @@ function loginCancelEnabled(val) {
     }
 }
 
-// Disable default form behavior.
+loginCancelButton.onclick = (e) => {
+        switchView(getCurrentView(), loginViewOnCancel, 500, 500, () => {
+            loginCancelEnabled(false)
+            if (loginViewCancelHandler != null) {
+                loginViewCancelHandler()
+                loginViewCancelHandler = null
+            }
+        })
+    }
+    // Disable default form behavior.
 loginForm.onsubmit = () => { return false }
 
 loginMSButton.addEventListener('click', (event) => {

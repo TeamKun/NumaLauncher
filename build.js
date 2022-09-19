@@ -3,6 +3,7 @@ const Platform = builder.Platform
 const fs = require('fs-extra')
 const path = require('path')
 const root = require('app-root-path')
+const Util = require('./app/assets/js/util')
 
 const dirName = 'jdk'
 const basePath = path.join(root.path, dirName)
@@ -54,7 +55,7 @@ builder.build({
         ],
         extraResources: [
             'libraries',
-            'jdk'
+            `jdk/${getJDKDirectory()}`
         ],
         asar: true
     }
@@ -75,5 +76,19 @@ function getCurrentPlatform() {
         default:
             console.error('Cannot resolve current platform!')
             return undefined
+    }
+}
+
+function getJDKDirectory() {
+    switch (process.argv[2]) {
+        case 'WINDOWS':
+            return 'windows'
+        case 'mac':
+            if (isAappleSilicon()) {
+                return 'mac-apple'
+            }
+            return 'mac-intel'
+        case 'LINUX':
+            return 'linux'
     }
 }

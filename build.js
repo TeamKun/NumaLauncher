@@ -1,18 +1,16 @@
 const builder = require('electron-builder')
 const Platform = builder.Platform
+const fs = require('fs-extra')
+const path = require('path')
+const root = require('app-root-path')
 
-function getCurrentPlatform() {
-    switch (process.platform) {
-        case 'win32':
-            return Platform.WINDOWS
-        case 'darwin':
-            return Platform.MAC
-        case 'linux':
-            return Platform.linux
-        default:
-            console.error('Cannot resolve current platform!')
-            return undefined
-    }
+const dirName = 'jdk'
+const basePath = path.join(root.path, dirName)
+
+if (!fs.existsSync(basePath)) {
+    console.log(`\x1b[31mERROR!!: ${basePath} が見つかりません`)
+    console.log("\x1b[31mERROR!!: https://github.com/TeamKun/config-files/releases/download/jdk/jdk.zip をダウンロードして展開してください")
+    return
 }
 
 builder.build({
@@ -65,3 +63,17 @@ builder.build({
 }).catch(err => {
     console.error('Error during build!', err)
 })
+
+function getCurrentPlatform() {
+    switch (process.platform) {
+        case 'win32':
+            return Platform.WINDOWS
+        case 'darwin':
+            return Platform.MAC
+        case 'linux':
+            return Platform.linux
+        default:
+            console.error('Cannot resolve current platform!')
+            return undefined
+    }
+}

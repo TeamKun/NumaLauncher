@@ -13,14 +13,13 @@
     "main": "index.js",
     "scripts": {
         "start": "electron .",
-        "cilinux": "node ./build/jdkdownloader.js && node build.js WINDOWS && node build.js LINUX",
-        "cidarwin": "node ./build/jdkdownloader.js && node build.js MAC",
-        "dist": "node ./build/jdkdownloader.js && cross-env ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES=true node build.js",
+        "cilinux": "node build.js WINDOWS && node build.js LINUX",
+        "cidarwin": "node build.js MAC",
+        "dist": "cross-env ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES=true node build.js",
         "dist:win": "npm run dist -- WINDOWS",
         "dist:mac": "npm run dist -- MAC",
         "dist:linux": "npm run dist -- LINUX",
-        "lint": "eslint --config .eslintrc.json .",
-        "jdk": "node ./build/jdkdownloader.js"
+        "lint": "eslint --config .eslintrc.json ."
     },
     "engines": {
         "node": "12.x.x"

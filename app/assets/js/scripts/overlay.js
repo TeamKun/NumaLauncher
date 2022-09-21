@@ -214,6 +214,7 @@ document.getElementById('accountSelectConfirm').addEventListener('click', async(
 
 // Bind server select cancel button.
 document.getElementById('serverSelectCancel').addEventListener('click', () => {
+    document.getElementById('filterInput').value = ''
     toggleOverlay(false)
 })
 
@@ -221,6 +222,22 @@ document.getElementById('accountSelectCancel').addEventListener('click', () => {
     $('#accountSelectContent').fadeOut(250, () => {
         $('#overlayContent').fadeIn(250)
     })
+})
+
+document.getElementById('filterInput').addEventListener('input', (e) => {
+    let value = document.getElementById('filterInput').value
+    const distro = DistroManager.getDistribution()
+    const servers = distro.getServers()
+
+    let searchedList = []
+
+    servers.forEach((server) => {
+        let reg = new RegExp(`^${value}`, 'i')
+        if (reg.test(getServerName(server.getName()))) {
+            searchedList.push(server)
+        }
+    })
+    createServerHtml(searchedList)
 })
 
 function setServerListingHandlers() {
@@ -263,41 +280,46 @@ function setAccountListingHandlers() {
 
 function populateServerListings() {
     const distro = DistroManager.getDistribution()
-    const giaSel = ConfigManager.getSelectedServer()
     let servers = distro.getServers()
+    createServerHtml(servers)
+}
 
+function createServerHtml(servers) {
     // ソート
     let sortedServers = sortServers(servers)
     let htmlString = ''
 
-    console.log(sortedServers)
-    for (const serv of sortedServers) {
-        let serverName = getServerName(serv.getName())
-            //let serverName = serv.getName()
-        htmlString += `<button class="serverListing" servid="${serv.getID()}" ${serv.getID() === giaSel ? 'selected' : ''}>
-            ${genelateIcon(serv.getIcon(), serverName)}
-            <div class="serverListingDetails">
-                <span class="serverListingName">${serverName}</span>
-                <span class="serverListingDescription">${serv.getDescription()}</span>
-                <div class="serverListingInfo">
-                    <div class="serverListingVersion">${serv.getMinecraftVersion()}</div>
-                    <div class="serverListingRevision">${serv.getVersion()}</div>
-                    ${serv.isMainServer() ? `<div class="serverListingStarWrapper">
-                        <svg id="Layer_1" viewBox="0 0 107.45 104.74" width="20px" height="20px">
-                            <defs>
-                                <style>.cls-1{fill:#fff;}.cls-2{fill:none;stroke:#fff;stroke-miterlimit:10;}</style>
-                            </defs>
-                            <path class="cls-1" d="M100.93,65.54C89,62,68.18,55.65,63.54,52.13c2.7-5.23,18.8-19.2,28-27.55C81.36,31.74,63.74,43.87,58.09,45.3c-2.41-5.37-3.61-26.52-4.37-39-.77,12.46-2,33.64-4.36,39-5.7-1.46-23.3-13.57-33.49-20.72,9.26,8.37,25.39,22.36,28,27.55C39.21,55.68,18.47,62,6.52,65.55c12.32-2,33.63-6.06,39.34-4.9-.16,5.87-8.41,26.16-13.11,37.69,6.1-10.89,16.52-30.16,21-33.9,4.5,3.79,14.93,23.09,21,34C70,86.84,61.73,66.48,61.59,60.65,67.36,59.49,88.64,63.52,100.93,65.54Z"/>
-                            <circle class="cls-2" cx="53.73" cy="53.9" r="38"/>
-                        </svg>
-                        <span class="serverListingStarTooltip">Main Server</span>
-                    </div>` : ''}
+    if (sortedServers.length < 1) {
+        htmlString += `<div style="width:375px;text-align:center">該当パックなし</div>`
+    } else {
+        for (const serv of sortedServers) {
+            let serverName = getServerName(serv.getName())
+                //let serverName = serv.getName()
+            htmlString += `<button class="serverListing" servid="${serv.getID()}" ${serv.getID() === ConfigManager.getSelectedServer() ? 'selected' : ''}>
+                ${genelateIcon(serv.getIcon(), serverName)}
+                <div class="serverListingDetails">
+                    <span class="serverListingName">${serverName}</span>
+                    <span class="serverListingDescription">${serv.getDescription()}</span>
+                    <div class="serverListingInfo">
+                        <div class="serverListingVersion">${serv.getMinecraftVersion()}</div>
+                        <div class="serverListingRevision">${serv.getVersion()}</div>
+                        ${serv.isMainServer() ? `<div class="serverListingStarWrapper">
+                            <svg id="Layer_1" viewBox="0 0 107.45 104.74" width="20px" height="20px">
+                                <defs>
+                                    <style>.cls-1{fill:#fff;}.cls-2{fill:none;stroke:#fff;stroke-miterlimit:10;}</style>
+                                </defs>
+                                <path class="cls-1" d="M100.93,65.54C89,62,68.18,55.65,63.54,52.13c2.7-5.23,18.8-19.2,28-27.55C81.36,31.74,63.74,43.87,58.09,45.3c-2.41-5.37-3.61-26.52-4.37-39-.77,12.46-2,33.64-4.36,39-5.7-1.46-23.3-13.57-33.49-20.72,9.26,8.37,25.39,22.36,28,27.55C39.21,55.68,18.47,62,6.52,65.55c12.32-2,33.63-6.06,39.34-4.9-.16,5.87-8.41,26.16-13.11,37.69,6.1-10.89,16.52-30.16,21-33.9,4.5,3.79,14.93,23.09,21,34C70,86.84,61.73,66.48,61.59,60.65,67.36,59.49,88.64,63.52,100.93,65.54Z"/>
+                                <circle class="cls-2" cx="53.73" cy="53.9" r="38"/>
+                            </svg>
+                            <span class="serverListingStarTooltip">Main Server</span>
+                        </div>` : ''}
+                    </div>
                 </div>
-            </div>
-        </button>`
+            </button>`
+        }
     }
-    document.getElementById('serverSelectListScrollable').innerHTML = htmlString
 
+    document.getElementById('serverSelectListScrollable').innerHTML = htmlString
 }
 
 /**

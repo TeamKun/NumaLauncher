@@ -5218,6 +5218,17 @@ form[name='submitSecretQuestion'] p {
     color: rgba(165, 165, 165, 0.75);
 }
 
+#filterInput {
+    margin-bottom: 8px;
+    width: 80%;
+    background-color: rgba(255, 255, 255, 0.75);
+    padding: 6px;
+    border-radius: 3px;
+    border: solid;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.75);
+}
+
 
 /* * *
 * Overlay View (Server + Account Selection Content)

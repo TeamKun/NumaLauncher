@@ -264,14 +264,20 @@ function setAccountListingHandlers() {
 function populateServerListings() {
     const distro = DistroManager.getDistribution()
     const giaSel = ConfigManager.getSelectedServer()
-    const servers = distro.getServers()
+    let servers = distro.getServers()
 
+    // ソート
+    let sortedServers = sortServers(servers)
     let htmlString = ''
-    for (const serv of servers) {
+
+    console.log(sortedServers)
+    for (const serv of sortedServers) {
+        let serverName = getServerName(serv.getName())
+            //let serverName = serv.getName()
         htmlString += `<button class="serverListing" servid="${serv.getID()}" ${serv.getID() === giaSel ? 'selected' : ''}>
-            ${genelateIcon(serv.getIcon(), serv.getName())}
+            ${genelateIcon(serv.getIcon(), serverName)}
             <div class="serverListingDetails">
-                <span class="serverListingName">${serv.getName()}</span>
+                <span class="serverListingName">${serverName}</span>
                 <span class="serverListingDescription">${serv.getDescription()}</span>
                 <div class="serverListingInfo">
                     <div class="serverListingVersion">${serv.getMinecraftVersion()}</div>
@@ -294,6 +300,60 @@ function populateServerListings() {
 
 }
 
+/**
+ * サーバー情報をソートする
+ * */
+function sortServers(servers) {
+    let sortableList = []
+    let notSotableList = []
+    
+    servers.forEach((server) => {
+        let orderReg = /^%\d*%/
+    
+        if (!orderReg.test(server.getName())) {
+            notSotableList.push(server)
+        } else {
+            sortableList.push(server)
+        }
+    })
+    
+    sortableList.sort((a, b) => {
+        let orderA = getOrder(a.getName())
+        let orderB = getOrder(b.getName())
+    
+        if (orderA < orderB) {
+            return -1
+        }
+        return 1
+    })
+
+    return sortableList.concat(notSotableList)
+}
+
+/**
+ * サーバー名からオーダー番号を取得する
+ * */
+function getOrder(serverName) {
+    let order = serverName.split('%')[1]
+
+    if (isNaN(order)) {
+        return null
+    }
+
+    return parseInt(order)
+}
+
+/**
+ * サーバー名からオーダー番号取り除く
+ * */
+function getServerName(serverName) {
+    let reg = /^%*%/
+    if (!reg.test(serverName)) {
+        return serverName
+    }
+
+    return serverName.split('%')[2]
+}
 /**
  * サーバー情報をもとにアイコンのHTMLタグを生成する
  * */

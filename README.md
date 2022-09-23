@@ -10,7 +10,7 @@
 | -------- | ---- |
 | Windows x64 | `NumaLauncher-setup-VERSION.exe` |
 | macOS | `NumaLauncher-setup-VERSION.dmg` |
-| Linux x64 | `サポート終了` |
+| Linux x64 | `サポート対象外` |
 
 ## Console
 
@@ -29,7 +29,8 @@ ctrl + shift + i
 
 **System Requirements**
 
-* [Node.js][nodejs] v12
+* Install Dependencies: Node.js v12
+* Build Installers: Node.js v16
 
 ---
 

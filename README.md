@@ -58,17 +58,10 @@ STEP1. <a src="https://github.com/TeamKun/config-files/releases">jdk.zip</a>を�
 
 STEP2. プラットフォームごとにコマンドを下記実行
 
-```console
-> npm run dist
-```
-
-Build for a specific platform.
-
-| Platform    | Command              |
-| ----------- | -------------------- |
-| Windows x64 | `npm run dist:win`   |
-| macOS       | `npm run dist:mac`   |
-| Linux x64   | `npm run dist:linux` |
+| Platform    | Command            |
+| ----------- | ------------------ |
+| Windows x64 | `npm run dist:win` |
+| macOS       | `npm run dist:mac` |
 
 !! mac OS用のインストーラはIntel,AppleSiliconそれぞれのプロセッサごとに実機でbuildが必要
 

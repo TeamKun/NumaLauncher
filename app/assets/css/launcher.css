@@ -1,4 +1,5 @@
 /* Github Code Highlighting. */
+
 @import '../../../node_modules/github-syntax-dark/lib/github-dark.css';
 
 /*******************************************************************************
@@ -22,13 +23,16 @@
     src: url('../fonts/Ringbearer.ttf');
 }
 
+
 /*******************************************************************************
  *                                                                             *
  * Element Styles                                                              *
  *                                                                             *
  ******************************************************************************/
 
+
 /* Reset body, html, and div presets. */
+
 body,
 html,
 div {
@@ -36,23 +40,29 @@ div {
     padding: 0px;
 }
 
+
 /* Reset p presets. */
+
 p {
     -webkit-margin-before: 0em;
     -webkit-margin-after: 0em;
 }
 
+
 /* Set default font and color. */
+
 body,
 button {
     font-family: 'Avenir Book';
     color: white;
 }
 
+
 /*body {
     background: url('./../images/backgrounds/0.jpg') no-repeat center center fixed;
     background-size: cover;
 }*/
+
 
 /*******************************************************************************
  *                                                                             *
@@ -60,7 +70,9 @@ button {
  *                                                                             *
  ******************************************************************************/
 
+
 /* Frame Bar */
+
 #frameBar {
     position: relative;
     z-index: 100;
@@ -71,26 +83,34 @@ button {
     -webkit-user-select: none;
 }
 
+
 /* Undraggable region on the top of the frame. */
+
 #frameResizableTop {
     height: 2px;
     width: 100%;
     -webkit-app-region: no-drag;
 }
 
+
 /* Flexbox to wrap the main frame content. */
+
 #frameMain {
     display: flex;
     height: 20px;
 }
 
+
 /* Undraggable region on the left and right of the frame. */
+
 .frameResizableVert {
     width: 2px;
     -webkit-app-region: no-drag;
 }
 
+
 /* Main frame content for windows. */
+
 #frameContentWin {
     display: flex;
     justify-content: space-between;
@@ -98,7 +118,9 @@ button {
     -webkit-app-region: drag;
 }
 
+
 /* Main frame content for darwin. */
+
 #frameContentDarwin {
     display: flex;
     justify-content: flex-start;
@@ -107,15 +129,19 @@ button {
     -webkit-app-region: drag;
 }
 
+
 /* Frame logo (windows only). */
+
 #frameTitleDock {
     padding: 0px 10px;
 }
+
 #frameTitleText {
     font-size: 14px;
     font-family: 'Avenir Medium';
     letter-spacing: 0.5px;
 }
+
 #frameTitleVersion {
     font-size: 10px;
     font-family: 'Avenir Medium';
@@ -123,7 +149,9 @@ button {
     color: grey;
 }
 
+
 /* Windows frame button dock. */
+
 #frameButtonDockWin {
     -webkit-app-region: no-drag !important;
     position: relative;
@@ -131,11 +159,14 @@ button {
     right: -2px;
     height: 22px;
 }
-#frameButtonDockWin > .frameButton:not(:first-child) {
+
+#frameButtonDockWin>.frameButton:not(:first-child) {
     margin-left: -4px;
 }
 
+
 /* Darwin frame button dock: NaN; */
+
 #frameButtonDockDarwin {
     -webkit-app-region: no-drag !important;
     position: relative;
@@ -143,7 +174,9 @@ button {
     right: -1px;
 }
 
+
 /* Windows Frame Button Styles. */
+
 .frameButton {
     background: none;
     border: none;
@@ -151,27 +184,35 @@ button {
     width: 39px;
     cursor: pointer;
 }
+
 .frameButton:hover,
 .frameButton:focus {
     background: rgba(189, 189, 189, 0.43);
 }
+
 .frameButton:active {
     background: rgba(156, 156, 156, 0.43);
 }
+
 .frameButton:focus {
     outline: 0px;
 }
 
+
 /* Close button is red. */
+
 #frameButton_close:hover,
 #frameButton_close:focus {
     background: rgba(255, 53, 53, 0.61) !important;
 }
+
 #frameButton_close:active {
     background: rgba(235, 0, 0, 0.61) !important;
 }
 
+
 /* Darwin Frame Button Styles. */
+
 .frameButtonDarwin {
     height: 12px;
     width: 12px;
@@ -181,6 +222,7 @@ button {
     -webkit-app-region: no-drag !important;
     cursor: pointer;
 }
+
 .frameButtonDarwin:focus {
     outline: 0px;
 }
@@ -188,10 +230,12 @@ button {
 #frameButtonDarwin_close {
     background-color: #e74c32;
 }
+
 #frameButtonDarwin_close:hover,
 #frameButtonDarwin_close:focus {
     background-color: #ff9a8a;
 }
+
 #frameButtonDarwin_close:active {
     background-color: #ff8d7b;
 }
@@ -199,10 +243,12 @@ button {
 #frameButtonDarwin_minimize {
     background-color: #fed045;
 }
+
 #frameButtonDarwin_minimize:hover,
 #frameButtonDarwin_minimize:focus {
     background-color: #ffe9a9;
 }
+
 #frameButtonDarwin_minimize:active {
     background-color: #ffde7b;
 }
@@ -210,13 +256,16 @@ button {
 #frameButtonDarwin_restoredown {
     background-color: #96e734;
 }
+
 #frameButtonDarwin_restoredown:hover,
 #frameButtonDarwin_restoredown:focus {
     background-color: #d6ffa6;
 }
+
 #frameButtonDarwin_restoredown:active {
     background-color: #bfff76;
 }
+
 
 /*******************************************************************************
  *                                                                             *
@@ -242,6 +291,7 @@ button {
     top: -10%;
     position: relative;
 }
+
 
 /*
 .cloudDiv {
@@ -315,7 +365,9 @@ button {
     text-shadow: rgba(255, 255, 255, 0.75) 0px 0px 20px;
 }
 
+
 /* Login button styles. */
+
 #welcomeButton {
     background: none;
     font-weight: bold;
@@ -330,19 +382,23 @@ button {
     margin-top: 5%;
     margin-bottom: -5%;
 }
+
 #welcomeButton:disabled {
     color: rgba(255, 255, 255, 0.75);
     pointer-events: none;
 }
+
 #welcomeButton:hover,
 #welcomeButton:focus {
     text-shadow: 0px 0px 20px #fff;
     outline: none;
 }
+
 #welcomeButton:active {
     color: #c7c7c7;
     text-shadow: 0px 0px 20px #c7c7c7;
 }
+
 #welcomeSVG {
     -webkit-transform: translate3d(0, 0, 0);
     overflow: visible;
@@ -352,16 +408,20 @@ button {
     width: 20px;
     height: 20px;
 }
+
 #welcomeButton:hover #welcomeSVG,
 #welcomeButton:focus #welcomeSVG {
     -webkit-filter: drop-shadow(0px 0px 2px #fff);
 }
+
 #welcomeButton:active #welcomeSVG .arrowLine {
     stroke: #c7c7c7;
 }
+
 #welcomeButton:active #welcomeSVG {
     -webkit-filter: drop-shadow(0px 0px 2px #c7c7c7);
 }
+
 #welcomeButton:disabled #welcomeSVG .arrowLine {
     stroke: rgba(255, 255, 255, 0.75);
 }
@@ -371,20 +431,25 @@ button {
     align-items: center;
 }
 
+
 /*******************************************************************************
  *                                                                             *
  * Login View (login.ejs)                                                      *
  *                                                                             *
  ******************************************************************************/
 
+
 /* Styles for dimmer login span. */
+
 .loginSpanDim {
     font-size: 12px;
     color: #848484;
     font-weight: bold;
 }
 
+
 /* Main login container. */
+
 #loginContainer {
     position: relative;
     display: flex;
@@ -396,14 +461,18 @@ button {
     background: rgba(0, 0, 0, 0.5);
 }
 
+
 /* Login cancel button styles. */
+
 #loginCancelContainer {
     position: absolute;
     top: 5%;
     right: 5%;
 }
 
+
 /* Login cancel button styles. */
+
 #loginCancelButton {
     background: none;
     border: none;
@@ -411,35 +480,43 @@ button {
     cursor: pointer;
     transition: 0.25s ease;
 }
+
 #loginCancelButton:hover #loginCancelIcon,
 #loginCancelButton:hover #loginCancelText,
 #loginCancelButton:focus #loginCancelIcon,
 #loginCancelButton:focus #loginCancelText {
     text-shadow: 0px 0px 20px white;
 }
+
 #loginCancelButton:hover #loginCancelIcon,
 #loginCancelButton:focus #loginCancelIcon {
     box-shadow: 0px 0px 20px white;
 }
+
 #loginCancelButton:active #loginCancelIcon,
 #loginCancelButton:active #loginCancelText {
     text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.75);
     color: rgba(255, 255, 255, 0.75);
     border-color: rgba(255, 255, 255, 0.75);
 }
+
 #loginCancelButton:active #loginCancelIcon {
     box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.75);
 }
+
 #loginCancelButton:disabled {
     pointer-events: none;
 }
+
 #loginCancelButton:disabled #loginCancelIcon,
 #loginCancelButton:disabled #loginCancelText {
     color: rgba(255, 255, 255, 0.75);
     border-color: rgba(255, 255, 255, 0.75);
 }
 
+
 /* The X in a circle icon for the cancel button. */
+
 #loginCancelIcon {
     border-radius: 50%;
     border: 1px solid white;
@@ -452,13 +529,18 @@ button {
     margin-bottom: 5px;
     transition: 0.25s ease;
 }
+
+
 /* Text for the login cancel button. */
+
 #loginCancelText {
     font-size: 15px;
     transition: 0.25s ease;
 }
 
+
 /* Login content wrapper. */
+
 #loginContent {
     display: flex;
     justify-content: center;
@@ -467,7 +549,9 @@ button {
     padding: 0px 25px;
 }
 
+
 /* Login form. */
+
 #loginForm {
     display: flex;
     flex-direction: column;
@@ -475,7 +559,9 @@ button {
     align-items: center;
 }
 
+
 /* Login form anchor styles. */
+
 #loginForm a {
     font-size: 12px;
     color: #848484;
@@ -483,16 +569,20 @@ button {
     text-decoration: none;
     transition: 0.25s ease;
 }
+
 #loginForm a:hover,
 #loginForm a:focus {
     color: #a2a2a2;
     outline: none;
 }
+
 #loginForm a:active {
     color: #8b8b8b;
 }
 
+
 /* Logo on login form. */
+
 #loginImageSeal {
     border-radius: 5%;
     height: 125px;
@@ -500,7 +590,9 @@ button {
     margin-bottom: 20px;
 }
 
+
 /* Header on login view. */
+
 #loginSubheader {
     font-family: 'Avenir Medium';
     margin-bottom: 25px;
@@ -509,7 +601,9 @@ button {
     font-weight: bold;
 }
 
+
 /* Container to organize login field elements. */
+
 .loginFieldContainer {
     position: relative;
     display: flex;
@@ -522,14 +616,18 @@ button {
     border-color: #fff;
 }
 
+
 /* SVG icons on the login view. */
+
 .loginSVG {
     fill: #fff;
     height: 20px;
     width: 20px;
 }
 
+
 /* Span which displays errors related to login field content. */
+
 .loginErrorSpan {
     font-family: 'Avenir Medium';
     font-weight: bold;
@@ -552,25 +650,24 @@ button {
     90% {
         transform: translate3d(-1px, 0, 0);
     }
-
     20%,
     80% {
         transform: translate3d(2px, 0, 0);
     }
-
     30%,
     50%,
     70% {
         transform: translate3d(-4px, 0, 0);
     }
-
     40%,
     60% {
         transform: translate3d(4px, 0, 0);
     }
 }
 
+
 /* Login text input styles. */
+
 .loginField {
     font-family: 'Avenir Book';
     background: none;
@@ -585,12 +682,15 @@ button {
     letter-spacing: 1px;
     z-index: 10;
 }
+
 .loginField:focus {
     outline: none;
 }
+
 .loginField:disabled {
     color: rgba(255, 255, 255, 0.5);
 }
+
 .loginField::-webkit-input-placeholder {
     color: rgba(255, 255, 255, 0.75);
     font-size: 10px;
@@ -598,29 +698,38 @@ button {
     text-align: center;
     font-weight: bold;
 }
+
 .loginField:focus::-webkit-input-placeholder {
     color: transparent;
 }
 
+
 /* Add spacing between password field and options bar. */
+
 #labelPassword {
     margin-bottom: 13px;
 }
 
+
 /* Container which contains the forgot and remember options. */
+
 #loginOptions {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
 
+
 /* Remember option text. */
+
 #loginRememberText {
     padding-right: 10px;
     transition: 0.25s ease;
 }
 
+
 /* Login button styles. */
+
 #loginButton {
     background: none;
     font-weight: bold;
@@ -632,22 +741,27 @@ button {
     right: -20px;
     transition: 0.5s ease;
 }
+
 #loginButton:disabled {
     color: rgba(255, 255, 255, 0.75);
     pointer-events: none;
 }
+
 #loginButton[loading] {
     color: #fff;
 }
+
 #loginButton:hover,
 #loginButton:focus {
     text-shadow: 0px 0px 20px #fff;
     outline: none;
 }
+
 #loginButton:active {
     color: #c7c7c7;
     text-shadow: 0px 0px 20px #c7c7c7;
 }
+
 #loginSVG {
     -webkit-transform: translate3d(0, 0, 0);
     overflow: visible;
@@ -657,16 +771,20 @@ button {
     width: 20px;
     height: 20px;
 }
+
 #loginButton:hover #loginSVG,
 #loginButton:focus #loginSVG {
     -webkit-filter: drop-shadow(0px 0px 2px #fff);
 }
+
 #loginButton:active #loginSVG .arrowLine {
     stroke: #c7c7c7;
 }
+
 #loginButton:active #loginSVG {
     -webkit-filter: drop-shadow(0px 0px 2px #c7c7c7);
 }
+
 #loginButton:disabled #loginSVG .arrowLine {
     stroke: rgba(255, 255, 255, 0.75);
 }
@@ -680,6 +798,7 @@ button {
 #loginButton[loading] #loginSVG {
     display: none;
 }
+
 #loginButton[loading] .circle-loader,
 #loginButton #loginSVG {
     display: initial;
@@ -700,6 +819,7 @@ button {
     width: 16px;
     height: 16px;
 }
+
 .circle-loader-big {
     margin: auto;
     border: 5px solid rgba(255, 255, 255, 0.5);
@@ -715,20 +835,24 @@ button {
     width: 60px;
     height: 60px;
 }
+
 .load-complete {
     animation: none;
     border-color: #ffffff;
     transition: border 500ms ease-out;
 }
+
 .checkmark {
     display: none;
 }
+
 .checkmark.draw:after {
     animation-duration: 800ms;
     animation-timing-function: ease;
     animation-name: checkmark;
     transform: scaleX(-1) rotate(135deg);
 }
+
 .checkmark:after {
     opacity: 1;
     height: 8px;
@@ -741,6 +865,7 @@ button {
     top: 8px;
     position: absolute;
 }
+
 @keyframes loader-spin {
     0% {
         transform: rotate(0deg);
@@ -749,6 +874,7 @@ button {
         transform: rotate(360deg);
     }
 }
+
 @keyframes checkmark {
     0% {
         height: 0;
@@ -772,6 +898,7 @@ button {
     }
 }
 
+
 /*.spinningCircle {
     margin-left: 20px;
     height: 16px;
@@ -794,7 +921,9 @@ button {
     }
 }*/
 
+
 /* Disclaimer container. */
+
 #loginDisclaimer {
     display: flex;
     flex-direction: column;
@@ -802,12 +931,16 @@ button {
     align-items: center;
 }
 
+
 /* Add spacing between register anchor and disclaimer. */
+
 #loginRegisterSpan {
     margin-bottom: 5px;
 }
 
+
 /* Disclaimer text styles. */
+
 .loginDisclaimerText {
     font-size: 7px;
     color: #848484;
@@ -815,11 +948,14 @@ button {
     text-align: center;
 }
 
+
 /* * *
 * Login View | Custom Checkbox
 * * */
 
+
 /* Checkbox container. */
+
 #checkmarkContainer {
     display: flex;
     justify-content: flex-end;
@@ -830,14 +966,18 @@ button {
     -webkit-user-select: none;
 }
 
+
 /* Hide the default checkbox. */
+
 #checkmarkContainer input {
     opacity: 0;
     cursor: pointer;
     position: absolute;
 }
 
+
 /* Create a custom checkbox. */
+
 .loginCheckmark {
     position: relative;
     height: 10px;
@@ -847,31 +987,49 @@ button {
     background: none;
     transition: 0.25s ease;
 }
+
+
 /* On hover and focus, add a grey border color. */
-#checkmarkContainer:hover input ~ *,
-#checkmarkContainer input:focus ~ * {
+
+#checkmarkContainer:hover input~*,
+#checkmarkContainer input:focus~* {
     color: #a2a2a2;
     border-color: #a2a2a2;
 }
+
+
 /* On keydown, darken the checkbox a bit. */
-#checkmarkContainer input:active ~ *:not(#loginRememberText) {
+
+#checkmarkContainer input:active~*:not(#loginRememberText) {
     color: #8d8d8d;
     border-color: #8d8d8d;
 }
+
 #checkmarkContainer[disabled] {
     pointer-events: none;
 }
+
+
 /* For checked -> #checkmarkContainer input:checked ~ * */
+
+
 /* Create the checkmark/indicator (hidden when not checked). */
+
 .loginCheckmark:after {
     content: '';
     display: none;
 }
+
+
 /* Show the checkmark when checked. */
-#checkmarkContainer input:checked ~ .loginCheckmark:after {
+
+#checkmarkContainer input:checked~.loginCheckmark:after {
     display: block;
 }
+
+
 /* Style the checkmark/indicator. */
+
 #checkmarkContainer .loginCheckmark:after {
     position: absolute;
     left: 3.5px;
@@ -885,25 +1043,50 @@ button {
 
 #loginMSButton {
     background: none;
+    background-color: rgb(255, 255, 255, 0);
     border: none;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    font-size: 20px;
-}
-#loginMSButton:disabled {
-    color: rgba(255, 255, 255, 0.75);
-    pointer-events: none;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 23px;
+    padding: 5px 0;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 30px;
+    width: 100%;
+    transition: ease 0.6s;
+    position: relative;
+    z-index: 2;
 }
 
-#loginMSButton:hover,
-#loginMSButton:focus {
-    text-shadow: 0px 0px 20px #fff;
+#loginMSButton:hover {
+    text-shadow: 0px 0px 100px #fff;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: rgba(0, 0, 0, 0.7);
     outline: none;
+    font-weight: bold;
 }
+
 #loginMSButton:active {
-    color: #c7c7c7;
-    text-shadow: 0px 0px 20px #c7c7c7;
+    color: rgba(255, 255, 255, 0.8);
+    background-color: rgb(255, 255, 255, 0);
 }
+
+#loginMSButtonGuid {
+    color: rgba(255, 255, 255, 0.8);
+    animation: upDown 1s ease-in-out infinite alternate;
+    z-index: 1;
+    position: absolute;
+}
+
+@keyframes upDown {
+    0% {
+        margin-top: 0;
+    }
+    100% {
+        margin-top: 10px;
+    }
+}
+
 
 /*
 #login_filter {
@@ -918,13 +1101,16 @@ button {
 }
 */
 
+
 /*******************************************************************************
  *                                                                             *
  * Settings View (settings.ejs)                                                 *
  *                                                                             *
  ******************************************************************************/
 
+
 /* Main settings container. */
+
 #settingsContainer {
     position: relative;
     height: 100%;
@@ -933,7 +1119,9 @@ button {
     transition: background-color 0.25s cubic-bezier(0.02, 0.01, 0.47, 1);
 }
 
+
 /* Drop shadow displayed when content is scrolled out of view. */
+
 #settingsContainer:before {
     content: '';
     background: linear-gradient(rgba(0, 0, 0, 0.25), transparent);
@@ -943,11 +1131,14 @@ button {
     opacity: 0;
     transition: opacity 0.25s ease;
 }
+
 #settingsContainer[scrolled]:before {
     opacity: 1;
 }
 
+
 /* Left hand side of the settings UI, for navigation. */
+
 #settingsContainerLeft {
     padding-top: 4%;
     height: 100%;
@@ -955,24 +1146,31 @@ button {
     box-sizing: border-box;
 }
 
+
 /* Settings navigation container. */
+
 #settingsNavContainer {
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
+
 /* Navigation header styles. */
+
 #settingsNavHeader {
     height: 15%;
     display: flex;
     justify-content: center;
 }
+
 #settingsNavHeaderText {
     font-size: 20px;
 }
 
+
 /* Navigation items outer container. */
+
 #settingsNavItemsContainer {
     height: 85%;
     display: flex;
@@ -980,7 +1178,9 @@ button {
     box-sizing: border-box;
 }
 
+
 /* Navigation items content container. */
+
 #settingsNavItemsContent {
     height: 100%;
     display: flex;
@@ -988,7 +1188,9 @@ button {
     position: relative;
 }
 
+
 /* Navigation item shared styles. */
+
 .settingsNavItem {
     background: none;
     border: none;
@@ -1000,29 +1202,37 @@ button {
     outline: none;
     transition: 0.25s ease;
 }
+
 .settingsNavItem:hover,
 .settingsNavItem:focus {
     color: #c1c1c1;
     text-shadow: 0px 0px 20px #c1c1c1;
 }
+
 .settingsNavItem[selected] {
     cursor: default;
     color: white;
     text-shadow: none;
 }
 
+
 /* Div to add some space between nav items. */
+
 .settingsNavSpacer {
     height: 25px;
 }
 
+
 /* Content container for the done button. */
+
 #settingsNavContentBottom {
     position: absolute;
     top: 65%;
 }
 
+
 /* Settings navigational divider. */
+
 .settingsNavDivider {
     width: 75%;
     height: 1px;
@@ -1031,7 +1241,9 @@ button {
     margin-bottom: 25px;
 }
 
+
 /* Settings done button styles. */
+
 #settingsNavDone {
     background: none;
     border: none;
@@ -1043,75 +1255,95 @@ button {
     outline: none;
     transition: 0.25s ease;
 }
+
 #settingsNavDone:hover,
 #settingsNavDone:focus {
     text-shadow: 0px 0px 20px white, 0px 0px 20px white, 0px 0px 20px white;
 }
+
 #settingsNavDone:active {
-    text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.75),
-        0px 0px 20px rgba(255, 255, 255, 0.75),
-        0px 0px 20px rgba(255, 255, 255, 0.75);
+    text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.75), 0px 0px 20px rgba(255, 255, 255, 0.75), 0px 0px 20px rgba(255, 255, 255, 0.75);
     color: rgba(255, 255, 255, 0.75);
 }
+
 #settingsNavDone:disabled {
     color: rgba(255, 255, 255, 0.75);
     pointer-events: none;
 }
 
+
 /* Right hand side of the settings container, for tabs. */
+
 #settingsContainerRight {
     height: 100%;
     width: 75%;
     box-sizing: border-box;
 }
 
+
 /* Settings tab shared styles. */
+
 .settingsTab {
     width: 100%;
     height: 100%;
     overflow-y: auto;
 }
+
 .settingsTab::-webkit-scrollbar {
     width: 2px;
 }
+
 .settingsTab::-webkit-scrollbar-track {
     display: none;
 }
+
 .settingsTab::-webkit-scrollbar-thumb {
     border-radius: 10px;
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
+
 /* Add spacing to the top of each settings tab. */
-.settingsTab > *:first-child {
+
+.settingsTab>*:first-child {
     margin-top: 5%;
 }
 
+
 /* Add spacing to the bottom of each settings tab. */
-.settingsTab > *:last-child {
+
+.settingsTab>*:last-child {
     margin-bottom: 20%;
 }
 
+
 /* Tab header shared styles. */
+
 .settingsTabHeader {
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
 }
+
 .settingsTabHeaderText {
     font-size: 20px;
     font-family: 'Avenir Medium';
 }
+
 .settingsTabHeaderDesc {
     font-size: 12px;
 }
 
+
 /* Remove spin button from number inputs. */
+
 #settingsContainer input[type='number']::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
 
+
 /* Default styles for text/number inputs. */
+
 #settingsContainer input[type='number'],
 #settingsContainer input[type='text'] {
     color: white;
@@ -1121,18 +1353,22 @@ button {
     font-family: 'Avenir Book';
     transition: 0.25s ease;
 }
+
 #settingsContainer input[type='number']:focus,
 #settingsContainer input[type='text']:focus {
     outline: none;
     border-color: rgba(126, 126, 126, 0.87);
 }
+
 #settingsContainer input[type='number'][error] {
     border-color: rgb(255, 27, 12);
     background: rgba(236, 0, 0, 0.25);
     color: rgb(255, 27, 12);
 }
 
+
 /* Styles for a generic settings entry. */
+
 .settingsFieldContainer {
     display: flex;
     align-items: center;
@@ -1141,27 +1377,33 @@ button {
     width: 75%;
     border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 }
+
 .settingsFieldLeft {
     display: flex;
     flex-direction: column;
 }
+
 .settingsFieldTitle {
     font-size: 14px;
     font-family: 'Avenir Medium';
     color: rgba(255, 255, 255, 0.95);
 }
+
 .settingsFieldDesc {
     font-size: 12px;
     color: rgba(255, 255, 255, 0.95);
     margin-top: 5px;
 }
+
 .settingsDivider {
     height: 1px;
     width: 75%;
     background: rgba(255, 255, 255, 0.25);
 }
 
+
 /* Toggle Switch */
+
 .toggleSwitch {
     position: relative;
     display: inline-block;
@@ -1170,9 +1412,11 @@ button {
     border-radius: 50px;
     box-sizing: border-box;
 }
+
 .toggleSwitch input {
     display: none;
 }
+
 .toggleSwitchSlider {
     position: absolute;
     cursor: pointer;
@@ -1185,6 +1429,7 @@ button {
     border-radius: 50px;
     border: 1px solid rgba(126, 126, 126, 0.57);
 }
+
 .toggleSwitchSlider:before {
     position: absolute;
     content: '';
@@ -1197,16 +1442,20 @@ button {
     border-radius: 50px;
     transition: 0.4s;
 }
-input:checked + .toggleSwitchSlider {
+
+input:checked+.toggleSwitchSlider {
     background-color: rgb(31, 140, 11);
     /* box-shadow: inset 2px 1px 20px black; */
     border: 1px solid rgb(31, 140, 11);
 }
-input:checked + .toggleSwitchSlider:before {
+
+input:checked+.toggleSwitchSlider:before {
     transform: translateX(15px);
 }
 
+
 /* Range Slider styles. */
+
 .rangeSlider {
     width: 35%;
     height: 5px;
@@ -1215,6 +1464,7 @@ input:checked + .toggleSwitchSlider:before {
     border-radius: 3px;
     position: relative;
 }
+
 .rangeSliderBar {
     position: absolute;
     background: #8be88b;
@@ -1223,6 +1473,7 @@ input:checked + .toggleSwitchSlider:before {
     border-radius: 3px 0px 0px 3px;
     transition: background 0.25s ease;
 }
+
 .rangeSliderTrack {
     position: absolute;
     top: -7.5px;
@@ -1234,9 +1485,12 @@ input:checked + .toggleSwitchSlider:before {
     cursor: ew-resize;
 }
 
+
 /* File selectors */
 
+
 /* Main container for File selectors. */
+
 .settingsFileSelContainer {
     display: flex;
     flex-direction: column;
@@ -1246,18 +1500,24 @@ input:checked + .toggleSwitchSlider:before {
     width: 75%;
 }
 
+
 /* File selector title. */
+
 .settingsFileSelTitle {
     margin-bottom: 10px;
 }
 
+
 /* Wrapper container for the actionable elements. */
+
 .settingsFileSelActions {
     display: flex;
     width: 90%;
 }
 
+
 /* File selector icon settings. */
+
 .settingsFileSelIcon {
     display: flex;
     align-items: center;
@@ -1266,13 +1526,16 @@ input:checked + .toggleSwitchSlider:before {
     padding: 5px;
     transition: 0.25s ease;
 }
+
 .settingsFileSelSVG {
     width: 20px;
     height: 20px;
     fill: white;
 }
 
+
 /* Disabled text field which stores the selected file path. */
+
 .settingsFileSelVal {
     border-radius: 0px !important;
     width: 100%;
@@ -1281,7 +1544,9 @@ input:checked + .toggleSwitchSlider:before {
     height: 30px;
 }
 
+
 /* File selection button. */
+
 .settingsFileSelButton {
     border: 0px;
     border-radius: 0px 3px 3px 0px;
@@ -1293,31 +1558,39 @@ input:checked + .toggleSwitchSlider:before {
     white-space: nowrap;
     outline: none;
 }
+
 .settingsFileSelButton:hover,
 .settingsFileSelButton:focus {
     text-shadow: 0px 0px 20px white;
 }
+
 .settingsFileSelButton:active {
     text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.75);
     color: rgba(255, 255, 255, 0.75);
 }
 
+
 /* Description for the file selector. */
+
 .settingsFileSelDesc {
     font-size: 10px;
     margin: 20px 0px;
     color: lightgrey;
     width: 89%;
 }
+
 .settingsFileSelDesc strong {
     font-family: 'Avenir Medium';
 }
+
 
 /* * *
 * Settings View (Account Tab)
 * * */
 
+
 /* Add account button styles. */
+
 #settingsAddAccount {
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(126, 126, 126, 0.57);
@@ -1330,29 +1603,38 @@ input:checked + .toggleSwitchSlider:before {
     outline: none;
     transition: 0.25s ease;
 }
+
 #settingsAddAccount:hover,
 #settingsAddAccount:focus {
     background: rgba(54, 54, 54, 0.25);
     text-shadow: 0px 0px 20px white;
 }
 
+
 /* Settings auth accounts header. */
+
 #settingsCurrentAccountsHeader {
     margin: 20px 0px;
 }
 
+
 /* Auth account list container styles. */
+
 #settingsCurrentAccounts {
     margin-bottom: 5%;
 }
-#settingsCurrentAccounts > .settingsAuthAccount:not(:last-child) {
+
+#settingsCurrentAccounts>.settingsAuthAccount:not(:last-child) {
     margin-bottom: 10px;
 }
-#settingsCurrentAccounts > .settingsAuthAccount:not(:first-child) {
+
+#settingsCurrentAccounts>.settingsAuthAccount:not(:first-child) {
     margin-top: 10px;
 }
 
+
 /* Auth account shared styles. */
+
 .settingsAuthAccount {
     display: flex;
     width: 75%;
@@ -1361,23 +1643,31 @@ input:checked + .toggleSwitchSlider:before {
     border: 1px solid rgba(126, 126, 126, 0.57);
 }
 
+
 /* Left hand side of an auth account element, for the skin image. */
+
 .settingsAuthAccountLeft {
     padding: 5px 5px 5px 20px;
 }
 
+
 /* Image of the auth account's skin. */
+
 .settingsAuthAccountImage {
     height: 115px;
 }
 
+
 /* Right hand side of the auth account, for info + actions. */
+
 .settingsAuthAccountRight {
     display: flex;
     width: 100%;
 }
 
+
 /* Account details container. */
+
 .settingsAuthAccountDetails {
     display: flex;
     flex-direction: column;
@@ -1385,27 +1675,34 @@ input:checked + .toggleSwitchSlider:before {
     margin-left: 20px;
     width: 100%;
 }
-.settingsAuthAccountDetails > *:not(:last-child) {
+
+.settingsAuthAccountDetails>*:not(:last-child) {
     margin-bottom: 20px;
 }
 
+
 /* Account detail element styles. */
+
 .settingsAuthAccountDetailPane {
     display: flex;
     flex-direction: column;
 }
+
 .settingsAuthAccountDetailTitle {
     font-size: 12px;
     color: grey;
     font-weight: bold;
     font-family: 'Avenir Medium';
 }
+
 .settingsAuthAccountDetailValue {
     font-size: 14px;
     -webkit-user-select: initial;
 }
 
+
 /* Account actions container. */
+
 .settingsAuthAccountActions {
     display: flex;
     flex-direction: column;
@@ -1414,7 +1711,9 @@ input:checked + .toggleSwitchSlider:before {
     padding: 10px;
 }
 
+
 /* Account select button shared styles. */
+
 .settingsAuthAccountSelect {
     opacity: 0;
     border: none;
@@ -1424,20 +1723,25 @@ input:checked + .toggleSwitchSlider:before {
     outline: none;
     transition: 0.25s ease;
 }
+
 .settingsAuthAccountSelect:hover:not([selected]),
 .settingsAuthAccountSelect:focus:not([selected]) {
     text-shadow: 0px 0px 20px white, 0px 0px 20px white;
     cursor: pointer;
 }
+
 .settingsAuthAccount:hover .settingsAuthAccountSelect:not([selected]),
 .settingsAuthAccountSelect[selected] {
     opacity: 1;
 }
+
 .settingsAuthAccountSelect[selected] {
     pointer-events: none;
 }
 
+
 /* Account logout button shared styles. */
+
 .settingsAuthAccountLogOut {
     opacity: 0;
     border: 1px solid rgb(241, 55, 55);
@@ -1450,26 +1754,32 @@ input:checked + .toggleSwitchSlider:before {
     cursor: pointer;
     outline: none;
 }
+
 .settingsAuthAccountLogOut:hover,
 .settingsAuthAccountLogOut:focus {
     box-shadow: 0px 0px 20px rgb(241, 55, 55);
     background: rgba(241, 55, 55, 0.25);
 }
+
 .settingsAuthAccountLogOut:active {
     box-shadow: 0px 0px 20px rgb(185, 47, 47);
     background: rgba(185, 47, 47, 0.25);
     border: 1px solid rgb(185, 47, 47);
     color: rgb(185, 47, 47);
 }
+
 .settingsAuthAccount:hover .settingsAuthAccountLogOut {
     opacity: 1;
 }
+
 
 /* * *
 * Settings View (Minecraft Tab)
 * * */
 
+
 /* Game resolution UI elements. */
+
 #settingsGameResolutionContainer {
     display: flex;
     flex-direction: column;
@@ -1477,26 +1787,32 @@ input:checked + .toggleSwitchSlider:before {
     border-bottom: 1px solid rgba(255, 255, 255, 0.5);
     width: 75%;
 }
+
 #settingsGameResolutionContent {
     display: flex;
     align-items: center;
     padding-top: 10px;
 }
+
 #settingsGameResolutionCross {
     color: grey;
     padding: 0px 15px;
 }
+
 #settingsGameWidth,
 #settingsGameHeight {
     padding: 7.5px 5px;
     width: 75px;
 }
 
+
 /* * *
 * Settings View (Mods Tab)
 * * */
 
+
 /* Selected server content container */
+
 #settingsSelServContainer {
     background: rgba(0, 0, 0, 0.25);
     width: 75%;
@@ -1506,7 +1822,9 @@ input:checked + .toggleSwitchSlider:before {
     margin: 15px 0px;
 }
 
+
 /* Div which will be populated with the selected server's information. */
+
 #settingsSelServContent {
     display: flex;
     align-items: center;
@@ -1514,14 +1832,18 @@ input:checked + .toggleSwitchSlider:before {
     padding: 5px 0px;
 }
 
+
 /* Wrapper container for the switch server button. */
+
 #settingsSwitchServerContainer {
     display: flex;
     align-items: center;
     padding: 15px;
 }
 
+
 /* Button to switch server configurations on the mods tab. */
+
 #settingsSwitchServerButton {
     opacity: 0;
     border: 1px solid rgb(255, 255, 255);
@@ -1534,41 +1856,52 @@ input:checked + .toggleSwitchSlider:before {
     cursor: pointer;
     outline: none;
 }
+
 #settingsSwitchServerButton:hover,
 #settingsSwitchServerButton:focus {
     box-shadow: 0px 0px 20px rgb(255, 255, 255);
     background: rgba(255, 255, 255, 0.25);
 }
+
 #settingsSwitchServerButton:active {
     box-shadow: 0px 0px 20px rgb(187, 187, 187);
     background: rgba(187, 187, 187, 0.25);
     border: 1px solid rgb(187, 187, 187);
     color: rgb(187, 187, 187);
 }
+
 #settingsSelServContainer:hover #settingsSwitchServerButton {
     opacity: 1;
 }
 
+
 /* Main content container for the mod elements. */
+
 #settingsModsContainer {
     width: 75%;
 }
 
+
 /* Mod sub-container header text. */
+
 .settingsModsHeader {
     padding-bottom: 10px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.5);
     margin-bottom: 10px;
 }
 
+
 /* Mod elements sub-containers. */
+
 #settingsReqModsContainer,
 #settingsOptModsContainer,
 #settingsDropinModsContainer {
     padding-bottom: 25px;
 }
 
+
 /* Main content containers for mod elements. */
+
 #settingsReqModsContent,
 #settingsOptModsContent,
 #settingsDropinModsContent {
@@ -1578,18 +1911,23 @@ input:checked + .toggleSwitchSlider:before {
     color: white;
 }
 
+
 /* Mod elements. */
+
 .settingsMod,
 .settingsDropinMod {
     padding: 10px;
 }
+
 .settingsSubMod {
     padding: 10px 0px 10px 15px;
     margin-left: 20px;
     border-left: 1px solid rgba(255, 255, 255, 0.5);
 }
 
+
 /* Main content container for mod element information. */
+
 .settingsModContent {
     display: flex;
     align-items: center;
@@ -1597,13 +1935,17 @@ input:checked + .toggleSwitchSlider:before {
     transition: opacity 0.25s ease;
 }
 
+
 /* Wrapper container for the left side of a mod element. */
+
 .settingsModMainWrapper {
     display: flex;
     align-items: center;
 }
 
+
 /* Mod enabled/disabled status. */
+
 .settingsModStatus {
     width: 7px;
     height: 7px;
@@ -1613,55 +1955,70 @@ input:checked + .toggleSwitchSlider:before {
     transition: 0.25s ease;
 }
 
+
 /* Mod details container. */
+
 .settingsModDetails {
     display: flex;
     flex-direction: column;
 }
 
+
 /* The version of the mod. */
+
 .settingsModVersion {
     color: grey;
     font-size: 10px;
 }
 
+
 /* Disabled toggleswitch for required mods. */
+
 .toggleSwitch[reqmod] {
     filter: grayscale(49%) brightness(60%);
     pointer-events: none;
 }
 
+
 /* Set the status color of an enabled mod. */
-.settingsBaseMod[enabled]
-    > .settingsModContent
-    > .settingsModMainWrapper
-    > .settingsModStatus {
+
+.settingsBaseMod[enabled]>.settingsModContent>.settingsModMainWrapper>.settingsModStatus {
     background-color: rgb(165, 195, 37);
 }
 
+
 /* Add opacity to submods of a disabled mod. */
-.settingsBaseMod:not([enabled]) > .settingsSubModContainer .settingsModContent {
+
+.settingsBaseMod:not([enabled])>.settingsSubModContainer .settingsModContent {
     opacity: 0.5;
 }
 
+
 /* Curve the left border for submods. */
-.settingsSubModContainer > .settingsSubMod:first-child {
+
+.settingsSubModContainer>.settingsSubMod:first-child {
     border-top-left-radius: 10px;
 }
-.settingsSubModContainer > .settingsSubMod:last-child {
+
+.settingsSubModContainer>.settingsSubMod:last-child {
     border-bottom-left-radius: 10px;
 }
-.settingsSubModContainer > .settingsSubMod:only-child {
+
+.settingsSubModContainer>.settingsSubMod:only-child {
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
 }
 
+
 /* Wrapper container for all submods. */
+
 .settingsSubModContainer {
     margin-top: 10px;
 }
 
+
 /* Button to open the mods folder for drop-in mods. */
+
 #settingsDropinFileSystemButton {
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(126, 126, 126, 0.57);
@@ -1675,19 +2032,25 @@ input:checked + .toggleSwitchSlider:before {
     transition: 0.25s ease;
     margin-bottom: 10px;
 }
+
 #settingsDropinFileSystemButton:hover,
 #settingsDropinFileSystemButton:focus,
 #settingsDropinFileSystemButton[drag] {
     background: rgba(54, 54, 54, 0.25);
     text-shadow: 0px 0px 20px white;
 }
+
+
 /* Refresh instructions on the file system button. */
+
 #settingsDropinRefreshNote {
     font-size: 10px;
     pointer-events: none;
 }
 
+
 /* Button to remove drop-in mods. */
+
 .settingsDropinRemoveButton {
     background: none;
     border: none;
@@ -1700,18 +2063,20 @@ input:checked + .toggleSwitchSlider:before {
     outline: none;
     transition: 0.25s ease;
 }
+
 .settingsDropinRemoveButton:hover,
 .settingsDropinRemoveButton:focus {
-    text-shadow: 0px 0px 20px #c32625, 0px 0px 20px #c32625,
-        0px 0px 20px #c32625;
-}
-.settingsDropinRemoveButton:active {
-    color: #9b1f1f;
-    text-shadow: 0px 0px 20px #9b1f1f, 0px 0px 20px #9b1f1f,
-        0px 0px 20px #9b1f1f;
+    text-shadow: 0px 0px 20px #c32625, 0px 0px 20px #c32625, 0px 0px 20px #c32625;
 }
 
+.settingsDropinRemoveButton:active {
+    color: #9b1f1f;
+    text-shadow: 0px 0px 20px #9b1f1f, 0px 0px 20px #9b1f1f, 0px 0px 20px #9b1f1f;
+}
+
+
 /* Shaderpack settings description. */
+
 #settingsShaderpackDesc {
     font-size: 10px;
     margin: 10px 0px;
@@ -1720,12 +2085,16 @@ input:checked + .toggleSwitchSlider:before {
     width: 89%;
 }
 
+
 /* Wrapper container. */
+
 #settingsShaderpackWrapper {
     display: flex;
 }
 
+
 /* Button to add shaderpacks. */
+
 #settingsShaderpackButton {
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(126, 126, 126, 0.57);
@@ -1737,6 +2106,7 @@ input:checked + .toggleSwitchSlider:before {
     padding: 6px 11px;
     margin-right: 5px;
 }
+
 #settingsShaderpackButton:hover,
 #settingsShaderpackButton:focus,
 #settingsShaderpackButton[drag] {
@@ -1744,13 +2114,17 @@ input:checked + .toggleSwitchSlider:before {
     text-shadow: 0px 0px 20px white;
 }
 
+
 /* Main select container. */
+
 .settingsSelectContainer {
     position: relative;
     width: 50%;
 }
 
+
 /* Div which displays the selected option. */
+
 .settingsSelectSelected {
     border-radius: 3px;
     border-width: 1px;
@@ -1758,7 +2132,9 @@ input:checked + .toggleSwitchSlider:before {
     padding: 6px 16px;
 }
 
+
 /* Style the arrow inside the select element. */
+
 .settingsSelectSelected:after {
     position: absolute;
     content: '';
@@ -1770,16 +2146,21 @@ input:checked + .toggleSwitchSlider:before {
     border-color: rgba(126, 126, 126, 0.57) transparent transparent transparent;
 }
 
+
 /* Point the arrow upwards when the select box is open (active). */
+
 .settingsSelectSelected.select-arrow-active:after {
     border-color: transparent transparent rgba(126, 126, 126, 0.57) transparent;
     top: 7px;
 }
+
 .settingsSelectSelected.select-arrow-active {
     border-radius: 3px 3px 0px 0px;
 }
 
+
 /* Options content container. */
+
 .settingsSelectOptions {
     position: absolute;
     top: 100%;
@@ -1792,22 +2173,30 @@ input:checked + .toggleSwitchSlider:before {
     border-top: none;
     border-radius: 0px 0px 3px 3px;
 }
+
+
 /* Hide the items when the select box is closed. */
+
 .settingsSelectOptions[hidden] {
     display: none;
 }
+
 .settingsSelectOptions::-webkit-scrollbar {
     width: 2px;
 }
+
 .settingsSelectOptions::-webkit-scrollbar-track {
     display: none;
 }
+
 .settingsSelectOptions::-webkit-scrollbar-thumb {
     border-radius: 10px;
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
+
 /* Shared styles between options and selection div. */
+
 .settingsSelectOptions div,
 .settingsSelectSelected {
     background: rgba(0, 0, 0, 0.25);
@@ -1816,44 +2205,55 @@ input:checked + .toggleSwitchSlider:before {
     color: #ffffff;
     cursor: pointer;
 }
+
 .settingsSelectOptions div {
     border-width: 0px 0px 1px 0px;
     font-size: 12px;
     padding: 4px 16px;
 }
+
 .settingsSelectOptions div:last-child {
     border-bottom: none;
 }
 
+
 /* Hover + selected styles. */
+
 .settingsSelectOptions div:hover,
 .settingsSelectOptions div[selected] {
     background-color: rgba(255, 255, 255, 0.25) !important;
 }
 
+
 /* * *
 * Settings View (Java Tab)
 * * */
 
+
 /* Style links on the Java tab. */
+
 #settingsTabJava a,
 .settingsChangelogText a {
     color: rgba(202, 202, 202, 0.75);
     transition: 0.25s ease;
     outline: none;
 }
+
 #settingsTabJava a:hover,
 #settingsTabJava a:focus,
 .settingsChangelogText a:hover,
 .settingsChangelogText a:focus {
     color: rgba(255, 255, 255, 0.75);
 }
+
 #settingsTabJava a:active,
 .settingsChangelogText a:active {
     color: rgba(165, 165, 165, 0.75);
 }
 
+
 /* Main container for memory management. */
+
 #settingsMemoryContainer {
     width: 75%;
     display: flex;
@@ -1862,76 +2262,98 @@ input:checked + .toggleSwitchSlider:before {
     margin-bottom: 20px;
 }
 
+
 /* Memory management title. */
+
 #settingsMemoryTitle {
     margin-bottom: 10px;
     padding-bottom: 5px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 }
 
+
 /* Memory management content. */
+
 #settingsMemoryContent {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
+
 #settingsMemoryContentLeft {
     width: 69%;
 }
+
 #settingsMemoryContentRight {
     display: flex;
     align-items: center;
     margin-right: 10%;
 }
 
+
 /* Header for memory sliders. */
+
 .settingsMemoryHeader {
     font-size: 14px;
 }
 
+
 /* Wrapper container for a memory slider and label. */
+
 .settingsMemoryActionContainer {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
+
 /* Label which displays a memory slider's value. */
+
 .settingsMemoryLabel {
     font-size: 14px;
     margin-right: 2%;
 }
 
+
 /* Range sliders for min and max memory settings. */
+
 #settingsMaxRAMRange,
 #settingsMinRAMRange {
     width: 85%;
 }
 
+
 /* Memory status elements. */
+
 #settingsMemoryStatus {
     display: flex;
     flex-direction: column;
 }
-#settingsMemoryStatus > .settingsMemoryStatusContainer:not(:last-child) {
+
+#settingsMemoryStatus>.settingsMemoryStatusContainer:not(:last-child) {
     margin-bottom: 50%;
 }
+
 .settingsMemoryStatusContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 .settingsMemoryStatusTitle {
     font-size: 12px;
     color: grey;
     font-weight: bold;
 }
+
 .settingsMemoryStatusValue {
     color: lightgrey;
     font-size: 16px;
 }
 
+
 /* Description for memory management. */
+
 #settingsMemoryDesc {
     font-size: 10px;
     margin: 20px 0px;
@@ -1939,41 +2361,54 @@ input:checked + .toggleSwitchSlider:before {
     font-weight: bold;
 }
 
+
 /* Status text which displays details on the selected executable. */
+
 #settingsJavaExecDetails {
     font-weight: bold;
     color: grey;
     font-size: 12px;
 }
 
+
 /* Main container for the JVM options setting. */
+
 #settingsJVMOptsContainer {
     width: 75%;
 }
 
+
 /* JVM options title. */
+
 #settingsJVMOptsTitle {
     margin-bottom: 10px;
 }
 
+
 /* Wrapper container for the actionable elements. */
+
 #settingsJVMOptsContent {
     display: flex;
     width: 90%;
 }
 
+
 /* Text field to input the JVM options. */
+
 #settingsJVMOptsVal {
     border-radius: 0px 3px 3px 0px !important;
     width: 100%;
     padding: 5px 10px;
     font-size: 12px;
 }
-#settingsJVMOptsContent:focus-within > .settingsJavaIcon {
+
+#settingsJVMOptsContent:focus-within>.settingsJavaIcon {
     background: rgba(126, 126, 126, 0.87);
 }
 
+
 /* Description for the JVM options setting. */
+
 #settingsJVMOptsDesc {
     font-size: 10px;
     margin: 20px 0px;
@@ -1982,20 +2417,26 @@ input:checked + .toggleSwitchSlider:before {
     width: 89%;
 }
 
+
 /* * *
 * Settings View (Launcher Tab)
 * * */
 
+
 /* Tailored style for the data directory header. */
+
 #settingsDataDirTitle {
     margin-bottom: 10px;
 }
+
 
 /* * *
 * Settings View (About Tab)
 * * */
 
+
 /* Main about content container. */
+
 #settingsAboutCurrentContainer {
     display: flex;
     flex-direction: column;
@@ -2006,38 +2447,48 @@ input:checked + .toggleSwitchSlider:before {
     margin-bottom: 20px;
 }
 
+
 /* About content. */
+
 #settingsAboutCurrentContent {
     display: flex;
     flex-direction: column;
     padding: 15px;
 }
 
+
 /* About header elements. */
+
 #settingsAboutCurrentHeadline {
     display: flex;
     align-items: center;
     padding-bottom: 5px;
     border-bottom: 1px solid rgba(126, 126, 126, 0.57);
 }
+
 #settingsAboutLogo {
     width: 30px;
     height: 30px;
     padding: 5px;
 }
+
 #settingsAboutTitle {
     font-size: 23px;
     padding-left: 10px;
 }
 
+
 /* Current version container. */
+
 #settingsAboutCurrentVersion {
     display: flex;
     align-items: center;
     padding-top: 10px;
 }
 
+
 /* Checkmark next to the version information. */
+
 #settingsAboutCurrentVersionCheck {
     border-radius: 50%;
     background: #23aa23;
@@ -2051,12 +2502,16 @@ input:checked + .toggleSwitchSlider:before {
     line-height: 17px;
 }
 
+
 /* Current version details container. */
+
 #settingsAboutCurrentVersionDetails {
     margin-left: 10px;
 }
 
+
 /* Release type text. */
+
 #settingsAboutCurrentVersionTitle {
     font-size: 12px;
     font-family: 'Avenir Medium';
@@ -2064,19 +2519,24 @@ input:checked + .toggleSwitchSlider:before {
     font-weight: bold;
 }
 
+
 /* Current version text. */
+
 #settingsAboutCurrentVersionLine {
     font-size: 10px;
     color: grey;
     font-weight: bold;
 }
 
+
 /* About information links. */
+
 #settingsAboutButtons {
     display: flex;
     padding: 0px 15px;
     margin-bottom: 5px;
 }
+
 .settingsAboutButton {
     background: none;
     border: none;
@@ -2087,15 +2547,19 @@ input:checked + .toggleSwitchSlider:before {
     outline: none;
     text-decoration: none;
 }
+
 .settingsAboutButton:hover,
 .settingsAboutButton:focus {
     color: rgb(165, 165, 165);
 }
+
 .settingsAboutButton:active {
     color: rgba(124, 124, 124, 0.75);
 }
 
+
 /* Main changelog container. */
+
 .settingsChangelogContainer {
     display: flex;
     flex-direction: column;
@@ -2106,42 +2570,55 @@ input:checked + .toggleSwitchSlider:before {
     margin-bottom: 20px;
 }
 
+
 /* Changelog content container. */
+
 .settingsChangelogContent {
     display: flex;
     flex-direction: column;
     padding: 15px;
 }
 
+
 /* Changelog header container. */
+
 .settingsChangelogHeadline {
     padding-bottom: 10px;
     margin-bottom: 10px;
     border-bottom: 1px solid rgba(126, 126, 126, 0.57);
 }
+
+
 /* Changelog header label. */
+
 .settingsChangelogLabel {
     font-size: 12px;
     color: grey;
     font-weight: bold;
 }
 
+
 /* Changelog text content container. */
+
 .settingsChangelogText {
     font-size: 12px;
 }
 
+
 /* Styles for the changelog elements. */
+
 .settingsChangelogText p {
     margin-bottom: 16px;
     line-height: 1.5;
 }
+
 .settingsChangelogText blockquote {
     border-left: 0.25em solid rgba(126, 126, 126, 0.95);
     margin: 0px;
     padding: 0 0 0 1em;
     color: rgba(255, 255, 255, 0.85);
 }
+
 .settingsChangelogText code {
     padding: 0.1em 0.4em;
     font-size: 85%;
@@ -2150,18 +2627,22 @@ input:checked + .toggleSwitchSlider:before {
     border-radius: 3px;
     font-family: 'Avenir Book';
 }
-.settingsChangelogText li + li {
+
+.settingsChangelogText li+li {
     margin-top: 0.25em;
 }
+
 .settingsChangelogText a.commit-link {
     font-weight: 400;
     color: #ffffff;
     text-decoration: none;
 }
+
 .settingsChangelogText a.commit-link:hover {
     text-decoration: underline !important;
     text-decoration-color: black;
 }
+
 .settingsChangelogText tt {
     padding: 0.1em 0.4em;
     font-size: 86%;
@@ -2170,25 +2651,32 @@ input:checked + .toggleSwitchSlider:before {
     color: black;
     font-weight: bold;
 }
+
 .settingsChangelogText a.commit-link:hover tt {
     text-decoration: underline;
     text-decoration-color: black;
 }
+
 .settingsChangelogText .highlight {
     background: rgba(0, 0, 0, 0.3);
     user-select: initial;
     padding: 5px 10px;
 }
+
 .settingsChangelogText .highlight pre {
     margin: 0px;
 }
 
+
 /* Container for the changelog button. */
+
 .settingsChangelogActions {
     padding: 0px 15px 5px 15px;
 }
 
+
 /* Open changelog on GitHub. */
+
 .settingsChangelogButton {
     padding: 0px;
 }
@@ -2268,11 +2756,14 @@ input:checked + .toggleSwitchSlider:before {
     }
 }
 
+
 /* * *
 * Settings View (Updates Tab)
 * * */
 
+
 /* Main about content container. */
+
 #settingsUpdateStatusContainer {
     display: flex;
     flex-direction: column;
@@ -2283,25 +2774,31 @@ input:checked + .toggleSwitchSlider:before {
     margin-bottom: 20px;
 }
 
+
 /* Update content. */
+
 #settingsUpdateStatusContent {
     display: flex;
     flex-direction: column;
     padding: 15px;
 }
 
+
 /* Update header elements. */
+
 #settingsUpdateStatusHeadline {
     display: flex;
     align-items: center;
     padding-bottom: 5px;
     border-bottom: 1px solid rgba(126, 126, 126, 0.57);
 }
+
 #settingsUpdateTitle {
     font-size: 16px;
     padding-left: 10px;
     font-weight: bold;
 }
+
 #settingsUpdateTitleVersion {
     font-size: 12px;
     padding-left: 10px;
@@ -2309,7 +2806,9 @@ input:checked + .toggleSwitchSlider:before {
     color: grey;
 }
 
+
 /* Update version container. */
+
 #settingsUpdateVersion {
     display: flex;
     align-items: center;
@@ -2317,7 +2816,9 @@ input:checked + .toggleSwitchSlider:before {
     border-bottom: 1px solid rgba(126, 126, 126, 0.57);
 }
 
+
 /* Checkmark next to the version information. */
+
 #settingsUpdateVersionCheck {
     border-radius: 50%;
     background: #23aa23;
@@ -2331,12 +2832,16 @@ input:checked + .toggleSwitchSlider:before {
     line-height: 17px;
 }
 
+
 /* Update version details container. */
+
 #settingsUpdateVersionDetails {
     margin-left: 10px;
 }
 
+
 /* Release type text. */
+
 #settingsUpdateVersionTitle {
     font-size: 12px;
     font-family: 'Avenir Medium';
@@ -2344,21 +2849,27 @@ input:checked + .toggleSwitchSlider:before {
     font-weight: bold;
 }
 
+
 /* Current version text. */
+
 #settingsUpdateVersionLine {
     font-size: 10px;
     color: grey;
     font-weight: bold;
 }
 
+
 /* Update action container. */
+
 #settingsUpdateActionContainer {
     padding-top: 10px;
     font-size: 14px;
     font-weight: bold;
 }
 
+
 /* Update action button styles. */
+
 #settingsUpdateActionButton {
     display: flex;
     flex-direction: column;
@@ -2372,18 +2883,21 @@ input:checked + .toggleSwitchSlider:before {
     text-align: left;
     transition: 0.25s ease;
 }
+
 #settingsUpdateActionButton:hover,
 #settingsUpdateActionButton:focus {
     text-shadow: 0px 0px 20px white, 0px 0px 20px white, 0px 0px 20px white;
 }
+
 #settingsUpdateActionButton:active {
-    text-shadow: 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7,
-        0px 0px 20px #c7c7c7;
+    text-shadow: 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7;
     color: #c7c7c7;
 }
+
 #settingsUpdateActionButton:disabled {
     pointer-events: none;
 }
+
 
 /*******************************************************************************
  *                                                                             *
@@ -2391,7 +2905,9 @@ input:checked + .toggleSwitchSlider:before {
  *                                                                             *
  ******************************************************************************/
 
+
 /* Main content container. */
+
 #landingContainer {
     height: 100%;
     position: relative;
@@ -2399,38 +2915,46 @@ input:checked + .toggleSwitchSlider:before {
     overflow-y: hidden;
 }
 
+
 /* Upper content container. */
-#landingContainer > #upper {
+
+#landingContainer>#upper {
     position: relative;
     transition: top 2s ease;
     top: 0px;
     height: 77%;
     display: flex;
 }
-#landingContainer > #upper > #left {
+
+#landingContainer>#upper>#left {
     display: inline-flex;
     width: 15%;
     height: 100%;
     justify-content: flex-end;
 }
-#landingContainer > #upper > #content {
+
+#landingContainer>#upper>#content {
     display: inline-flex;
     width: 70%;
     height: 100%;
 }
-#landingContainer > #upper > #right {
+
+#landingContainer>#upper>#right {
     display: inline-flex;
     width: 15%;
     height: 100%;
 }
 
+
 /* Lower content container. */
-#landingContainer > #lower {
+
+#landingContainer>#lower {
     height: 23%;
     display: flex;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
 }
-#landingContainer > #lower > #left {
+
+#landingContainer>#lower>#left {
     position: relative;
     transition: top 2s ease;
     top: 0px;
@@ -2439,13 +2963,15 @@ input:checked + .toggleSwitchSlider:before {
     display: inline-flex;
     justify-content: center;
 }
-#landingContainer > #lower > #left #content {
+
+#landingContainer>#lower>#left #content {
     position: relative;
     top: 25px;
     display: inline-flex;
     line-height: 24px;
 }
-#landingContainer > #lower > #center {
+
+#landingContainer>#lower>#center {
     position: relative;
     transition: top 2s ease;
     top: 0px;
@@ -2454,13 +2980,15 @@ input:checked + .toggleSwitchSlider:before {
     display: inline-flex;
     justify-content: center;
 }
-#landingContainer > #lower > #center #content {
+
+#landingContainer>#lower>#center #content {
     position: relative;
     z-index: 500;
     transition: top 2s ease;
     top: 23px;
 }
-#landingContainer > #lower > #right {
+
+#landingContainer>#lower>#right {
     position: relative;
     transition: top 2s ease;
     top: 0px;
@@ -2469,13 +2997,16 @@ input:checked + .toggleSwitchSlider:before {
     display: inline-flex;
 }
 
+
 /*******************************************************************************
  *                                                                             *
  * Landing View (News Styles)                                                  *
  *                                                                             *
  ******************************************************************************/
 
+
 /* Main container. */
+
 #newsContainer {
     position: absolute;
     top: 100%;
@@ -2487,7 +3018,9 @@ input:checked + .toggleSwitchSlider:before {
     justify-content: center;
 }
 
+
 /* News content container. */
+
 #newsContent {
     height: 82vh;
     width: 100%;
@@ -2498,7 +3031,9 @@ input:checked + .toggleSwitchSlider:before {
     overflow: hidden;
 }
 
+
 /* Drop shadow displayed when content is scrolled out of view. */
+
 #newsContent:before {
     content: '';
     background: linear-gradient(rgba(0, 0, 0, 0.25), transparent);
@@ -2508,11 +3043,14 @@ input:checked + .toggleSwitchSlider:before {
     opacity: 0;
     transition: opacity 0.25s ease;
 }
+
 #newsContent[scrolled]:before {
     opacity: 1;
 }
 
+
 /* News article status container (left). */
+
 #newsStatusContainer {
     width: calc(30% - 60px);
     height: calc(100% - 30px);
@@ -2523,20 +3061,26 @@ input:checked + .toggleSwitchSlider:before {
     position: relative;
 }
 
+
 /* News status content. */
+
 #newsStatusContent {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
 }
 
+
 /* News title wrapper. */
+
 #newsTitleContainer {
     display: flex;
     max-width: 90%;
 }
 
+
 /* News article title styles. */
+
 #newsArticleTitle {
     font-size: 18px;
     font-weight: bold;
@@ -2547,29 +3091,37 @@ input:checked + .toggleSwitchSlider:before {
     outline: none;
     text-align: right;
 }
+
 #newsArticleTitle:hover,
 #newsArticleTitle:focus {
     text-shadow: 0px 0px 20px white;
 }
+
 #newsArticleTitle:active {
     color: #c7c7c7;
     text-shadow: 0px 0px 20px #c7c7c7;
 }
 
+
 /* News meta container. */
+
 #newsMetaContainer {
     display: flex;
     flex-direction: column;
 }
 
+
 /* Date and author wrappers. */
+
 #newsArticleDateWrapper,
 #newsArticleAuthorWrapper {
     display: flex;
     justify-content: flex-end;
 }
 
+
 /* Date and author shared styles. */
+
 #newsArticleDate,
 #newsArticleAuthor {
     display: inline-block;
@@ -2579,19 +3131,25 @@ input:checked + .toggleSwitchSlider:before {
     border-radius: 2px;
 }
 
+
 /* Date styles. */
+
 #newsArticleDate {
     background: white;
     color: black;
     margin-top: 5px;
 }
 
+
 /* Author styles. */
+
 #newsArticleAuthor {
     background: #a02d2a;
 }
 
+
 /* News article comments styles. */
+
 #newsArticleComments {
     margin-top: 5px;
     display: inline-block;
@@ -2602,56 +3160,70 @@ input:checked + .toggleSwitchSlider:before {
     outline: none;
     text-align: right;
 }
+
 #newsArticleComments:focus,
 #newsArticleComments:hover {
     color: #e0e0e0;
 }
+
 #newsArticleComments:active {
     color: #c7c7c7;
 }
 
+
 /* Article content container (right). */
+
 #newsArticleContainer {
     width: calc(100% - 25px);
     height: 100%;
     margin: 0px 0px 0px 25px;
 }
 
+
 /* Article content styles. */
+
 #newsArticleContentScrollable {
     font-size: 12px;
     overflow-y: scroll;
     height: 100%;
     padding: 0px 15px 0px 15px;
 }
+
 #newsArticleContentScrollable img,
 #newsArticleContentScrollable iframe {
     max-width: 95%;
     display: block;
     margin: 0 auto;
 }
+
 #newsArticleContentScrollable a {
     color: rgba(202, 202, 202, 0.75);
     transition: 0.25s ease;
     outline: none;
 }
+
 #newsArticleContentScrollable a:hover,
 #newsArticleContentScrollable a:focus {
     color: rgba(255, 255, 255, 0.75);
 }
+
 #newsArticleContentScrollable a:active {
     color: rgba(165, 165, 165, 0.75);
 }
+
 #newsArticleContentScrollable::-webkit-scrollbar {
     width: 2px;
 }
+
 #newsArticleContentScrollable::-webkit-scrollbar-track {
     display: none;
 }
+
 #newsArticleContentScrollable::-webkit-scrollbar-thumb {
     border-radius: 10px;
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
 }
+
 .bbCodeSpoilerButton {
     background: none;
     border: none;
@@ -2663,16 +3235,17 @@ input:checked + .toggleSwitchSlider:before {
     border-bottom: 1px solid white;
     padding-bottom: 15px;
 }
+
 .bbCodeSpoilerButton:hover,
 .bbCodeSpoilerButton:focus {
-    text-shadow: 0px 0px 20px #ffffff, 0px 0px 20px #ffffff,
-        0px 0px 20px #ffffff;
+    text-shadow: 0px 0px 20px #ffffff, 0px 0px 20px #ffffff, 0px 0px 20px #ffffff;
 }
+
 .bbCodeSpoilerButton:active {
     color: #c7c7c7;
-    text-shadow: 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7,
-        0px 0px 20px #c7c7c7;
+    text-shadow: 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7;
 }
+
 .bbCodeSpoilerText {
     display: none;
     padding: 15px 0px;
@@ -2687,12 +3260,16 @@ input:checked + .toggleSwitchSlider:before {
     height: 15px;
 }
 
+
 /* Div to add spacing at the end of a news article. */
+
 .newsArticleSpacerBot {
     height: 30px;
 }
 
+
 /* News navigation container. */
+
 #newsNavigationContainer {
     display: flex;
     justify-content: center;
@@ -2704,13 +3281,17 @@ input:checked + .toggleSwitchSlider:before {
     right: 0px;
 }
 
+
 /* Navigation status span. */
+
 #newsNavigationStatus {
     font-size: 12px;
     margin: 0px 15px;
 }
 
+
 /* Left and right navigation button styles. */
+
 #newsNavigateLeft,
 #newsNavigateRight {
     background: none;
@@ -2719,34 +3300,42 @@ input:checked + .toggleSwitchSlider:before {
     height: 20px;
     cursor: pointer;
 }
+
 #newsNavigateLeft:hover #newsNavigationLeftSVG,
 #newsNavigateLeft:focus #newsNavigationLeftSVG,
 #newsNavigateRight:hover #newsNavigationRightSVG,
 #newsNavigateRight:focus #newsNavigationRightSVG {
     -webkit-filter: drop-shadow(0px 0px 2px #fff);
 }
+
 #newsNavigateLeft:active #newsNavigationLeftSVG .arrowLine,
 #newsNavigateRight:active #newsNavigationRightSVG .arrowLine {
     stroke: #c7c7c7;
 }
+
 #newsNavigateLeft:active #newsNavigationLeftSVG,
 #newsNavigateRight:active #newsNavigationRightSVG {
     -webkit-filter: drop-shadow(0px 0px 2px #c7c7c7);
 }
+
 #newsNavigateLeft:disabled #newsNavigationLeftSVG .arrowLine,
 #newsNavigateRight:disabled #newsNavigationRightSVG .arrowLine {
     stroke: rgba(255, 255, 255, 0.75);
 }
+
 #newsNavigationLeftSVG {
     transform: rotate(-90deg);
     width: 15px;
 }
+
 #newsNavigationRightSVG {
     transform: rotate(90deg);
     width: 15px;
 }
 
+
 /* News error (message) container. */
+
 #newsErrorContainer {
     height: 100%;
     display: flex;
@@ -2754,6 +3343,7 @@ input:checked + .toggleSwitchSlider:before {
     flex-direction: column;
     justify-content: center;
 }
+
 #newsErrorFailed {
     display: flex;
     align-items: center;
@@ -2761,18 +3351,25 @@ input:checked + .toggleSwitchSlider:before {
     justify-content: center;
 }
 
+
 /* News error content (message). */
+
 .newsErrorContent {
     font-size: 20px;
 }
+
 #newsErrorLoading {
     display: flex;
     width: 168.92px;
 }
+
 #nELoadSpan {
     white-space: pre;
 }
+
+
 /* News error retry button styles. */
+
 #newsErrorRetry {
     font-size: 12px;
     font-weight: bold;
@@ -2782,10 +3379,12 @@ input:checked + .toggleSwitchSlider:before {
     outline: none;
     transition: 0.25s ease;
 }
+
 #newsErrorRetry:focus,
 #newsErrorRetry:hover {
     text-shadow: 0px 0px 20px white;
 }
+
 #newsErrorRetry:active {
     color: #c7c7c7;
     text-shadow: 0px 0px 20px #c7c7c7;
@@ -2795,11 +3394,13 @@ input:checked + .toggleSwitchSlider:before {
     width: 50%;
     margin: 0 auto;
 }
+
 .skinView__inner {
     width: 100%;
     border-right: 1px solid #969696;
     text-align: center;
 }
+
 .skinlLibrary {
     width: 50%;
     overflow-y: scroll;
@@ -2853,10 +3454,12 @@ input:checked + .toggleSwitchSlider:before {
     height: 3px;
     width: 15px;
 }
+
 .selectSkin__addNew__btn:hover {
     opacity: 0.6;
     transition: 0.3s;
 }
+
 .selectSkin__item,
 .selectSkin__addNew {
     position: relative;
@@ -2870,12 +3473,15 @@ input:checked + .toggleSwitchSlider:before {
     opacity: 0.6;
     transition: 0.3s;
 }
+
 .selectSkin__item:hover .selectSkin__item__hover {
     display: block !important;
 }
+
 .selectSkin__item {
     padding: 20px 0;
 }
+
 .selectSkin__item canvas {
     width: 100%;
 }
@@ -2910,6 +3516,7 @@ input:checked + .toggleSwitchSlider:before {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
 .selectSkin__btn__inner {
     display: none;
     position: absolute;
@@ -2919,12 +3526,15 @@ input:checked + .toggleSwitchSlider:before {
     transform: translateX(-50%);
     top: -80px;
 }
+
 .selectSkin__btn__inner.is-view {
     display: block;
 }
+
 .selectSkin__btn--other__wrap {
     position: relative;
 }
+
 .selectSkin__btn--use,
 .selectSkin__btn--copy,
 .selectSkin__btn--other {
@@ -2937,6 +3547,7 @@ input:checked + .toggleSwitchSlider:before {
     cursor: pointer;
     font-size: 11px;
 }
+
 .selectSkin__btn__inner--delete,
 .selectSkin__btn__inner--copy,
 .selectSkin__btn__inner--edit {
@@ -2944,12 +3555,14 @@ input:checked + .toggleSwitchSlider:before {
     transition: 0.3s;
     cursor: pointer;
 }
+
 .selectSkin__btn__inner--delete:hover,
 .selectSkin__btn__inner--copy:hover,
 .selectSkin__btn__inner--edit:hover {
     background: #008542;
     transition: 0.3s;
 }
+
 .selectSkin__btn--use:hover,
 .selectSkin__btn--copy:hover,
 .selectSkin__btn--other:hover {
@@ -2957,31 +3570,38 @@ input:checked + .toggleSwitchSlider:before {
     background: rgba(255, 255, 255, 0.3);
     cursor: pointer;
 }
+
 .selectSkin__btn--use {
     background-color: #008542;
 }
+
 .selectSkin__btn--use:hover {
     opacity: 0.6;
     background-color: #008542;
     transition: 0.3s;
     cursor: pointer;
 }
+
 .selectSkin__btn--copy,
 .selectSkin__btn--other {
     border: 1px solid #ffffff;
     box-sizing: border-box;
 }
+
 .selectSkin__btn--copy:hover {
     transition: 0.3s;
     background: rgba(255, 255, 255, 0.3);
     cursor: pointer;
 }
+
 .selectSkin__item__ttl {
     font-size: 12px;
 }
+
 .selectSkin__item__text {
     font-size: 11px;
 }
+
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -3009,6 +3629,7 @@ input:checked + .toggleSwitchSlider:before {
     height: 100%;
     z-index: 600;
 }
+
 .editLauncherSkin__btn {
     width: 22px;
     height: 22px;
@@ -3019,10 +3640,12 @@ input:checked + .toggleSwitchSlider:before {
     cursor: pointer;
     z-index: 100;
 }
+
 .editLauncherSkin__btn:hover {
     opacity: 0.6;
     transition: 0.3s;
 }
+
 .editLauncherSkin__btn svg {
     width: 100%;
 }
@@ -3068,11 +3691,13 @@ input:checked + .toggleSwitchSlider:before {
     background: #ffffff;
     transform: rotate(-45deg);
 }
+
 .addNewSkinContent__inner {
     max-width: 760px;
     width: 100%;
     margin: 0 auto;
 }
+
 .addNewSkinContent__ttl {
     text-align: center;
     margin: 20px 0;
@@ -3080,6 +3705,7 @@ input:checked + .toggleSwitchSlider:before {
     font-weight: bold;
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
+
 .changeSkin__overlay {
     position: fixed;
     top: 0;
@@ -3098,6 +3724,7 @@ input:checked + .toggleSwitchSlider:before {
     transform: translate(-50%, -50%);
 }
 
+
 /* .changeSkin__overlay.is-hide{
     display: none;
 } */
@@ -3105,9 +3732,11 @@ input:checked + .toggleSwitchSlider:before {
 .addNewSkin__edit__wrap {
     display: flex;
 }
+
 .addNewSkin__edit__viewer {
     width: 40%;
 }
+
 .addNewSkin__edit__editor {
     width: 60%;
 }
@@ -3135,11 +3764,13 @@ input:checked + .toggleSwitchSlider:before {
     color: #ffffff;
     box-sizing: border-box;
 }
+
 .addNewSkin__edit__inputArea input[type='button']:focus {
     border: 1px solid #ffffff;
     background-color: rgba(0, 0, 0, 0.5);
     outline: none;
 }
+
 .addNewSkin__edit__inputArea input[type='button'] {
     border-radius: 0;
     border: 1px solid #ffffff;
@@ -3150,26 +3781,28 @@ input:checked + .toggleSwitchSlider:before {
     transition: 0.3s;
     cursor: pointer;
 }
+
 .addNewSkin__edit__inputArea input[type='button']:hover {
     opacity: 0.6;
     transition: 0.3s;
 }
+
 .addNewSkin__edit__inputArea input[type='button']:focus {
     background-color: rgba(0, 0, 0, 0.5);
     outline: none;
 }
+
 .addNewSkin__edit__inputArea__inner {
     display: flex;
 }
+
 .addNewSkin__edit__inputArea__inner input[type='radio'] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-
     border-radius: 50%;
     width: 16px;
     height: 16px;
-
     border: 2px solid #999;
     margin-right: 5px;
     margin: 0 5px 0 0;
@@ -3178,17 +3811,21 @@ input:checked + .toggleSwitchSlider:before {
     transition: 0.2s;
     cursor: pointer;
 }
+
 .addNewSkin__edit__inputArea__inner input[type='radio']:hover {
     opacity: 0.6;
     transition: 0.2s;
 }
+
 .addNewSkin__edit__inputArea__inner input[type='radio']:checked {
     border: 6px solid #008542;
     transition: 0.2s;
 }
+
 .addNewSkin__edit__inputArea__inner input[type='radio']:focus {
     outline: none;
 }
+
 .radio__skin__text {
     cursor: pointer;
 }
@@ -3197,9 +3834,11 @@ input:checked + .toggleSwitchSlider:before {
     font-size: 12px;
     margin-right: 10px;
 }
+
 .addNewSkin__edit__button {
     cursor: pointer;
 }
+
 .addNewSkin__edit__buttonArea input:focus {
     outline: none;
 }
@@ -3215,12 +3854,14 @@ input:checked + .toggleSwitchSlider:before {
     box-sizing: border-box;
     transition: 0.3s;
 }
+
 .addNewSkin__edit__button--cancel:hover,
 .addNewSkin__edit__button--save:hover,
 .deleteSkin__popup--cancel:hover {
     opacity: 0.6;
     transition: 0.3s;
 }
+
 .addNewSkin__edit__button--saveAndUse {
     padding: 2px 20px;
     border-radius: 0;
@@ -3230,10 +3871,12 @@ input:checked + .toggleSwitchSlider:before {
     box-sizing: border-box;
     transition: 0.3s;
 }
+
 .addNewSkin__edit__button--saveAndUse:hover {
     opacity: 0.6;
     transition: 0.3s;
 }
+
 .deleteSkin__popup--delete {
     padding: 2px 20px;
     border-radius: 0;
@@ -3243,10 +3886,12 @@ input:checked + .toggleSwitchSlider:before {
     box-sizing: border-box;
     transition: 0.3s;
 }
+
 .deleteSkin__popup--delete:hover {
     opacity: 0.6;
     transition: 0.3s;
 }
+
 canvas:focus {
     outline: none;
 }
@@ -3271,10 +3916,12 @@ canvas:focus {
     transition: 0.3s;
     cursor: pointer;
 }
+
 .firstImportSkinBox__btn:hover {
     opacity: 0.6;
     transition: 0.3s;
 }
+
 input[type='text'].firstImportSkinBox__txtArea {
     border-radius: 2px;
     border: 1px solid rgba(0, 0, 0, 0.8);
@@ -3284,6 +3931,7 @@ input[type='text'].firstImportSkinBox__txtArea {
     color: #ffffff;
     box-sizing: border-box;
 }
+
 input[type='button'].firstImportSkinBox__txtArea {
     padding: 2px 20px;
     border-radius: 0;
@@ -3293,6 +3941,7 @@ input[type='button'].firstImportSkinBox__txtArea {
     box-sizing: border-box;
     transition: 0.3s;
 }
+
 input[type='button']:hover.firstImportSkinBox__txtArea {
     opacity: 0.6;
     transition: 0.3s;
@@ -3303,6 +3952,7 @@ input[type='button']:hover.firstImportSkinBox__txtArea {
     height: 50px;
     background-color: #8be88b;
 }
+
 #settingMyOriginSkinPath {
     width: 100%;
     height: 100%;
@@ -3354,8 +4004,8 @@ input[type='button']:hover.firstImportSkinBox__txtArea {
     color: #9b1f1f;
 }
 
-.text-center {
-}
+.text-center {}
+
 .nextStepLink {
     text-decoration: underline;
     font-weight: bold;
@@ -3390,6 +4040,7 @@ input[type='button']:hover.firstImportSkinBox__txtArea {
     margin: 40px auto 0 auto;
     font-size: 12px;
 }
+
 .settingSkinData__noticeText a {
     font-weight: bold;
     color: #ffffff;
@@ -3404,10 +4055,12 @@ input[type='button']:hover.firstImportSkinBox__txtArea {
     background: rgb(0, 0, 0, 0.7);
     z-index: 100;
 }
+
 .deleteSkin__popup__text {
     font-size: 13px;
     margin-bottom: 12px;
 }
+
 .deleteSkin__popup__inner {
     position: absolute;
     text-align: center;
@@ -3418,17 +4071,21 @@ input[type='button']:hover.firstImportSkinBox__txtArea {
     background: rgba(50, 50, 50, 1);
     border-radius: 4px;
 }
+
 .deleteSkin__popup__img {
     width: 150px;
     margin: 0 auto;
 }
+
 .deleteSkin__popup__img img {
     width: 100%;
 }
+
 .deleteSkin__popup__name {
     margin-bottom: 20px;
     font-size: 13px;
 }
+
 
 /* * *
 * Loading animation
@@ -3448,38 +4105,47 @@ input[type='button']:hover.firstImportSkinBox__txtArea {
     -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
     animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
 }
+
 .sk-cube-grid .sk-cube1 {
     -webkit-animation-delay: 0.2s;
     animation-delay: 0.2s;
 }
+
 .sk-cube-grid .sk-cube2 {
     -webkit-animation-delay: 0.3s;
     animation-delay: 0.3s;
 }
+
 .sk-cube-grid .sk-cube3 {
     -webkit-animation-delay: 0.4s;
     animation-delay: 0.4s;
 }
+
 .sk-cube-grid .sk-cube4 {
     -webkit-animation-delay: 0.1s;
     animation-delay: 0.1s;
 }
+
 .sk-cube-grid .sk-cube5 {
     -webkit-animation-delay: 0.2s;
     animation-delay: 0.2s;
 }
+
 .sk-cube-grid .sk-cube6 {
     -webkit-animation-delay: 0.3s;
     animation-delay: 0.3s;
 }
+
 .sk-cube-grid .sk-cube7 {
     -webkit-animation-delay: 0s;
     animation-delay: 0s;
 }
+
 .sk-cube-grid .sk-cube8 {
     -webkit-animation-delay: 0.1s;
     animation-delay: 0.1s;
 }
+
 .sk-cube-grid .sk-cube9 {
     -webkit-animation-delay: 0.2s;
     animation-delay: 0.2s;
@@ -3511,7 +4177,9 @@ input[type='button']:hover.firstImportSkinBox__txtArea {
     }
 }
 
+
 /*秘密の質問の画面*/
+
 .submitSecretQuestionContent__closeBtn__wrap {
     position: absolute;
     right: 50px;
@@ -3600,17 +4268,21 @@ form[name='submitSecretQuestion'] p {
     transition: 0.3s;
 }
 
+
 /*******************************************************************************
  *                                                                             *
  * Landing View (Top Styles)                                                   *
  *                                                                             *
  ******************************************************************************/
 
+
 /* * *
 * Landing View (Top Styles) | Left Content
 * * */
 
+
 /* Logo image. */
+
 #image_seal {
     height: 70px;
     width: auto;
@@ -3619,7 +4291,9 @@ form[name='submitSecretQuestion'] p {
     border-radius: 5%;
 }
 
+
 /* Logo container styles. */
+
 #image_seal_container {
     position: relative;
     height: 70px;
@@ -3628,10 +4302,13 @@ form[name='submitSecretQuestion'] p {
     margin-top: 50px;
 }
 
+
 /* Logo container styles w/ update. */
+
 #image_seal_container[update] {
     cursor: pointer;
 }
+
 #image_seal_container[update]:before,
 #image_seal_container[update]:after {
     cursor: pointer;
@@ -3646,11 +4323,14 @@ form[name='submitSecretQuestion'] p {
     animation: glow-grow 4s ease-out infinite;
     background: rgba(0, 0, 0, 0.15);
 }
+
 #image_seal_container[update]:before {
     animation-delay: 2s;
 }
 
+
 /* Update available tooltip styles. */
+
 #updateAvailableTooltip {
     cursor: pointer;
     visibility: hidden;
@@ -3670,6 +4350,7 @@ form[name='submitSecretQuestion'] p {
     font-size: 12px;
     transition: visibility 0s linear 0.25s, opacity 0.25s ease;
 }
+
 #updateAvailableTooltip::after {
     content: ' ';
     position: absolute;
@@ -3680,13 +4361,19 @@ form[name='submitSecretQuestion'] p {
     border-style: solid;
     border-color: transparent transparent rgb(0, 0, 0) transparent;
 }
-#image_seal_container[update]/*:hover*/ #updateAvailableTooltip {
+
+#image_seal_container[update]
+/*:hover*/
+
+#updateAvailableTooltip {
     visibility: visible;
     opacity: 1;
     transition-delay: 0s;
 }
 
+
 /* Update available animation. */
+
 @keyframes glow-grow {
     0% {
         opacity: 0;
@@ -3701,11 +4388,14 @@ form[name='submitSecretQuestion'] p {
     }
 }
 
+
 /* * *
 * Landing View (Bottom Styles) | Right Content
 * * */
 
+
 /*  Wrapper container for top, right content. */
+
 #rightContainer {
     display: flex;
     flex-direction: column;
@@ -3715,7 +4405,9 @@ form[name='submitSecretQuestion'] p {
     height: calc(100% - 50px);
 }
 
+
 /* Right hand user content container. */
+
 #user_content {
     display: flex;
     align-items: center;
@@ -3724,7 +4416,9 @@ form[name='submitSecretQuestion'] p {
     position: relative;
 }
 
+
 /* User profile avatar container. */
+
 #avatarContainer {
     border-radius: 50%;
     border: 2px solid #cad7e1;
@@ -3740,7 +4434,9 @@ form[name='submitSecretQuestion'] p {
     background-size: contain;
 }
 
+
 /* Avatar edit overlay. */
+
 #avatarOverlay {
     opacity: 0;
     position: absolute;
@@ -3759,15 +4455,19 @@ form[name='submitSecretQuestion'] p {
     height: 100%;
     border-radius: 50%;
 }
+
 #avatarOverlay:hover,
 #avatarOverlay:focus {
     opacity: 1;
 }
+
 #avatarOverlay:active {
     background-color: rgba(0, 0, 0, 0.45);
 }
 
+
 /* User profile name text. */
+
 #user_text {
     font-size: 12px;
     min-width: 135px;
@@ -3780,7 +4480,9 @@ form[name='submitSecretQuestion'] p {
     -webkit-user-select: initial;
 }
 
+
 /* Social media icon content container. */
+
 #mediaContent {
     position: relative;
     display: flex;
@@ -3791,14 +4493,18 @@ form[name='submitSecretQuestion'] p {
     align-items: center;
 }
 
+
 /* Social Media Icon division containers. */
+
 #internalMedia,
 #externalMedia {
     display: flex;
     flex-direction: column;
 }
 
+
 /* Container object which wraps an icon to ensure fluid transitions. */
+
 .mediaContainer {
     display: flex;
     justify-content: center;
@@ -3806,7 +4512,9 @@ form[name='submitSecretQuestion'] p {
     height: 27px;
 }
 
+
 /* Divider bar between the external and internal icons. */
+
 .mediaDivider {
     height: 1px;
     width: 14px;
@@ -3814,7 +4522,9 @@ form[name='submitSecretQuestion'] p {
     margin: 10px 0px;
 }
 
+
 /* Social media icon shared styles. */
+
 .mediaSVG {
     fill: #ffffff;
     height: 12px;
@@ -3823,18 +4533,23 @@ form[name='submitSecretQuestion'] p {
     height: 12px;
     width: 25px;
 }
+
 .mediaSVG:hover,
 .mediaURL:focus .mediaSVG,
 .mediaSVG:active {
     height: 20px;
 }
 
+
 /* Social media URL shared styles. */
+
 .mediaURL {
     outline: none;
 }
 
+
 /* Internal media button shared styles. */
+
 .mediaButton {
     background: none;
     border: none;
@@ -3848,18 +4563,23 @@ form[name='submitSecretQuestion'] p {
     position: relative;
 }
 
+
 /* Settings icon colors. */
+
 #settingsSVG {
     stroke: #ffffff;
     height: 15px;
 }
+
 .mediaButton:hover #settingsSVG,
 .mediaButton:focus #settingsSVG,
 .mediaButton:active #settingsSVG {
     height: 23px;
 }
 
+
 /* Settings tooltip styles. */
+
 .settingsTooltip {
     visibility: hidden;
     opacity: 0;
@@ -3875,6 +4595,7 @@ form[name='submitSecretQuestion'] p {
     line-height: 20px;
     transition: visibility 0s linear 0.25s, opacity 0.25s ease;
 }
+
 .settingsTooltip::after {
     content: ' ';
     position: absolute;
@@ -3885,6 +4606,7 @@ form[name='submitSecretQuestion'] p {
     border-style: solid;
     border-color: transparent transparent transparent rgba(0, 0, 0, 0.75);
 }
+
 .mediaButton:hover .settingsTooltip,
 .mediaButton:focus .settingsTooltip,
 .mediaButton:active .settingsTooltip {
@@ -3893,42 +4615,55 @@ form[name='submitSecretQuestion'] p {
     transition-delay: 0s;
 }
 
+
 /* Twitter icon colors. */
+
 #twitterSVG:hover,
 #twitterURL:focus #twitterSVG {
     fill: #1da1f2;
 }
+
 #twitterSVG:active {
     fill: #1b8dd4;
 }
 
+
 /* Instagram icon colors. */
+
 #instagramSVG:hover,
 #instagramURL:focus #instagramSVG {
     fill: url('#instaFill');
     /*fill: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); */
 }
+
 #instagramSVG:active {
     fill: url('#instaFill');
 }
 
+
 /* Youtube icon colors. */
+
 #youtubeSVG:hover,
 #youtubeURL:focus #youtubeSVG {
     fill: #f00;
 }
+
 #youtubeSVG:active {
     fill: #ea0202;
 }
 
+
 /* Discord icon colors. */
+
 #discordSVG:hover,
 #discordURL:focus #discordSVG {
     fill: #7288d9;
 }
+
 #discordSVG:active {
     fill: #657ac4;
 }
+
 
 /*******************************************************************************
  *                                                                             *
@@ -3936,7 +4671,9 @@ form[name='submitSecretQuestion'] p {
  *                                                                             *
  ******************************************************************************/
 
+
 /* Style for a general label on the bottom of the landing view. */
+
 .bot_label {
     font-size: 9px;
     letter-spacing: 1px;
@@ -3944,7 +4681,9 @@ form[name='submitSecretQuestion'] p {
     text-shadow: 0px 0px 0px #bebcbb;
 }
 
+
 /* Divider used on the bottom of the landing view. */
+
 .bot_divider {
     height: 25px;
     width: 2px;
@@ -3953,17 +4692,22 @@ form[name='submitSecretQuestion'] p {
     margin-right: 20px;
 }
 
+
 /* * *
 * Landing View (Bottom Styles) | Left Content
 * * */
 
+
 /* Maintains maximum width on the status bar. */
+
 #server_status_wrapper {
     display: inline-flex;
     width: 75px;
 }
 
+
 /* Span which displays the player count of the selected server. */
+
 #player_count {
     color: #949494;
     font-size: 8px;
@@ -3972,14 +4716,18 @@ form[name='submitSecretQuestion'] p {
     margin-left: 10px;
 }
 
+
 /* Wrapper container for the mojang status bar. */
+
 #mojangStatusWrapper {
     position: relative;
     display: flex;
     cursor: pointer;
 }
 
+
 /* Icon which displays the status of the mojang services. */
+
 #mojang_status_icon {
     font-size: 30px;
     color: #848484;
@@ -3987,7 +4735,9 @@ form[name='submitSecretQuestion'] p {
     font-family: 'sans-serif';
 }
 
+
 /* Tooltip which displays more details about the mojang statuses. */
+
 #mojangStatusTooltip {
     position: absolute;
     visibility: hidden;
@@ -4008,6 +4758,7 @@ form[name='submitSecretQuestion'] p {
     box-shadow: 0px 0px 20px rgb(0, 0, 0);
     cursor: default;
 }
+
 #mojangStatusTooltip:after {
     content: ' ';
     position: absolute;
@@ -4018,13 +4769,16 @@ form[name='submitSecretQuestion'] p {
     border-style: solid;
     border-color: rgba(0, 0, 0, 0.75) transparent transparent transparent;
 }
+
 #mojangStatusWrapper:hover #mojangStatusTooltip {
     visibility: visible;
     opacity: 1;
     transition-delay: 0s;
 }
 
+
 /* Tooltip title for the mojang statuses. */
+
 #mojangStatusTooltipTitle {
     width: 100%;
     text-align: center;
@@ -4032,21 +4786,27 @@ form[name='submitSecretQuestion'] p {
     letter-spacing: 1px;
 }
 
+
 /* Wrapper container for the non essential services title. */
+
 #mojangStatusNEContainer {
     display: flex;
     align-items: center;
     margin: 10px 0px;
 }
 
+
 /* White bar which surrounds the non essential service title. */
+
 .mojangStatusNEBar {
     height: 1px;
     width: 100%;
     background: white;
 }
 
+
 /* Non essential service title text. */
+
 #mojangStatusNETitle {
     font-size: 10px;
     padding: 0px 3px;
@@ -4054,12 +4814,16 @@ form[name='submitSecretQuestion'] p {
     letter-spacing: 1px;
 }
 
+
 /* Wrapper container for mojang service information. */
+
 .mojangStatusContainer {
     display: flex;
 }
 
+
 /* Displays the name of the mojang service. */
+
 .mojangStatusName {
     width: 100%;
     font-size: 10px;
@@ -4068,18 +4832,23 @@ form[name='submitSecretQuestion'] p {
     padding: 6px 0px;
 }
 
+
 /* Displays the status of the mojang service. */
+
 .mojangStatusIcon {
     margin-right: 10px;
     font-size: 18.5px;
     color: #848484;
 }
 
+
 /* * *
 * Landing View (Bottom Styles) | Center Content
 * * */
 
+
 /* Button which opens the news view. */
+
 .newsButton {
     background: none;
     border: none;
@@ -4087,10 +4856,12 @@ form[name='submitSecretQuestion'] p {
     outline: none;
     text-decoration: none;
 }
+
 .newsButton:hover .newsButtonText,
 .newsButton:focus .newsButtonText {
     text-shadow: 0px 0px 20px #fff, 0px 0px 20px #fff;
 }
+
 .newsButton:active {
     color: #c7c7c7;
     text-shadow: 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7;
@@ -4100,17 +4871,22 @@ form[name='submitSecretQuestion'] p {
 .newsButton:focus .newsButtonSVG {
     -webkit-filter: drop-shadow(0px 0px 2px #fff);
 }
+
 .newsButton:active .newsButtonSVG .arrowLine {
     stroke: #c7c7c7;
 }
+
 .newsButton:active .newsButtonSVG {
     -webkit-filter: drop-shadow(0px 0px 2px #c7c7c7);
 }
+
 .newsButton:disabled .newsButtonSVG .arrowLine {
     stroke: rgba(255, 255, 255, 0.75);
 }
 
+
 /* Icon which indicates there is new news. */
+
 .newsButtonAlert {
     width: 5px;
     height: 5px;
@@ -4121,14 +4897,18 @@ form[name='submitSecretQuestion'] p {
     top: 50%;
 }
 
+
 /* Arrow image which floats above the news button. */
+
 .newsButtonSVG {
     height: 11px;
     margin-left: -2px;
     transition: 0.25s ease;
 }
 
+
 /* Span which contains the news button text. */
+
 .newsButtonText {
     color: white;
     font-weight: 900;
@@ -4140,18 +4920,23 @@ form[name='submitSecretQuestion'] p {
     transition: 0.25s ease;
 }
 
+
 /* * *
 * Landing View (Bottom Styles) | Right Content
 * * */
 
+
 /* Main launch content container. */
-#landingContainer > #lower > #right #launch_content {
+
+#landingContainer>#lower>#right #launch_content {
     position: relative;
     top: 25px;
     display: inline-flex;
 }
 
+
 /* The launch button. */
+
 #launch_button {
     background: none;
     border: none;
@@ -4164,33 +4949,42 @@ form[name='submitSecretQuestion'] p {
     transition: 0.25s ease;
     outline: none;
 }
+
 #launch_button:hover,
 #launch_button:focus {
     text-shadow: 0px 0px 20px #fff, 0px 0px 20px #fff;
 }
+
 #launch_button:active {
     color: #c7c7c7;
     text-shadow: 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7;
 }
+
 #launch_button:disabled {
     color: #c7c7c7;
     cursor: default;
     pointer-events: none;
 }
 
+
 /* Launch details main container, hidden until launch processing begins. */
+
 #launch_details {
     position: relative;
     top: 25px;
     display: none;
 }
 
+
 /* Left side of launch details container, displays percentage and a divider. */
+
 #launch_details_left {
     display: flex;
 }
 
+
 /* Span which displays percentage complete. */
+
 #launch_progress_label {
     font-weight: 900;
     letter-spacing: 1px;
@@ -4201,7 +4995,9 @@ form[name='submitSecretQuestion'] p {
     text-align: right;
 }
 
+
 /* Right side of launch details container, displays progress bar and details. */
+
 #launch_details_right {
     display: flex;
     flex-direction: column;
@@ -4211,11 +5007,14 @@ form[name='submitSecretQuestion'] p {
 .launch_ruby {
     font-size: 6px;
 }
+
 #server_selection_button .launch_ruby {
     line-height: 12px;
 }
 
+
 /* Button which opens the server selection view. */
+
 #server_selection_button {
     background: none;
     border: none;
@@ -4225,30 +5024,37 @@ form[name='submitSecretQuestion'] p {
     padding: 0px;
     transition: 0.25s ease;
 }
+
 #server_selection_button:hover,
 #server_selection_button:focus {
     text-shadow: 0px 0px 20px #fff, 0px 0px 20px #fff, 0px 0px 20px #fff;
 }
+
 #server_selection_button:active {
     color: #c7c7c7;
-    text-shadow: 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7,
-        0px 0px 20px #c7c7c7;
+    text-shadow: 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7;
 }
 
+
 /* Progress bar styles. */
+
 #launch_progress[value] {
     height: 3px;
     width: 265px;
     -webkit-appearance: none;
 }
+
 #launch_progress[value]::-webkit-progress-bar {
     background-color: transparent;
 }
+
 #launch_progress[value]::-webkit-progress-value {
     background-color: #fff;
 }
 
+
 /* Span which displays information about the status of the launch process. */
+
 #launch_details_text {
     font-size: 11px;
     text-overflow: ellipsis;
@@ -4256,17 +5062,21 @@ form[name='submitSecretQuestion'] p {
     overflow: hidden;
 }
 
+
 /*******************************************************************************
  *                                                                             *
  * Overlay View (overlay.ejs)                                                  *
  *                                                                             *
  ******************************************************************************/
 
+
 /* * *
 * Overlay View (Main Content)
 * * */
 
+
 /* Overlay container, placed over the main div. */
+
 #overlayContainer {
     position: absolute;
     z-index: 500;
@@ -4279,7 +5089,9 @@ form[name='submitSecretQuestion'] p {
     background: rgba(0, 0, 0, 0.5);
 }
 
+
 /* Main overlay content. */
+
 #overlayContent {
     position: relative;
     display: flex;
@@ -4294,34 +5106,44 @@ form[name='submitSecretQuestion'] p {
     text-align: center;
 }
 
+
 /* Main overlay content anchor styles. */
+
 #overlayContent a,
 #overlayDismiss {
     color: rgba(202, 202, 202, 0.75);
     transition: 0.25s ease;
 }
+
 #overlayContent a:hover,
 #overlayContent a:focus,
 #overlayDismiss:focus {
     color: rgba(255, 255, 255, 0.75);
 }
+
 #overlayContent a:active,
 #overlayDismiss:active {
     color: rgba(165, 165, 165, 0.75);
 }
 
+
 /* Add spacing between overlay content elements. */
-#overlayContent > *:first-child {
+
+#overlayContent>*:first-child {
     margin-top: 0px !important;
 }
-#overlayContent > *:last-child {
+
+#overlayContent>*:last-child {
     margin-bottom: 0px !important;
 }
-#overlayContent > * {
+
+#overlayContent>* {
     margin: 8px 0px;
 }
 
+
 /* Overlay title styles. */
+
 #overlayTitle {
     font-family: 'Avenir Medium';
     font-size: 20px;
@@ -4330,21 +5152,27 @@ form[name='submitSecretQuestion'] p {
     -webkit-user-select: initial;
 }
 
+
 /* Overlay description styles. */
+
 #overlayDesc {
     font-size: 12px;
     font-weight: bold;
     -webkit-user-select: initial;
 }
 
+
 /* Div which contains action buttons. */
+
 #overlayActionContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
+
 /* Overlay acknowledge button styles. */
+
 #overlayAcknowledge {
     background: none;
     border: 1px solid #ffffff;
@@ -4356,17 +5184,21 @@ form[name='submitSecretQuestion'] p {
     cursor: pointer;
     transition: 0.25s ease;
 }
+
 #overlayAcknowledge:hover,
 #overlayAcknowledge:focus {
     box-shadow: 0px 0px 10px 0px #fff;
     outline: none;
 }
+
 #overlayAcknowledge:active {
     border-color: rgba(255, 255, 255, 0.75);
     color: rgba(255, 255, 255, 0.75);
 }
 
+
 /* Overlay dismiss option styles. */
+
 #overlayDismiss {
     font-weight: bold;
     font-size: 10px;
@@ -4377,18 +5209,34 @@ form[name='submitSecretQuestion'] p {
     outline: none;
     cursor: pointer;
 }
+
 #overlayDismiss:hover {
     color: rgba(255, 255, 255, 0.75);
 }
+
 #overlayDismiss:active {
     color: rgba(165, 165, 165, 0.75);
 }
+
+#filterInput {
+    margin-bottom: 8px;
+    width: 80%;
+    background-color: rgba(255, 255, 255, 0.75);
+    padding: 6px;
+    border-radius: 3px;
+    border: solid;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.75);
+}
+
 
 /* * *
 * Overlay View (Server + Account Selection Content)
 * * */
 
+
 /* Server selection content container. */
+
 #serverSelectContent,
 #accountSelectContent {
     display: flex;
@@ -4398,7 +5246,9 @@ form[name='submitSecretQuestion'] p {
     height: 75%;
 }
 
+
 /* Server selection header. */
+
 #serverSelectHeader,
 #accountSelectHeader {
     font-family: 'Avenir Medium';
@@ -4408,7 +5258,9 @@ form[name='submitSecretQuestion'] p {
     margin-bottom: 25px;
 }
 
+
 /* Wrapper div for the list of available servers. */
+
 #serverSelectList,
 #accountSelectList {
     display: flex;
@@ -4419,27 +5271,108 @@ form[name='submitSecretQuestion'] p {
     min-height: 40%;
 }
 
+
 /* Scrollable div which lists the available servers. */
+
 #serverSelectListScrollable,
 #accountSelectListScrollable {
     padding: 0px 5px;
     overflow-y: scroll;
 }
+
 #serverSelectListScrollable::-webkit-scrollbar,
 #accountSelectListScrollable::-webkit-scrollbar {
     width: 2px;
 }
+
 #serverSelectListScrollable::-webkit-scrollbar-track,
 #accountSelectListScrollable::-webkit-scrollbar-track {
     display: none;
 }
+
 #serverSelectListScrollable::-webkit-scrollbar-thumb,
 #accountSelectListScrollable::-webkit-scrollbar-thumb {
     border-radius: 10px;
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
+
 /* Content container for a server listing. */
+
+.altIconContainer {
+    margin: 0px 10px 0px 5px;
+    border: 1px solid #fff;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.altIcon {
+    width: 85%;
+    height: 85%;
+    transform: rotate(-3deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.altIconChar {
+    width: 85%;
+    height: 85%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(3deg);
+    font-size: 28px;
+    font-weight: bolder;
+    color: white
+}
+
+
+/** icon colers*/
+
+.iconColor0 {
+    background: linear-gradient(rgb(0, 0, 255), rgb(255, 0, 0));
+}
+
+.iconColor1 {
+    background: linear-gradient(rgb(0, 128, 0), rgb(255, 255, 0));
+}
+
+.iconColor2 {
+    background: linear-gradient(rgb(255, 35, 108), rgb(208, 255, 115));
+}
+
+.iconColor3 {
+    background: linear-gradient(rgb(16, 205, 226), rgb(137, 67, 184));
+}
+
+.iconColor4 {
+    background: linear-gradient(rgb(232, 234, 83), rgb(255, 140, 0));
+}
+
+.iconColor5 {
+    background: linear-gradient(rgb(255, 0, 0), rgb(0, 0, 255));
+}
+
+.iconColor6 {
+    background: linear-gradient(rgb(255, 255, 0), rgb(0, 128, 0));
+}
+
+.iconColor7 {
+    background: linear-gradient(rgb(208, 255, 115), rgb(255, 35, 108));
+}
+
+.iconColor8 {
+    background: linear-gradient(rgb(137, 67, 184), rgb(16, 205, 226));
+}
+
+.iconColor9 {
+    background: linear-gradient(rgb(255, 140, 0), rgb(232, 234, 83));
+}
+
 .serverListing {
     border: none;
     padding: 0px;
@@ -4454,10 +5387,12 @@ form[name='submitSecretQuestion'] p {
     position: relative;
     background: rgba(131, 131, 131, 0.25);
 }
+
 .serverListing[selected] {
     cursor: default;
     opacity: 1;
 }
+
 .serverListing:hover,
 .serverListing:focus {
     outline: none;
@@ -4479,10 +5414,12 @@ form[name='submitSecretQuestion'] p {
     position: relative;
     background: rgba(0, 0, 0, 0.25);
 }
+
 .accountListing[selected] {
     cursor: default;
     opacity: 1;
 }
+
 .accountListing:hover,
 .accountListing:focus {
     outline: none;
@@ -4496,22 +5433,27 @@ form[name='submitSecretQuestion'] p {
     padding-left: 10px;
 }
 
+
 /* Add spacing between server listings. */
-#serverSelectListScrollable > .serverListing:not(:first-child):not(:last-child),
-#accountSelectListScrollable
-    > .accountListing:not(:first-child):not(:last-child) {
+
+#serverSelectListScrollable>.serverListing:not(:first-child):not(:last-child),
+#accountSelectListScrollable>.accountListing:not(:first-child):not(:last-child) {
     margin: 5px 0px;
 }
-#serverSelectListScrollable > .serverListing:first-child,
-#accountSelectListScrollable > .accountListing:first-child {
+
+#serverSelectListScrollable>.serverListing:first-child,
+#accountSelectListScrollable>.accountListing:first-child {
     margin-bottom: 5px;
 }
-#serverSelectListScrollable > .serverListing:last-child,
-#accountSelectListScrollable > .accountListing:last-child {
+
+#serverSelectListScrollable>.serverListing:last-child,
+#accountSelectListScrollable>.accountListing:last-child {
     margin-top: 5px;
 }
 
+
 /* Server listing image. */
+
 .serverListingImg {
     margin: 0px 10px 0px 5px;
     border: 1px solid #fff;
@@ -4519,7 +5461,9 @@ form[name='submitSecretQuestion'] p {
     width: 50px;
 }
 
+
 /* Content container for the server listing's details. */
+
 .serverListingDetails {
     display: flex;
     flex-direction: column;
@@ -4528,27 +5472,35 @@ form[name='submitSecretQuestion'] p {
     height: 50px;
 }
 
+
 /* The name of the server listing. */
+
 .serverListingName {
     font-size: 14px;
     font-weight: bold;
 }
 
+
 /* Description for the server listing. */
+
 .serverListingDescription {
     font-size: 10px;
     line-height: 10px;
     font-weight: bold;
 }
 
+
 /* Content container for the server listing's information. */
+
 .serverListingInfo {
     width: 100%;
     display: flex;
     justify-content: flex-start;
 }
 
+
 /* The minecraft version of the server listing. */
+
 .serverListingVersion {
     font-size: 10px;
     text-align: center;
@@ -4562,7 +5514,9 @@ form[name='submitSecretQuestion'] p {
     padding: 0px 2px;
 }
 
+
 /* The revision version of the server's manifest. */
+
 .serverListingRevision {
     color: #969696;
     font-size: 10px;
@@ -4570,7 +5524,9 @@ form[name='submitSecretQuestion'] p {
     padding: 0px 5px;
 }
 
+
 /* Star which indicates the default (main) server. */
+
 .serverListingStarWrapper {
     display: flex;
     align-items: center;
@@ -4578,7 +5534,10 @@ form[name='submitSecretQuestion'] p {
     height: 12px;
     position: relative;
 }
+
+
 /* Tooltip which displays when hovering over the star. */
+
 .serverListingStarTooltip {
     visibility: hidden;
     opacity: 0;
@@ -4592,23 +5551,28 @@ form[name='submitSecretQuestion'] p {
     font-size: 10px;
     transition: visibility 0s linear 0.25s, opacity 0.25s ease;
 }
+
 .serverListingStarTooltip::after {
     content: ' ';
     position: absolute;
     top: 50%;
-    right: 100%; /* To the left of the tooltip */
+    right: 100%;
+    /* To the left of the tooltip */
     margin-top: -5px;
     border-width: 5px;
     border-style: solid;
     border-color: transparent rgba(0, 0, 0, 0.4) transparent transparent;
 }
+
 .serverListingStarWrapper:hover .serverListingStarTooltip {
     visibility: visible;
     opacity: 1;
     transition-delay: 0s;
 }
 
+
 /* Content container which contains the server select actions. */
+
 #serverSelectActions,
 #accountSelectActions {
     display: flex;
@@ -4618,7 +5582,9 @@ form[name='submitSecretQuestion'] p {
     margin-top: 25px;
 }
 
+
 /* Server selection confirm button styles. */
+
 #serverSelectConfirm,
 #accountSelectConfirm {
     background: none;
@@ -4632,6 +5598,7 @@ form[name='submitSecretQuestion'] p {
     transition: 0.25s ease;
     min-height: 20.67px;
 }
+
 #serverSelectConfirm:hover,
 #serverSelectConfirm:focus,
 #accountSelectConfirm:hover,
@@ -4639,13 +5606,16 @@ form[name='submitSecretQuestion'] p {
     box-shadow: 0px 0px 10px 0px #fff;
     outline: none;
 }
+
 #serverSelectConfirm:active,
 #accountSelectConfirm:active {
     border-color: rgba(255, 255, 255, 0.75);
     color: rgba(255, 255, 255, 0.75);
 }
 
+
 /* Server selection cancel button styles. */
+
 #serverSelectCancel,
 #accountSelectCancel {
     font-weight: bold;
@@ -4659,16 +5629,19 @@ form[name='submitSecretQuestion'] p {
     outline: none;
     cursor: pointer;
 }
+
 #serverSelectCancel:hover,
 #serverSelectCancel:focus,
 #accountSelectCancel:hover,
 #accountSelectCancel:focus {
     color: rgba(255, 255, 255, 0.75);
 }
+
 #serverSelectCancel:active,
 #accountSelectCancel:active {
     color: rgba(165, 165, 165, 0.75);
 }
+
 
 /*******************************************************************************
  *                                                                             *
@@ -4676,7 +5649,9 @@ form[name='submitSecretQuestion'] p {
  *                                                                             *
  ******************************************************************************/
 
+
 /* Loading container, placed above everything. */
+
 #loadingContainer {
     position: absolute;
     z-index: 400;
@@ -4687,7 +5662,9 @@ form[name='submitSecretQuestion'] p {
     height: calc(100% - 22px);
 }
 
+
 /* Loading content container. */
+
 #loadingContent {
     position: relative;
     display: flex;
@@ -4696,7 +5673,9 @@ form[name='submitSecretQuestion'] p {
     justify-content: center;
 }
 
+
 /* Spinner container. */
+
 #loadSpinnerContainer {
     position: relative;
     display: flex;
@@ -4704,7 +5683,9 @@ form[name='submitSecretQuestion'] p {
     justify-content: center;
 }
 
+
 /* Stationary image for the spinner. */
+
 #loadCenterImage {
     position: absolute;
     width: 277px;
@@ -4712,14 +5693,18 @@ form[name='submitSecretQuestion'] p {
     z-index: 402;
 }
 
+
 /* Rotating image for the spinner. */
+
 #loadSpinnerImage {
     width: 280px;
     height: auto;
     z-index: 401;
 }
 
+
 /* Rotating image for the spinner. */
+
 #loadSpinnerImageBack {
     position: absolute;
     width: 280px;
@@ -4727,7 +5712,9 @@ form[name='submitSecretQuestion'] p {
     z-index: 400;
 }
 
+
 /* Rotating animation for the spinner. */
+
 @keyframes rotating {
     from {
         transform: rotate(0deg);
@@ -4746,7 +5733,9 @@ form[name='submitSecretQuestion'] p {
     }
 }
 
+
 /* Class which is applied when the spinner image is spinning. */
+
 .rotating {
     animation: rotating 32s linear infinite;
 }

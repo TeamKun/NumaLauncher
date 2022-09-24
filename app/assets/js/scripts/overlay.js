@@ -179,12 +179,15 @@ document.getElementById('serverSelectConfirm').addEventListener('click', () => {
             updateSelectedServer(serv)
             refreshServerStatus(true)
             toggleOverlay(false)
+            document.getElementById('filterInput').value = ''
             return
         }
     }
     // None are selected? Not possible right? Meh, handle it.
     if (listings.length > 0) {
-        const serv = DistroManager.getDistribution().getServer(listings[i].getAttribute('servid'))
+        // TODO iが定義されてないので一応0に修正. そもそもこのロジック必要なのか不明
+        // const serv = DistroManager.getDistribution().getServer(listings[i].getAttribute('servid'))
+        const serv = DistroManager.getDistribution().getServer(listings[0].getAttribute('servid'))
         updateSelectedServer(serv)
         toggleOverlay(false)
     }
@@ -238,6 +241,7 @@ document.getElementById('filterInput').addEventListener('input', (e) => {
         }
     })
     createServerHtml(searchedList)
+    setServerListingHandlers()
 })
 
 function setServerListingHandlers() {
@@ -419,3 +423,4 @@ function prepareAccountSelectionList() {
     populateAccountListings()
     setAccountListingHandlers()
 }
+

@@ -83,12 +83,21 @@ function getJDKDirectory() {
     switch (process.argv[2]) {
         case 'WINDOWS':
             return 'windows'
+<<<<<<< HEAD
         case 'mac':
             if (isAappleSilicon()) {
+=======
+        case 'MAC':
+            if (Util.isAappleSilicon()) {
+>>>>>>> master
                 return 'mac-apple'
             }
             return 'mac-intel'
         case 'LINUX':
             return 'linux'
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> master

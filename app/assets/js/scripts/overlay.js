@@ -241,7 +241,10 @@ document.getElementById('filterInput').addEventListener('input', (e) => {
         }
     })
     createServerHtml(searchedList)
+<<<<<<< HEAD
     setServerListingHandlers()
+=======
+>>>>>>> master
 })
 
 function setServerListingHandlers() {
@@ -325,6 +328,7 @@ function createServerHtml(servers) {
 
     document.getElementById('serverSelectListScrollable').innerHTML = htmlString
 }
+<<<<<<< HEAD
 
 /**
  * サーバー情報をソートする
@@ -357,6 +361,40 @@ function sortServers(servers) {
 }
 
 /**
+=======
+
+/**
+ * サーバー情報をソートする
+ * */
+function sortServers(servers) {
+    let sortableList = []
+    let notSotableList = []
+    
+    servers.forEach((server) => {
+        let orderReg = /^%\d*%/
+    
+        if (!orderReg.test(server.getName())) {
+            notSotableList.push(server)
+        } else {
+            sortableList.push(server)
+        }
+    })
+    
+    sortableList.sort((a, b) => {
+        let orderA = getOrder(a.getName())
+        let orderB = getOrder(b.getName())
+    
+        if (orderA < orderB) {
+            return -1
+        }
+        return 1
+    })
+
+    return sortableList.concat(notSotableList)
+}
+
+/**
+>>>>>>> master
  * サーバー名からオーダー番号を取得する
  * */
 function getOrder(serverName) {

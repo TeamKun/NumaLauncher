@@ -172,13 +172,13 @@ function setDismissHandler(handler) {
 
 document.getElementById('serverSelectConfirm').addEventListener('click', () => {
     const listings = document.getElementsByClassName('serverListing')
+    document.getElementById('filterInput').value = ''
     for (let i = 0; i < listings.length; i++) {
         if (listings[i].hasAttribute('selected')) {
             const serv = DistroManager.getDistribution().getServer(listings[i].getAttribute('servid'))
             updateSelectedServer(serv)
             refreshServerStatus(true)
             toggleOverlay(false)
-            document.getElementById('filterInput').value = ''
             return
         }
     }
@@ -227,15 +227,15 @@ document.getElementById('accountSelectCancel').addEventListener('click', () => {
 })
 
 document.getElementById('filterInput').addEventListener('input', (e) => {
-    let value = document.getElementById('filterInput').value
+    let value = Util.kanaToHira(document.getElementById('filterInput').value.toLowerCase())
     const distro = DistroManager.getDistribution()
     const servers = distro.getServers()
 
     let searchedList = []
 
     servers.forEach((server) => {
-        let reg = new RegExp(`^${value}`, 'i')
-        if (reg.test(getServerName(server.getName()))) {
+        let serverName = Util.kanaToHira(getServerName(server.getName()).toLowerCase())
+        if (serverName.indexOf(value) >= 0) {
             searchedList.push(server)
         }
     })

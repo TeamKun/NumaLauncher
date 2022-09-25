@@ -1,7 +1,6 @@
 /**
  * Script for overlay.ejs
  */
-
 /* Overlay Wrapper Functions */
 
 /**
@@ -297,7 +296,7 @@ function createServerHtml(servers) {
         htmlString += `<div style="width:375px;text-align:center">該当パックなし</div>`
     } else {
         for (const serv of sortedServers) {
-            let serverName = getServerName(serv.getName())
+            let serverName = Util.removeOrderNumber(serv.getName())
                 //let serverName = serv.getName()
             htmlString += `<button class="serverListing" servid="${serv.getID()}" ${serv.getID() === ConfigManager.getSelectedServer() ? 'selected' : ''}>
                 ${genelateIcon(serv.getIcon(), serverName)}

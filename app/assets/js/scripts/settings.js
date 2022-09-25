@@ -890,7 +890,7 @@ function loadSelectedServerOnModsTab() {
     document.getElementById('settingsSelServContent').innerHTML = `
         <img class="serverListingImg" src="${serv.getIcon()}"/>
         <div class="serverListingDetails">
-            <span class="serverListingName">${serv.getName()}</span>
+            <span class="serverListingName">${Util.removeOrderNumber(serv.getName())}</span>
             <span class="serverListingDescription">${serv.getDescription()}</span>
             <div class="serverListingInfo">
                 <div class="serverListingVersion">${serv.getMinecraftVersion()}</div>

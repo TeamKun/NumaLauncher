@@ -137,7 +137,7 @@ function updateSelectedServer(serv) {
     }
     ConfigManager.setSelectedServer(serv != null ? serv.getID() : null)
     ConfigManager.save()
-    server_selection_button_status.innerHTML = '\u2022 ' + (serv != null ? serv.getName() : 'Modパックが選択されていません')
+    server_selection_button_status.innerHTML = '\u2022 ' + (serv != null ? Util.removeOrderNumber(serv.getName()) : 'Modパックが選択されていません')
     if (getCurrentView() === VIEWS.settings) {
         animateModsTabRefresh()
     }

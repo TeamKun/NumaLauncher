@@ -9,7 +9,8 @@
 | Platform | File |
 | -------- | ---- |
 | Windows x64 | `NumaLauncher-setup-VERSION.exe` |
-| macOS | `NumaLauncher-setup-VERSION.dmg` |
+| macOS with Intel CPU | `NumaLauncher-setup-VERSION.dmg` |
+| macOS with AppleSilicon CPU | `NumaLauncher-applesilicon-setup-VERSION.dmg` |
 | Linux x64 | `サポート対象外` |
 
 ## Console

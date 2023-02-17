@@ -45,7 +45,7 @@ class ProcessBuilder {
         const modObj = this.resolveModConfiguration(ConfigManager.getModConfiguration(this.server.getID()).mods, this.server.getModules())
 
         // Mod list below 1.13
-        if (!Util.mcVersionAtLeast('1.17', this.server.getMinecraftVersion())) {
+        if (!Util.mcVersionAtLeast('1.13', this.server.getMinecraftVersion())) {
             this.constructJSONModList('forge', modObj.fMods, true)
             if (this.usingLiteLoader) {
                 this.constructJSONModList('liteloader', modObj.lMods, true)
@@ -55,7 +55,7 @@ class ProcessBuilder {
         const uberModArr = modObj.fMods.concat(modObj.lMods)
         let args = this.constructJVMArguments(uberModArr, tempNativePath)
 
-        if (Util.mcVersionAtLeast('1.17', this.server.getMinecraftVersion())) {
+        if (Util.mcVersionAtLeast('1.13', this.server.getMinecraftVersion())) {
             //args = args.concat(this.constructModArguments(modObj.fMods))
             args = args.concat(this.constructModList(modObj.fMods))
         }

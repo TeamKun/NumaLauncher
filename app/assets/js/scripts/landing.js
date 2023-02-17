@@ -5,6 +5,7 @@
 const cp = require('child_process')
 const crypto = require('crypto')
 const request = require('request')
+const fs = require('fs')
 const { URL } = require('url')
 
 // Internal Requirements
@@ -91,14 +92,31 @@ document.getElementById('launch_button').addEventListener('click', function(e) {
 
     // OS,　プロセッサ, MCverionから起動できるか判定
     let validationResult = Util.varidatePlatform()
-
     if (validationResult) {
         showLaunchFailure(validationResult.title, validationResult.disc)
         return
     }
 
-    // 起動
-    dlAsync()
+    const mcVersion = DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer()).getMinecraftVersion()
+    const jExe = JavaGuard.javaExecFromRoot(Util.getJDKPath())
+    if(!fs.existsSync(jExe)){
+        asyncSystemScan(mcVersion)
+    } else {
+
+        setLaunchDetails(Lang.queryJS('landing.launch.pleaseWait'))
+        toggleLaunchArea(true)
+        setLaunchPercentage(0, 100)
+
+        const jg = new JavaGuard(mcVersion)
+        jg._validateJavaBinary(jExe).then((v) => {
+            loggerLanding.log('Java version meta', v)
+            if(v.valid){
+                dlAsync()
+            } else {
+                asyncSystemScan(mcVersion)
+            }
+        })
+    }
 })
 
 // Bind settings button
@@ -326,7 +344,7 @@ function asyncSystemScan(mcVersion, launchAfter = true) {
                 )
                 setOverlayHandler(() => {
                     setLaunchDetails('Javaダウンロードの準備中..')
-                    sysAEx.send({ task: 'changeContext', class: 'AssetGuard', args: [ConfigManager.getCommonDirectory(), ConfigManager.getJavaExecutable()] })
+                    sysAEx.send({ task: 'changeContext', class: 'AssetGuard', args: [ConfigManager.getCommonDirectory(), Util.getJDKVersion(), Util.getJDKPath()] })
                     sysAEx.send({ task: 'execute', function: '_enqueueOpenJDK', argsArr: [ConfigManager.getDataDirectory()] })
                     toggleOverlay(false)
                 })
@@ -458,10 +476,15 @@ function asyncSystemScan(mcVersion, launchAfter = true) {
         }
     })
 
-    // Begin system Java scan.
-    setLaunchDetails('システムをスキャン中..')
-    sysAEx.send({ task: 'execute', function: 'validateJava', argsArr: [ConfigManager.getDataDirectory()] })
+    // // Begin system Java scan.
+    // setLaunchDetails('システムをスキャン中..')
+    // sysAEx.send({ task: 'execute', function: 'validateJava', argsArr: [ConfigManager.getDataDirectory()] })
 
+    // バグの原因なのでシステム環境依存のJavaは使用しない。
+    // 代わりにJavaダウンロードを開始する。
+    setLaunchDetails('Javaダウンロードの準備中..')
+    sysAEx.send({ task: 'changeContext', class: 'AssetGuard', args: [ConfigManager.getCommonDirectory(), Util.getJDKVersion(), Util.getJDKPath()] })
+    sysAEx.send({ task: 'execute', function: '_enqueueOpenJDK', argsArr: [ConfigManager.getDataDirectory()] })
 }
 
 // Keep reference to Minecraft Process
@@ -514,7 +537,7 @@ async function dlAsync(login = true) {
     aEx = cp.fork(path.join(__dirname, 'assets', 'js', 'assetexec.js'), [
             'AssetGuard',
             ConfigManager.getCommonDirectory(),
-            Util.getJDKPath()
+            JavaGuard.javaExecFromRoot(Util.getJDKPath())
         ], {
             env: forkEnv,
             stdio: 'pipe'

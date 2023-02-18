@@ -211,8 +211,11 @@ class JavaGuard extends EventEmitter {
 
         console.log('_latestOpenJDK')
         console.log(process.platform)
+
+        return this._latestCustom(major)
+
         // if (process.platform === 'darwin') {
-        return this._latestCorretto(major)
+        //     return this._latestCorretto(major)
         // } else {
         //     return this._latestAdoptOpenJDK(major)
         // }
@@ -290,6 +293,50 @@ class JavaGuard extends EventEmitter {
                     })
                 } else {
                     resolve(null)
+                }
+            })
+        })
+
+    }
+
+    static _latestCustom(major) {
+
+        let architecture = 'x64'
+        let ext = 'tar.gz'
+        let sanitizedOS
+
+        switch (process.platform) {
+            case 'win32':
+                sanitizedOS = 'windows'
+                ext = 'zip'
+                break
+            case 'darwin':
+                if (Util.isAappleSilicon()) {
+                    architecture = 'aarch64'
+                }
+                sanitizedOS = 'macosx'
+                break
+            default:
+                // サポートOS外
+                return Promise.resolve({
+                    error: `「${process.platform}」は対応していないOSです。<br>Windows(x64)、macOS(x64/M1)のみ対応しています。<br>Linuxは対応していませんので沼ランチャーの使用を諦め、ご自身でModパック導入方法を調べて導入してください。`
+                })
+        }
+
+        const url = `https://github.com/TeamKun/public-files/releases/download/openjdk/jdk${major}-${sanitizedOS}-${architecture}.${ext}`
+
+        return new Promise((resolve, reject) => {
+            request.head({ url, json: true }, (err, resp) => {
+                if (!err && resp.statusCode === 200) {
+                    resolve({
+                        uri: url,
+                        size: parseInt(resp.headers['content-length']),
+                        name: url.substr(url.lastIndexOf('/') + 1)
+                    })
+                } else {
+                    resolve({
+                        error: `ダウンロードできませんでした。<br>「jdk${major}-${sanitizedOS}-${architecture}.${ext}」が <a href="https://github.com/TeamKun/public-files/releases/tag/openjdk">TeamKunのGitHubページ内</a> にあるか確認してください。`
+                    })
                 }
             })
         })
@@ -920,11 +967,12 @@ class AssetGuard extends EventEmitter {
      * values. Each identifier is resolved to an empty DLTracker.
      * 
      * @param {string} commonPath The common path for shared game files.
-     * @param {string} javaversion The version of jdk which will be used
      * @param {string} javaexec The path to a java executable which will be used
+     * @param {string} javadir The path to the jdk directory which will be used
+     * @param {string} javaversion The version of jdk which will be used
      * to finalize installation.
      */
-    constructor(commonPath, javaversion, javaexec) {
+    constructor(commonPath, javaexec, javadir, javaversion) {
         super()
         this.totaldlsize = 0
         this.progress = 0
@@ -935,8 +983,9 @@ class AssetGuard extends EventEmitter {
         this.java = new DLTracker([], 0)
         this.extractQueue = []
         this.commonPath = commonPath
-        this.javaversion = javaversion
         this.javaexec = javaexec
+        this.javadir = javadir
+        this.javaversion = javaversion
     }
 
     // Static Utility Functions
@@ -1130,6 +1179,7 @@ class AssetGuard extends EventEmitter {
                 }
             }
 
+            console.log('Launching ForgeCLI:', `${javaExecutable} -jar ${libPath} --installer ${installerExec} --target ${workDir}`)
             const child = child_process.spawn(javaExecutable, ['-jar', libPath, '--installer', installerExec, '--target', workDir])
             child.stdout.on('data', (data) => {
                 console.log('[ForgeCLI]', data.toString('utf8'))
@@ -1640,6 +1690,11 @@ class AssetGuard extends EventEmitter {
             JavaGuard._latestOpenJDK(this.javaversion).then(verData => {
                 if (verData != null) {
 
+                    if (verData.error) {
+                        resolve([false, verData.error])
+                        return
+                    }
+
                     dataDir = path.join(dataDir, 'runtime', 'download')
                     const fDir = path.join(dataDir, verData.name)
                     const jre = new Asset(verData.name, null, verData.size, verData.uri, fDir)
@@ -1657,11 +1712,11 @@ class AssetGuard extends EventEmitter {
                                         if (err) {
                                             console.log(err)
                                         }
-                                        fs.move(pos, this.javaexec, { overwrite: true }, err => {
+                                        fs.move(pos, this.javadir, { overwrite: true }, err => {
                                             if (err) {
                                                 console.log(err)
                                             }
-                                            self.emit('complete', 'java', JavaGuard.javaExecFromRoot(this.javaexec))
+                                            self.emit('complete', 'java', this.javadir)
                                         })
                                     })
                                 }
@@ -1691,20 +1746,20 @@ class AssetGuard extends EventEmitter {
                                             h = h.substring(0, h.indexOf('/'))
                                         }
                                         const pos = path.join(dataDir, h)
-                                        fs.move(pos, this.javaexec, { overwrite: true }, err => {
+                                        fs.move(pos, this.javadir, { overwrite: true }, err => {
                                             if (err) {
                                                 console.log(err)
                                             }
-                                            self.emit('complete', 'java', JavaGuard.javaExecFromRoot(this.javaexec))
+                                            self.emit('complete', 'java', this.javadir)
                                         })
                                     })
                                 })
                         }
                     })
-                    resolve(true)
+                    resolve([true])
 
                 } else {
-                    resolve(false)
+                    resolve([false])
                 }
             })
         })

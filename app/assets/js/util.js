@@ -27,16 +27,16 @@ class Util {
     static getJDKVersion() {
         const mcVersion = DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer()).getMinecraftVersion()
 
-        if (!Util.mcVersionAtLeast('1.17', mcVersion)) {
-            // less than MC1.17
+        if (!Util.mcVersionAtLeast('1.16', mcVersion)) {
+            // x < MC1.16
             return '8'
 
         } else if (!Util.mcVersionAtLeast('1.18', mcVersion)) {
-            // MC1.17
+            // MC1.16 <= x < MC1.18
             return '16'
 
         } else {
-            // MC1.18+
+            // MC1.18 <= x
             return '17'
         }
     }
@@ -56,7 +56,7 @@ class Util {
     static getJDKVersionCorretto(major) {
         switch (major) {
             case '8':
-                return '8.312.07.1'
+                return '8.362.08.1'
             case '16':
                 return '16.0.2.7.1'
             default:

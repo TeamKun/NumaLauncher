@@ -496,7 +496,7 @@ class JavaGuard extends EventEmitter {
                     }
                 } else if (verOb.major >= 16) {
                     // TODO Make this logic better. Make java 16 required.
-                    if (Util.mcVersionAtLeast('1.17', this.mcVersion)) {
+                    if (Util.mcVersionAtLeast('1.16', this.mcVersion)) {
                         meta.version = verOb
                             ++checksum
                         if (checksum === goal) {
@@ -1838,7 +1838,7 @@ class AssetGuard extends EventEmitter {
                 })
 
                 req.on('error', (err) => {
-                    self.emit('error', 'download', err)
+                    self.emit('error', 'download', {error: err, asset: asset})
                 })
 
                 req.on('data', (chunk) => {

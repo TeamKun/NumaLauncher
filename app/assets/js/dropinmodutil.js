@@ -95,7 +95,7 @@ exports.addDropinMods = function(files, modsdir) {
  * @returns {boolean} True if the mod was deleted, otherwise false.
  */
 exports.deleteDropinMod = function(modsDir, fullName){
-    const res = shell.moveItemToTrash(path.join(modsDir, fullName))
+    const res = shell.trashItem(path.join(modsDir, fullName))
     if(!res){
         shell.beep()
     }

@@ -211,71 +211,63 @@ class JavaGuard extends EventEmitter {
 
         console.log('_latestOpenJDK')
         console.log(process.platform)
-        if (process.platform === 'darwin') {
-            return this._latestCorretto(major)
-        } else {
-            return this._latestAdoptOpenJDK(major)
-        }
+
+        return this._latestCustom(major)
+
+        // if (process.platform === 'darwin') {
+        //     return this._latestCorretto(major)
+        // } else {
+        //     return this._latestAdoptOpenJDK(major)
+        // }
     }
 
     static _latestAdoptOpenJDK(major) {
 
         const sanitizedOS = process.platform === 'win32' ? 'windows' : (process.platform === 'darwin' ? 'mac' : process.platform)
 
-        //const url = `https://api.adoptopenjdk.net/v2/latestAssets/nightly/openjdk${major}?os=${sanitizedOS}&arch=x64&heap_size=normal&openjdk_impl=hotspot&type=jre`
-
-        const url = `https://api.adoptium.net/v3/assets/latest/16/hotspot?vendor=eclipse`
+        const fullVersion = Util.getJDKVersionAdoptium(major)
+        const url = `https://api.adoptium.net/v3/assets/version/${fullVersion}`
         return new Promise((resolve, reject) => {
-                request({ url, json: true }, (err, resp, body) => {
-                    if (!err && body.length > 0) {
+            request({ url, json: true }, (err, resp, body) => {
+                if (!err && body.length > 0) {
 
-                        const targetBinary = body.find(entry => {
-                            return entry.version.major === majorNum &&
-                                entry.binary.os === sanitizedOS &&
-                                entry.binary.image_type === 'jdk' &&
-                                entry.binary.architecture === 'x64'
+                    const targetBinary = body[0].binaries.find(entry => {
+                        return entry.os === sanitizedOS &&
+                            entry.image_type === 'jdk' &&
+                            entry.architecture === 'x64'
+                    })
+                    if (targetBinary != null) {
+                        resolve({
+                            uri: targetBinary.package.link,
+                            size: targetBinary.package.size,
+                            name: targetBinary.package.name
                         })
-                        if (targetBinary != null) {
-                            resolve({
-                                uri: targetBinary.binary.package.link,
-                                size: targetBinary.binary.package.size,
-                                name: targetBinary.binary.package.name
-                            })
-                        } else {
-                            resolve(null)
-                        }
                     } else {
                         resolve(null)
                     }
-                })
+                } else {
+                    resolve(null)
+                }
             })
-            // return new Promise((resolve, reject) => {
-            //     request({url, json: true}, (err, resp, body) => {
-            //         if(!err && body.length > 0){
-            //             resolve({
-            //                 uri: body[0].binary_link,
-            //                 size: body[0].binary_size,
-            //                 name: body[0].binary_name
-            //             })
-            //         } else {
-            //             resolve(null)
-            //         }
-            //     })
-            // })
-
+        })
     }
 
     static _latestCorretto(major) {
 
+        let architecture = 'x64'
         let sanitizedOS, ext
 
         switch (process.platform) {
             case 'win32':
+                architecture = 'x64-jdk'
                 sanitizedOS = 'windows'
                 ext = 'zip'
                 break
             case 'darwin':
-                sanitizedOS = 'macos'
+                if (Util.isAappleSilicon()) {
+                    architecture = 'aarch64'
+                }
+                sanitizedOS = 'macosx'
                 ext = 'tar.gz'
                 break
             case 'linux':
@@ -288,7 +280,8 @@ class JavaGuard extends EventEmitter {
                 break
         }
 
-        const url = `https://corretto.aws/downloads/latest/amazon-corretto-${major}-x64-${sanitizedOS}-jdk.${ext}`
+        const fullVersion = Util.getJDKVersionCorretto(major)
+        const url = `https://corretto.aws/downloads/resources/${fullVersion}/amazon-corretto-${fullVersion}-${sanitizedOS}-${architecture}.${ext}`
 
         return new Promise((resolve, reject) => {
             request.head({ url, json: true }, (err, resp) => {
@@ -300,6 +293,50 @@ class JavaGuard extends EventEmitter {
                     })
                 } else {
                     resolve(null)
+                }
+            })
+        })
+
+    }
+
+    static _latestCustom(major) {
+
+        let architecture = 'x64'
+        let ext = 'tar.gz'
+        let sanitizedOS
+
+        switch (process.platform) {
+            case 'win32':
+                sanitizedOS = 'windows'
+                ext = 'zip'
+                break
+            case 'darwin':
+                if (Util.isAappleSilicon()) {
+                    architecture = 'aarch64'
+                }
+                sanitizedOS = 'macosx'
+                break
+            default:
+                // サポートOS外
+                return Promise.resolve({
+                    error: `「${process.platform}」は対応していないOSです。<br>Windows(x64)、macOS(x64/M1)のみ対応しています。<br>Linuxは対応していませんので沼ランチャーの使用を諦め、ご自身でModパック導入方法を調べて導入してください。`
+                })
+        }
+
+        const url = `https://github.com/TeamKun/public-files/releases/download/openjdk/jdk${major}-${sanitizedOS}-${architecture}.${ext}`
+
+        return new Promise((resolve, reject) => {
+            request.head({ url, json: true }, (err, resp) => {
+                if (!err && resp.statusCode === 200) {
+                    resolve({
+                        uri: url,
+                        size: parseInt(resp.headers['content-length']),
+                        name: url.substr(url.lastIndexOf('/') + 1)
+                    })
+                } else {
+                    resolve({
+                        error: `ダウンロードできませんでした。<br>「jdk${major}-${sanitizedOS}-${architecture}.${ext}」が <a href="https://github.com/TeamKun/public-files/releases/tag/openjdk">TeamKunのGitHubページ内</a> にあるか確認してください。`
+                    })
                 }
             })
         })
@@ -459,7 +496,7 @@ class JavaGuard extends EventEmitter {
                     }
                 } else if (verOb.major >= 16) {
                     // TODO Make this logic better. Make java 16 required.
-                    if (Util.mcVersionAtLeast('1.17', this.mcVersion)) {
+                    if (Util.mcVersionAtLeast('1.16', this.mcVersion)) {
                         meta.version = verOb
                             ++checksum
                         if (checksum === goal) {
@@ -931,9 +968,11 @@ class AssetGuard extends EventEmitter {
      * 
      * @param {string} commonPath The common path for shared game files.
      * @param {string} javaexec The path to a java executable which will be used
+     * @param {string} javadir The path to the jdk directory which will be used
+     * @param {string} javaversion The version of jdk which will be used
      * to finalize installation.
      */
-    constructor(commonPath, javaexec) {
+    constructor(commonPath, javaexec, javadir, javaversion) {
         super()
         this.totaldlsize = 0
         this.progress = 0
@@ -945,6 +984,8 @@ class AssetGuard extends EventEmitter {
         this.extractQueue = []
         this.commonPath = commonPath
         this.javaexec = javaexec
+        this.javadir = javadir
+        this.javaversion = javaversion
     }
 
     // Static Utility Functions
@@ -1138,6 +1179,7 @@ class AssetGuard extends EventEmitter {
                 }
             }
 
+            console.log('Launching ForgeCLI:', `${javaExecutable} -jar ${libPath} --installer ${installerExec} --target ${workDir}`)
             const child = child_process.spawn(javaExecutable, ['-jar', libPath, '--installer', installerExec, '--target', workDir])
             child.stdout.on('data', (data) => {
                 console.log('[ForgeCLI]', data.toString('utf8'))
@@ -1645,10 +1687,15 @@ class AssetGuard extends EventEmitter {
 
     _enqueueOpenJDK(dataDir) {
         return new Promise((resolve, reject) => {
-            JavaGuard._latestOpenJDK('8').then(verData => {
+            JavaGuard._latestOpenJDK(this.javaversion).then(verData => {
                 if (verData != null) {
 
-                    dataDir = path.join(dataDir, 'runtime', 'x64')
+                    if (verData.error) {
+                        resolve([false, verData.error])
+                        return
+                    }
+
+                    dataDir = path.join(dataDir, 'runtime', 'download')
                     const fDir = path.join(dataDir, verData.name)
                     const jre = new Asset(verData.name, null, verData.size, verData.uri, fDir)
                     this.java = new DLTracker([jre], jre.size, (a, self) => {
@@ -1656,7 +1703,7 @@ class AssetGuard extends EventEmitter {
 
                             const zip = new AdmZip(a.to)
                             const pos = path.join(dataDir, zip.getEntries()[0].entryName)
-                            zip.extractAllToAsync(dataDir, true, (err) => {
+                            zip.extractAllToAsync(dataDir, true, false, (err) => {
                                 if (err) {
                                     console.log(err)
                                     self.emit('complete', 'java', JavaGuard.javaExecFromRoot(pos))
@@ -1665,7 +1712,12 @@ class AssetGuard extends EventEmitter {
                                         if (err) {
                                             console.log(err)
                                         }
-                                        self.emit('complete', 'java', JavaGuard.javaExecFromRoot(pos))
+                                        fs.move(pos, this.javadir, { overwrite: true }, err => {
+                                            if (err) {
+                                                console.log(err)
+                                            }
+                                            self.emit('complete', 'java', this.javadir)
+                                        })
                                     })
                                 }
                             })
@@ -1694,15 +1746,20 @@ class AssetGuard extends EventEmitter {
                                             h = h.substring(0, h.indexOf('/'))
                                         }
                                         const pos = path.join(dataDir, h)
-                                        self.emit('complete', 'java', JavaGuard.javaExecFromRoot(pos))
+                                        fs.move(pos, this.javadir, { overwrite: true }, err => {
+                                            if (err) {
+                                                console.log(err)
+                                            }
+                                            self.emit('complete', 'java', this.javadir)
+                                        })
                                     })
                                 })
                         }
                     })
-                    resolve(true)
+                    resolve([true])
 
                 } else {
-                    resolve(false)
+                    resolve([false])
                 }
             })
         })
@@ -1781,7 +1838,7 @@ class AssetGuard extends EventEmitter {
                 })
 
                 req.on('error', (err) => {
-                    self.emit('error', 'download', err)
+                    self.emit('error', 'download', {error: err, asset: asset})
                 })
 
                 req.on('data', (chunk) => {

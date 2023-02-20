@@ -24,32 +24,55 @@ class Util {
         return true
     }
 
-    static getJDKPath() {
-        let mcVersion = DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer()).getMinecraftVersion()
-        let basePath, jdkMajorVersion, sanitizedOS, midwayPath, fileName, jdkPath
+    static getJDKVersion() {
+        const mcVersion = DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer()).getMinecraftVersion()
 
-        // less than MC1.17
-        if (!Util.mcVersionAtLeast('1.17', mcVersion)) {
-            jdkMajorVersion = '8'
+        if (!Util.mcVersionAtLeast('1.16', mcVersion)) {
+            // x < MC1.16
+            return '8'
 
-            // MC1.17
         } else if (!Util.mcVersionAtLeast('1.18', mcVersion)) {
-            jdkMajorVersion = '16'
+            // MC1.16 <= x < MC1.18
+            return '16'
 
-            // MC1.18+
         } else {
-            jdkMajorVersion = '17'
+            // MC1.18 <= x
+            return '17'
         }
+    }
+
+    static getJDKVersionAdoptium(major) {
+        switch (major) {
+            case '8':
+                return '8u302b08'
+            case '16':
+                return '16.0.2+7'
+            default:
+            case '17':
+                return '17.0.4.1+1'
+        }
+    }
+
+    static getJDKVersionCorretto(major) {
+        switch (major) {
+            case '8':
+                return '8.362.08.1'
+            case '16':
+                return '16.0.2.7.1'
+            default:
+            case '17':
+                return '17.0.4.9.1'
+        }
+    }
+
+    static getJDKPath() {
+        const jdkMajorVersion = Util.getJDKVersion()
+        const basePath = path.join(ConfigManager.getDataDirectory(), "runtime")
+
+        let sanitizedOS
         switch (process.platform) {
             case 'win32':
                 sanitizedOS = 'windows'
-                midwayPath = 'bin'
-                fileName = 'javaw.exe'
-                if (isDev) {
-                    basePath = path.join(process.cwd(), 'jdk')
-                } else {
-                    basePath = path.join(process.cwd(), 'Resources', 'jdk')
-                }
                 break
             case 'darwin':
                 if (Util.isAappleSilicon()) {
@@ -57,29 +80,15 @@ class Util {
                 } else {
                     sanitizedOS = 'mac-intel'
                 }
-
-                midwayPath = path.join('Contents', 'Home', 'bin')
-                fileName = 'java'
-
-                // process.cwdでは正常にパスが取得できないので__dirnameで対応
-                basePath = path.join(__dirname, '../../../..', 'jdk')
-                if (isDev) {
-                    basePath = path.join(__dirname, '../../..', 'jdk')
-                } else {
-                    basePath = path.join(__dirname, '../../../..', 'jdk')
-                }
                 break
             case 'linux':
                 sanitizedOS = 'linux'
-                midwayPath = 'bin'
-                fileName = 'java'
-                basePath = path.join(process.cwd(), 'resources', 'jdk')
                 break
             default:
                 return ConfigManager.getJavaExecutable()
         }
 
-        jdkPath = path.join(basePath, sanitizedOS, jdkMajorVersion, midwayPath, fileName)
+        const jdkPath = path.join(basePath, sanitizedOS, jdkMajorVersion)
         
         console.log(jdkPath)
         return jdkPath
@@ -155,13 +164,13 @@ class Util {
             return null
         }
 
-        // 1.16 ~ 1.18
-        if (!Util.mcVersionAtLeast('1.19', MC_VERSION)) {
-            return {
-                title: 'SORRY!!',
-                disc: `沼ランチャーでは現在、AppleSiliconプロセッサで</br>MC${MC_VERSION}</br>を起動することができません。`,
-            }
-        }
+        // // 1.16 ~ 1.18
+        // if (!Util.mcVersionAtLeast('1.19', MC_VERSION)) {
+        //     return {
+        //         title: 'SORRY!!',
+        //         disc: `沼ランチャーでは現在、AppleSiliconプロセッサで</br>MC${MC_VERSION}</br>を起動することができません。`,
+        //     }
+        // }
 
         // 1.19+
         return null

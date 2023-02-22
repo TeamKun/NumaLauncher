@@ -695,7 +695,7 @@ class ProcessBuilder {
         // Merge libraries, server libs with the same
         // maven identifier will override the mojang ones.
         // Ex. 1.7.10 forge overrides mojang's guava with newer version.
-        const finalLibs = {...mojangLibs, ...servLibs }
+        const finalLibs = { ...mojangLibs, ...servLibs }
         cpArgs = cpArgs.concat(Object.values(finalLibs))
 
         this._processClassPathList(cpArgs)
@@ -713,6 +713,7 @@ class ProcessBuilder {
      * @returns {{[id: string]: string}} An object containing the paths of each library mojang declares.
      */
     _resolveMojangLibraries(tempNativePath) {
+        const nativesRegex = /.+:natives-([^-]+)(?:-(.+))?/
         const libs = {}
 
         const libArr = this.versionData.libraries
@@ -720,13 +721,8 @@ class ProcessBuilder {
         for (let i = 0; i < libArr.length; i++) {
             const lib = libArr[i]
             if (Library.validateRules(lib.rules, lib.natives)) {
-                if (lib.natives == null) {
-                    const dlInfo = lib.downloads
-                    const artifact = dlInfo.artifact
-                    const to = path.join(this.libPath, artifact.path)
-                    const versionIndependentId = lib.name.substring(0, lib.name.lastIndexOf(':'))
-                    libs[versionIndependentId] = to
-                } else {
+                // Pre-1.19 has a natives object.
+                if (lib.natives != null) {
                     // Extract the native library.
                     const exclusionArr = lib.extract != null ? lib.extract.exclude : ['META-INF/']
                     const artifact = lib.downloads.classifiers[lib.natives[Library.mojangFriendlyOS()].replace('${arch}', process.arch.replace('x', ''))]
@@ -744,7 +740,7 @@ class ProcessBuilder {
                         let shouldExclude = false
 
                         // Exclude noted files.
-                        exclusionArr.forEach(function(exclusion) {
+                        exclusionArr.forEach(function (exclusion) {
                             if (fileName.indexOf(exclusion) > -1) {
                                 shouldExclude = true
                             }
@@ -760,6 +756,65 @@ class ProcessBuilder {
                         }
 
                     }
+                }
+                // 1.19+ logic
+                else if (lib.name.includes('natives-')) {
+
+                    const regexTest = nativesRegex.exec(lib.name)
+                    // const os = regexTest[1]
+                    const arch = regexTest[2] ?? 'x64'
+
+                    if (arch != process.arch) {
+                        continue
+                    }
+
+                    // Extract the native library.
+                    const exclusionArr = lib.extract != null ? lib.extract.exclude : ['META-INF/', '.git', '.sha1']
+                    const artifact = lib.downloads.artifact
+
+                    // Location of native zip.
+                    const to = path.join(this.libPath, artifact.path)
+
+                    let zip = new AdmZip(to)
+                    let zipEntries = zip.getEntries()
+
+                    // Unzip the native zip.
+                    for (let i = 0; i < zipEntries.length; i++) {
+                        if (zipEntries[i].isDirectory) {
+                            continue
+                        }
+
+                        const fileName = zipEntries[i].entryName
+
+                        let shouldExclude = false
+
+                        // Exclude noted files.
+                        exclusionArr.forEach(function (exclusion) {
+                            if (fileName.indexOf(exclusion) > -1) {
+                                shouldExclude = true
+                            }
+                        })
+
+                        const extractName = fileName.includes('/') ? fileName.substring(fileName.lastIndexOf('/')) : fileName
+
+                        // Extract the file.
+                        if (!shouldExclude) {
+                            fs.writeFile(path.join(tempNativePath, extractName), zipEntries[i].getData(), (err) => {
+                                if (err) {
+                                    logger.error('Error while extracting native library:', err)
+                                }
+                            })
+                        }
+
+                    }
+                }
+                // No natives
+                else {
+                    const dlInfo = lib.downloads
+                    const artifact = dlInfo.artifact
+                    const to = path.join(this.libPath, artifact.path)
+                    const versionIndependentId = lib.name.substring(0, lib.name.lastIndexOf(':'))
+                    libs[versionIndependentId] = to
                 }
             }
         }
@@ -787,7 +842,7 @@ class ProcessBuilder {
                 if (mdl.hasSubModules()) {
                     const res = this._resolveModuleLibraries(mdl)
                     if (res.length > 0) {
-                        libs = {...libs, ...res }
+                        libs = { ...libs, ...res }
                     }
                 }
             } else if (type === DistroManager.Types.Forge) {
@@ -796,7 +851,7 @@ class ProcessBuilder {
                 for (const library of this.forgeData.libraries) {
                     forgeLibs.push(path.join(ConfigManager.getCommonDirectory(), 'libraries', library.downloads.artifact.path))
                 }
-                libs = {...libs, ...forgeLibs }
+                libs = { ...libs, ...forgeLibs }
             }
         }
 
@@ -805,7 +860,7 @@ class ProcessBuilder {
             if (mods.sub_modules != null) {
                 const res = this._resolveModuleLibraries(mods[i])
                 if (res.length > 0) {
-                    libs = {...libs, ...res }
+                    libs = { ...libs, ...res }
                 }
             }
         }

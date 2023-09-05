@@ -297,7 +297,10 @@ function createServerHtml(servers) {
     } else {
         for (const serv of sortedServers) {
             let serverName = Util.removeOrderNumber(serv.getName())
-                //let serverName = serv.getName()
+            //メンバーシップ用のサーバーであるか判定
+            if(!serverName.startsWith('[メン限]')) {
+                continue
+            }
             htmlString += `<button class="serverListing" servid="${serv.getID()}" ${serv.getID() === ConfigManager.getSelectedServer() ? 'selected' : ''}>
                 ${genelateIcon(serv.getIcon(), serverName)}
                 <div class="serverListingDetails">

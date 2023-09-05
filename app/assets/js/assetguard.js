@@ -319,7 +319,7 @@ class JavaGuard extends EventEmitter {
             default:
                 // サポートOS外
                 return Promise.resolve({
-                    error: `「${process.platform}」は対応していないOSです。<br>Windows(x64)、macOS(x64/M1)のみ対応しています。<br>Linuxは対応していませんので沼ランチャーの使用を諦め、ご自身でModパック導入方法を調べて導入してください。`
+                    error: `「${process.platform}」は対応していないOSです。<br>Windows(x64)、macOS(x64/M1)のみ対応しています。<br>Linuxは対応していませんのでケーユーエヌランチャーの使用を諦め、ご自身でModパック導入方法を調べて導入してください。`
                 })
         }
 

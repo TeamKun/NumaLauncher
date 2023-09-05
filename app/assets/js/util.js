@@ -168,7 +168,7 @@ class Util {
         // if (!Util.mcVersionAtLeast('1.19', MC_VERSION)) {
         //     return {
         //         title: 'SORRY!!',
-        //         disc: `沼ランチャーでは現在、AppleSiliconプロセッサで</br>MC${MC_VERSION}</br>を起動することができません。`,
+        //         disc: `ケーユーエヌランチャーでは現在、AppleSiliconプロセッサで</br>MC${MC_VERSION}</br>を起動することができません。`,
         //     }
         // }
 

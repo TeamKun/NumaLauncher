@@ -1,6 +1,6 @@
 <p align="center"><img src="./app/assets/images/SealCircle.svg" width="150px" height="150px" alt="aventium softworks"></p>
 
-<h1 align="center">沼ランチャー</h1>
+<h1 align="center">ケーユーエヌランチャー</h1>
 
 <em><h5 align="center">(formerly Electron Launcher)</h5></em>
 

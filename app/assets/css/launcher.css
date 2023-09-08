@@ -458,7 +458,7 @@ button {
     height: 100%;
     width: 100%;
     transition: filter 0.25s ease;
-    background: rgba(0, 0, 0, 0.5);
+    background: white;
 }
 
 
@@ -1043,14 +1043,14 @@ button {
 
 #loginMSButton {
     background: none;
-    background-color: rgb(255, 255, 255, 0);
+    background-color: rgba(0, 0, 0, 0);
     border: none;
     margin-top: 20px;
     margin-bottom: 20px;
     font-size: 23px;
     padding: 5px 0;
     border: 2px solid rgba(255, 255, 255, 0.6);
-    color: rgba(255, 255, 255, 0.8);
+    color: rgb(85, 83, 83);
     border-radius: 30px;
     width: 100%;
     transition: ease 0.6s;
@@ -1061,7 +1061,7 @@ button {
 #loginMSButton:hover {
     text-shadow: 0px 0px 100px #fff;
     background-color: rgba(255, 255, 255, 0.8);
-    color: rgba(0, 0, 0, 0.7);
+    color: rgba(105, 100, 100, 0.7);
     outline: none;
     font-weight: bold;
 }
@@ -5660,6 +5660,7 @@ form[name='submitSecretQuestion'] p {
     justify-content: center;
     width: 100%;
     height: calc(100% - 22px);
+    background-color: white;
 }
 
 

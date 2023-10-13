@@ -1,9 +1,12 @@
 name: Build
 
-on: push
+on:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
-  release:
+  build:
     runs-on: ${{ matrix.os }}
 
     permissions:
@@ -13,14 +16,42 @@ jobs:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
 
+    defaults:
+      run:
+        working-directory: ./launcher
+
     steps:
+      - name: Check out Git repository (helios-core)
+        uses: actions/checkout@v3
+        with:
+          repository: Kamesuta/helios-core
+          path: ./helios-core
+
       - name: Check out Git repository
         uses: actions/checkout@v3
+        with:
+          path: ./launcher
+
+      - name: Build (helios-core)
+        run: |
+          npm ci
+          npm run build
+        shell: bash
+        working-directory: ./helios-core
 
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
+
+      ##Tag Number input
+      - name: Get latest release version tag number
+        id: get_version
+        uses: battila7/get-version-action@v2
+
+      ##Set npm Version
+      - name: Set npm version
+        run: npm version ${{ steps.get_version.outputs.version-without-v }} --no-git-tag-version
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -36,3 +67,56 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run dist
         shell: bash
+
+      ##Upload Artifact
+      - uses: actions/upload-artifact@v3
+        name: Action-Upload
+        with:
+          name: ${{ matrix.os }}-release
+          path: |
+            launcher/dist/latest.yml
+            launcher/dist/latest-mac.yml
+            launcher/dist/latest-linux.yml
+            launcher/dist/KamePowerLauncher-setup-${{ steps.get_version.outputs.version-without-v }}.*
+
+
+  release:
+    runs-on: ubuntu-latest
+
+    needs:
+      - build
+
+    steps:
+      ##Tag Number input
+      - name: Get latest release version tag number
+        id: get_version
+        uses: battila7/get-version-action@v2
+
+      ##Download Artifact
+      - uses: actions/download-artifact@v3
+        name: Action-Download
+        with:
+          path: dist
+
+      ##ReleaseChannel - go!
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.get_version.outputs.version }}
+          name: KamePowerLauncher - ${{ steps.get_version.outputs.version }}
+          body: |
+            ### ▼ご使用のOSのインストーラーをダウンロードしてください。
+            [Windows](https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.version }}/KamePowerLauncher-setup-${{ steps.get_version.outputs.version-without-v }}.exe)
+            [Mac OS X](https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.version }}/KamePowerLauncher-setup-${{ steps.get_version.outputs.version-without-v }}.dmg)
+            [Linux](https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.version }}/KamePowerLauncher-setup-${{ steps.get_version.outputs.version-without-v }}.AppImage)
+
+            ### ビルド情報
+            ${{ steps.get_version.outputs.version }} by ${{ github.actor }}
+          draft: false
+          prerelease: false
+          files: |
+            dist/**/latest.yml
+            dist/**/latest-mac.yml
+            dist/**/latest-linux.yml
+            dist/**/KamePowerLauncher-setup-${{ steps.get_version.outputs.version-without-v }}.*

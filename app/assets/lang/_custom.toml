@@ -1,20 +1,20 @@
 # Custom Language File for Launcher Customizer
 
 [ejs.app]
-title = "Helios Launcher"
+title = "かめぱわぁ～るどランチャー"
 
 [ejs.landing]
-mediaGitHubURL = "https://github.com/dscalzi/HeliosLauncher"
-mediaTwitterURL = "#"
-mediaInstagramURL = "#"
-mediaYouTubeURL = "#"
-mediaDiscordURL = "https://discord.gg/zNWUXdt"
+mediaGitHubURL = "https://www.kamesuta.com/"
+mediaTwitterURL = "https://twitter.com/hashtag/%E3%81%8B%E3%82%81%E3%81%B1%E3%82%8F%E3%81%81%EF%BD%9E%E3%82%8B%E3%81%A9?src=hashtag_click"
+mediaInstagramURL = "https://github.com/KamePowerWorld/KamePowerLauncher"
+mediaYouTubeURL = "https://www.youtube.com/@Kamesuta"
+mediaDiscordURL = "https://discord.gg/uuHpBcZSXj"
 
 [ejs.settings]
-sourceGithubLink = "https://github.com/dscalZi/HeliosLauncher"
-supportLink = "https://github.com/dscalZi/HeliosLauncher/issues"
+sourceGithubLink = "https://github.com/KamePowerWorld/KamePowerLauncher"
+supportLink = "https://discord.gg/kyefhuY5Rd"
 
 [ejs.welcome]
-welcomeHeader = "WELCOME TO WESTEROSCRAFT"
-welcomeDescription = "Our mission is to recreate the universe imagined by author George RR Martin in his fantasy series, A Song of Ice and Fire.  Through the collaborative effort of thousands of community members, we have sought to create Westeros as accurately and precisely as possible within Minecraft.  The world we are creating is yours to explore.  Journey from Dorne to Castle Black, and if you aren’t afraid, beyond the Wall itself, but best not delay.  As the words of House Stark ominously warn: Winter is Coming."
-welcomeDescCTA = "You are just a few clicks away from Westeros."
+welcomeHeader = "ようこそ、かめぱわぁ～るどへ"
+welcomeDescription = "Modの知識がなくてもMod導入ができる、かめぱわぁ～るど専用のランチャーです。"
+welcomeDescCTA = "数クリックでかめぱわぁ～るどのMod鯖へ参加する準備が整います。"

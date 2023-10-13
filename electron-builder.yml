@@ -1,8 +1,8 @@
-appId: 'helioslauncher'
-productName: 'Helios Launcher'
+appId: 'kamepowerlauncher'
+productName: 'KamePowerLauncher'
 artifactName: '${productName}-setup-${version}.${ext}'
 
-copyright: 'Copyright © 2018-2022 Daniel Scalzi'
+copyright: 'Copyright © 2018-2022 Daniel Scalzi, 2023 Kamesuta'
 
 asar: true
 compression: 'maximum'
@@ -39,10 +39,10 @@ mac:
 # Linux Configuration
 linux: 
   target: 'AppImage'
-  maintainer: 'Daniel Scalzi'
-  vendor: 'Daniel Scalzi'
-  synopsis: 'Modded Minecraft Launcher'
-  description: 'Custom launcher which allows users to join modded servers. All mods, configurations, and updates are handled automatically.'
+  maintainer: 'Kamesuta'
+  vendor: 'Daniel Scalzi, Kamesuta'
+  synopsis: 'Minecraft Modランチャー'
+  description: 'Modの知識がなくてもMod導入ができる、かめぱわぁ～るど専用のランチャーです。'
   category: 'Game'
 
 

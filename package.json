@@ -1,13 +1,13 @@
 {
-  "name": "helioslauncher",
+  "name": "kamepowerlauncher",
   "version": "2.0.5",
-  "productName": "Helios Launcher",
-  "description": "Modded Minecraft Launcher",
-  "author": "Daniel Scalzi (https://github.com/dscalzi/)",
+  "productName": "KamePowerLauncher",
+  "description": "Modの知識がなくてもMod導入ができる「かめぱわぁ～るど」専用のランチャーです。",
+  "author": "Daniel Scalzi (https://github.com/dscalzi/), Kamesuta (https://github.com/Kamesuta/)",
   "license": "UNLICENSED",
-  "homepage": "https://github.com/dscalzi/HeliosLauncher",
+  "homepage": "https://github.com/KamePowerWorld/KamePowerLauncher",
   "bugs": {
-    "url": "https://github.com/dscalzi/HeliosLauncher/issues"
+    "url": "https://discord.gg/kyefhuY5Rd"
   },
   "private": true,
   "main": "index.js",
@@ -46,6 +46,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dscalzi/HeliosLauncher.git"
+    "url": "git+https://github.com/KamePowerWorld/KamePowerLauncher.git"
   }
 }

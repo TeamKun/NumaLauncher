@@ -74,10 +74,8 @@ jobs:
         with:
           name: ${{ matrix.os }}-release
           path: |
-            launcher/dist/latest.yml
-            launcher/dist/latest-mac.yml
-            launcher/dist/latest-linux.yml
-            launcher/dist/KamePowerLauncher-setup-${{ steps.get_version.outputs.version-without-v }}.*
+            launcher/dist/latest*.yml
+            launcher/dist/KamePowerLauncher-setup-${{ steps.get_version.outputs.version-without-v }}*
 
 
   release:
@@ -116,7 +114,5 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            dist/**/latest.yml
-            dist/**/latest-mac.yml
-            dist/**/latest-linux.yml
-            dist/**/KamePowerLauncher-setup-${{ steps.get_version.outputs.version-without-v }}.*
+            dist/**/latest*.yml
+            dist/**/KamePowerLauncher-setup-${{ steps.get_version.outputs.version-without-v }}*

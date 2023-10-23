@@ -30,10 +30,7 @@ nsis:
 mac:
   target:
     - target: 'dmg'
-      arch:
-        - 'x64'
-        - 'arm64'
-  artifactName: '${productName}-setup-${version}-${arch}.${ext}'
+      arch: 'universal'
   category: 'public.app-category.games'
 
 # Linux Configuration

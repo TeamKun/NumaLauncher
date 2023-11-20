@@ -2522,6 +2522,7 @@ input:checked + .toggleSwitchSlider:before {
     height: 100%;
     width: 33%;
     display: inline-flex;
+    margin-left: 30%;
 }
 
 /*******************************************************************************

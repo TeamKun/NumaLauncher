@@ -736,7 +736,7 @@ function parseModulesForUI(mdls, submodules, servConf){
 
     for(const mdl of mdls){
 
-        if(mdl.rawModule.type === Type.ForgeMod || mdl.rawModule.type === Type.LiteMod || mdl.rawModule.type === Type.LiteLoader){
+        if(mdl.rawModule.type === Type.ForgeMod || mdl.rawModule.type === Type.LiteMod || mdl.rawModule.type === Type.LiteLoader || mdl.rawModule.type === Type.FabricMod){
 
             if(mdl.getRequired().value){
 
@@ -900,7 +900,7 @@ function bindDropinModsRemoveButton(){
                 setOverlayContent(
                     Lang.queryJS('settings.dropinMods.deleteFailedTitle', { fullName }),
                     Lang.queryJS('settings.dropinMods.deleteFailedMessage'),
-                    Lang.queryJS('settings.okButton')
+                    Lang.queryJS('settings.dropinMods.okButton')
                 )
                 setOverlayHandler(null)
                 toggleOverlay(true)
@@ -955,7 +955,7 @@ function saveDropinModConfiguration(){
                         setOverlayContent(
                             Lang.queryJS('settings.dropinMods.failedToggleTitle'),
                             err.message,
-                            Lang.queryJS('settings.okButton')
+                            Lang.queryJS('settings.dropinMods.okButton')
                         )
                         setOverlayHandler(null)
                         toggleOverlay(true)

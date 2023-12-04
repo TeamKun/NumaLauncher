@@ -24,7 +24,7 @@ jobs:
       - name: Check out Git repository (helios-core)
         uses: actions/checkout@v3
         with:
-          repository: Kamesuta/helios-core
+          repository: KamePowerWorld/helios-core
           path: ./helios-core
 
       - name: Check out Git repository

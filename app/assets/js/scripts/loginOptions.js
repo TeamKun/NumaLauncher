@@ -1,5 +1,6 @@
 const loginOptionsCancelContainer = document.getElementById('loginOptionCancelContainer')
 const loginOptionMicrosoft = document.getElementById('loginOptionMicrosoft')
+const loginOptionMicrosoftMsMcLauncherAuth = document.getElementById('loginOptionMicrosoftMsMcLauncherAuth')
 const loginOptionMojang = document.getElementById('loginOptionMojang')
 const loginOptionsCancelButton = document.getElementById('loginOptionCancelButton')
 
@@ -23,7 +24,19 @@ loginOptionMicrosoft.onclick = (e) => {
         ipcRenderer.send(
             MSFT_OPCODE.OPEN_LOGIN,
             loginOptionsViewOnLoginSuccess,
-            loginOptionsViewOnLoginCancel
+            loginOptionsViewOnLoginCancel,
+            false
+        )
+    })
+}
+
+loginOptionMicrosoftMsMcLauncherAuth.onclick = (e) => {
+    switchView(getCurrentView(), VIEWS.waiting, 500, 500, () => {
+        ipcRenderer.send(
+            MSFT_OPCODE.OPEN_LOGIN,
+            loginOptionsViewOnLoginSuccess,
+            loginOptionsViewOnLoginCancel,
+            true
         )
     })
 }

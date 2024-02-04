@@ -1523,6 +1523,8 @@ input:checked + .toggleSwitchSlider:before {
     cursor: pointer;
     outline: none;
     transition: 0.25s ease;
+    display: flex;
+    justify-content: right;
 }
 .settingsAddAuthAccount:hover,
 .settingsAddAuthAccount:focus {

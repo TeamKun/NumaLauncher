@@ -265,7 +265,7 @@ async function validateSelectedMicrosoftAccount(){
     if(msExpired) {
         // MS expired, do full refresh.
         try {
-            const res = await fullMicrosoftAuthFlow(current.microsoft.refresh_token, AUTH_MODE.MS_REFRESH)
+            const res = await fullMicrosoftAuthFlow(current.microsoft.refresh_token, AUTH_MODE.MS_REFRESH, current.microsoft.is_mc_launcher_auth)
 
             ConfigManager.updateMicrosoftAuthAccount(
                 current.uuid,
@@ -273,7 +273,8 @@ async function validateSelectedMicrosoftAccount(){
                 res.accessToken.access_token,
                 res.accessToken.refresh_token,
                 calculateExpiryDate(now, res.accessToken.expires_in),
-                calculateExpiryDate(now, res.mcToken.expires_in)
+                calculateExpiryDate(now, res.mcToken.expires_in),
+                current.microsoft.is_mc_launcher_auth
             )
             ConfigManager.save()
             return true
@@ -283,7 +284,7 @@ async function validateSelectedMicrosoftAccount(){
     } else {
         // Only MC expired, use existing MS token.
         try {
-            const res = await fullMicrosoftAuthFlow(current.microsoft.access_token, AUTH_MODE.MC_REFRESH)
+            const res = await fullMicrosoftAuthFlow(current.microsoft.access_token, AUTH_MODE.MC_REFRESH, current.microsoft.is_mc_launcher_auth)
 
             ConfigManager.updateMicrosoftAuthAccount(
                 current.uuid,
@@ -291,7 +292,8 @@ async function validateSelectedMicrosoftAccount(){
                 current.microsoft.access_token,
                 current.microsoft.refresh_token,
                 current.microsoft.expires_at,
-                calculateExpiryDate(now, res.mcToken.expires_in)
+                calculateExpiryDate(now, res.mcToken.expires_in),
+                current.microsoft.is_mc_launcher_auth
             )
             ConfigManager.save()
             return true

@@ -366,7 +366,8 @@ async function validateSelectedAccount(){
                                 selectedAcc.expiresAt,
                                 selectedAcc.microsoft.access_token,
                                 selectedAcc.microsoft.refresh_token,
-                                selectedAcc.microsoft.expires_at
+                                selectedAcc.microsoft.expires_at,
+                                selectedAcc.microsoft.is_mc_launcher_auth
                             )
                         } else {
                             ConfigManager.addMojangAuthAccount(selectedAcc.uuid, selectedAcc.accessToken, selectedAcc.username, selectedAcc.displayName)

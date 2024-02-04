@@ -4,6 +4,9 @@
 exports.AZURE_CLIENT_ID = '5b2d8e51-391a-483d-b9b4-71cfae677f50'
 // SEE NOTE ABOVE.
 
+// This is the client ID for the Minecraft Launcher.
+exports.MC_LAUNCHER_CLIENT_ID = '00000000402B5328'
+
 
 // Opcodes
 exports.MSFT_OPCODE = {

@@ -10,7 +10,7 @@ const isDev                             = require('./app/assets/js/isdev')
 const path                              = require('path')
 const semver                            = require('semver')
 const { pathToFileURL }                 = require('url')
-const { AZURE_CLIENT_ID, MSFT_OPCODE, MSFT_REPLY_TYPE, MSFT_ERROR, SHELL_OPCODE } = require('./app/assets/js/ipcconstants')
+const { AZURE_CLIENT_ID, MC_LAUNCHER_CLIENT_ID, MSFT_OPCODE, MSFT_REPLY_TYPE, MSFT_ERROR, SHELL_OPCODE } = require('./app/assets/js/ipcconstants')
 const LangLoader                        = require('./app/assets/js/langloader')
 
 // Setup Lang
@@ -110,6 +110,7 @@ app.disableHardwareAcceleration()
 
 
 const REDIRECT_URI_PREFIX = 'https://login.microsoftonline.com/common/oauth2/nativeclient?'
+const REDIRECT_URI_PREFIX_LIVE = 'https://login.live.com/oauth20_desktop.srf?'
 
 // Microsoft Auth Login
 let msftAuthWindow
@@ -144,8 +145,12 @@ ipcMain.on(MSFT_OPCODE.OPEN_LOGIN, (ipcEvent, ...arguments_) => {
     })
 
     msftAuthWindow.webContents.on('did-navigate', (_, uri) => {
-        if (uri.startsWith(REDIRECT_URI_PREFIX)) {
-            let queries = uri.substring(REDIRECT_URI_PREFIX.length).split('#', 1).toString().split('&')
+        const query = uri.startsWith(REDIRECT_URI_PREFIX) ? uri.substring(REDIRECT_URI_PREFIX.length)
+            : uri.startsWith(REDIRECT_URI_PREFIX_LIVE) ? uri.substring(REDIRECT_URI_PREFIX_LIVE.length)
+                : undefined
+
+        if (query) {
+            let queries = query.split('#', 1).toString().split('&')
             let queryMap = {}
 
             queries.forEach(query => {
@@ -163,6 +168,7 @@ ipcMain.on(MSFT_OPCODE.OPEN_LOGIN, (ipcEvent, ...arguments_) => {
 
     msftAuthWindow.removeMenu()
     msftAuthWindow.loadURL(`https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?prompt=select_account&client_id=${AZURE_CLIENT_ID}&response_type=code&scope=XboxLive.signin%20offline_access&redirect_uri=https://login.microsoftonline.com/common/oauth2/nativeclient`)
+    //msftAuthWindow.loadURL(`https://login.live.com/oauth20_authorize.srf?prompt=select_account&client_id=${MC_LAUNCHER_CLIENT_ID}&response_type=code&scope=service::user.auth.xboxlive.com::MBI_SSL&lw=1&fl=dob,easi2&xsup=1&nopa=2&redirect_uri=https://login.live.com/oauth20_desktop.srf`)
 })
 
 // Microsoft Auth Logout

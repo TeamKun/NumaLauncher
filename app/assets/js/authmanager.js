@@ -14,7 +14,7 @@ const { LoggerUtil }         = require('helios-core')
 const { RestResponseStatus } = require('helios-core/common')
 const { MojangRestAPI, mojangErrorDisplayable, MojangErrorCode } = require('helios-core/mojang')
 const { MicrosoftAuth, microsoftErrorDisplayable, MicrosoftErrorCode } = require('helios-core/microsoft')
-const { AZURE_CLIENT_ID }    = require('./ipcconstants')
+const { AZURE_CLIENT_ID, MC_LAUNCHER_CLIENT_ID }    = require('./ipcconstants')
 
 const log = LoggerUtil.getLogger('AuthManager')
 
@@ -68,15 +68,18 @@ const AUTH_MODE = { FULL: 0, MS_REFRESH: 1, MC_REFRESH: 2 }
  * 
  * @param {string} entryCode FULL-AuthCode. MS_REFRESH=refreshToken, MC_REFRESH=accessToken
  * @param {*} authMode The auth mode.
+ * @param {boolean} msMcLauncherAuth Whether or not the microsoft account is authenticated via official launcher client id 
  * @returns An object with all auth data. AccessToken object will be null when mode is MC_REFRESH.
  */
-async function fullMicrosoftAuthFlow(entryCode, authMode) {
+async function fullMicrosoftAuthFlow(entryCode, authMode, msMcLauncherAuth) {
     try {
 
         let accessTokenRaw
         let accessToken
         if(authMode !== AUTH_MODE.MC_REFRESH) {
-            const accessTokenResponse = await MicrosoftAuth.getAccessToken(entryCode, authMode === AUTH_MODE.MS_REFRESH, AZURE_CLIENT_ID)
+            const accessTokenResponse = msMcLauncherAuth
+                ? await MicrosoftAuth.getAccessTokenLive(entryCode, authMode === AUTH_MODE.MS_REFRESH, MC_LAUNCHER_CLIENT_ID)
+                : await MicrosoftAuth.getAccessToken(entryCode, authMode === AUTH_MODE.MS_REFRESH, AZURE_CLIENT_ID)
             if(accessTokenResponse.responseStatus === RestResponseStatus.ERROR) {
                 return Promise.reject(microsoftErrorDisplayable(accessTokenResponse.microsoftErrorCode))
             }
@@ -86,7 +89,7 @@ async function fullMicrosoftAuthFlow(entryCode, authMode) {
             accessTokenRaw = entryCode
         }
         
-        const xblResponse = await MicrosoftAuth.getXBLToken(accessTokenRaw)
+        const xblResponse = await MicrosoftAuth.getXBLToken(accessTokenRaw, !msMcLauncherAuth)
         if(xblResponse.responseStatus === RestResponseStatus.ERROR) {
             return Promise.reject(microsoftErrorDisplayable(xblResponse.microsoftErrorCode))
         }
@@ -133,11 +136,12 @@ function calculateExpiryDate(nowMs, epiresInS) {
  * The resultant data will be stored as an auth account in the configuration database.
  * 
  * @param {string} authCode The authCode obtained from microsoft.
+ * @param {boolean} msMcLauncherAuth Whether or not the microsoft account is authenticated via official launcher client id 
  * @returns {Promise.<Object>} Promise which resolves the resolved authenticated account object.
  */
-exports.addMicrosoftAccount = async function(authCode) {
+exports.addMicrosoftAccount = async function(authCode, msMcLauncherAuth) {
 
-    const fullAuth = await fullMicrosoftAuthFlow(authCode, AUTH_MODE.FULL)
+    const fullAuth = await fullMicrosoftAuthFlow(authCode, AUTH_MODE.FULL, msMcLauncherAuth)
 
     // Advance expiry by 10 seconds to avoid close calls.
     const now = new Date().getTime()
@@ -149,7 +153,8 @@ exports.addMicrosoftAccount = async function(authCode) {
         calculateExpiryDate(now, fullAuth.mcToken.expires_in),
         fullAuth.accessToken.access_token,
         fullAuth.accessToken.refresh_token,
-        calculateExpiryDate(now, fullAuth.accessToken.expires_in)
+        calculateExpiryDate(now, fullAuth.accessToken.expires_in),
+        msMcLauncherAuth
     )
     ConfigManager.save()
 

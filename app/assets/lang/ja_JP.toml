@@ -248,6 +248,11 @@ latestVersionTitle = "最新バージョンをご利用中です"
 checkForUpdatesButton = "アップデートを確認"
 checkingForUpdatesButton = "アップデートを確認中..."
 
+[js.settings.msftLogin]
+errorTitle = "Microsoftのログインに失敗しました"
+errorMessage = "Microsoftアカウントの認証に失敗しました。もう一度試してみてください。"
+okButton = "OK"
+
 [js.uibinder.startup]
 fatalErrorTitle = "致命的なエラー: ディストリビューションインデックスの読み込みに失敗"
 fatalErrorMessage = "サーバーへの接続に失敗したためディストリビューションインデックスをダウンロードできませんでした。ローカルのキャッシュもありません。<br><br>ディストリビューションインデックスは、最新のサーバー情報を提供する重要なファイルです。このファイルなしではランチャーを起動できません。インターネットに接続されていることを確認して、アプリケーションを再起動してください。"

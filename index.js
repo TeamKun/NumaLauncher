@@ -104,7 +104,7 @@ ipcMain.on("distributionIndexDone", (event, res) => {
   // ダウンロードフォルダ
   const downloadDirectory = path.join(
     app.getPath("temp"),
-    "NumaLauncher",
+    "KUNLauncher",
     "ManualDownloads"
   );
   // IDでウィンドウを閉じる

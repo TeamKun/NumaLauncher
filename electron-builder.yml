@@ -2,7 +2,7 @@ appId: 'kamepowerlauncher'
 productName: 'KamePowerLauncher'
 artifactName: '${productName}-setup-${version}.${ext}'
 
-copyright: 'Copyright © 2018-2022 Daniel Scalzi, 2023 Kamesuta'
+copyright: 'Copyright © 2018-2024 Daniel Scalzi, 2023-2024 Kamesuta'
 
 asar: true
 compression: 'maximum'

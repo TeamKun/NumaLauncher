@@ -5,13 +5,13 @@ remoteMain.initialize()
 const { app, BrowserWindow, ipcMain, Menu, shell } = require('electron')
 const autoUpdater                       = require('electron-updater').autoUpdater
 const ejse                              = require('ejs-electron')
-const fs                                = require('fs')
 const isDev                             = require('./app/assets/js/isdev')
 const path                              = require('path')
 const semver                            = require('semver')
 const { pathToFileURL }                 = require('url')
 const { AZURE_CLIENT_ID, MC_LAUNCHER_CLIENT_ID, MSFT_OPCODE, MSFT_REPLY_TYPE, MSFT_ERROR, SHELL_OPCODE } = require('./app/assets/js/ipcconstants')
 const LangLoader                        = require('./app/assets/js/langloader')
+const { default: got }                  = require('got')
 
 // Setup Lang
 LangLoader.setupLanguage()
@@ -235,7 +235,7 @@ ipcMain.on(MSFT_OPCODE.OPEN_LOGOUT, (ipcEvent, uuid, isLastAccount) => {
 // be closed automatically when the JavaScript object is garbage collected.
 let win
 
-function createWindow() {
+async function createWindow() {
 
     win = new BrowserWindow({
         width: 980,
@@ -251,8 +251,18 @@ function createWindow() {
     })
     remoteMain.enable(win.webContents)
 
+    // 背景画像を取得
+    const url = 'https://raw.githubusercontent.com/KamePowerWorld/ModPacks/deploy/backgrounds'
+    const backgrounds = await got.get(`${url}/list.json`, { responseType: 'json' })
+        .then(res => res.body?.map(name => `${url}/${name}`))
+        .catch(err => {
+            console.error(err)
+            return []
+        })
+    const background = backgrounds[Math.floor(Math.random() * backgrounds.length)] ?? ''
+
     const data = {
-        bkid: Math.floor((Math.random() * fs.readdirSync(path.join(__dirname, 'app', 'assets', 'images', 'backgrounds')).length)),
+        bkid: background,
         lang: (str, placeHolders) => LangLoader.queryEJS(str, placeHolders)
     }
     Object.entries(data).forEach(([key, val]) => ejse.data(key, val))

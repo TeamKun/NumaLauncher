@@ -43,6 +43,16 @@ const configPath = path.join(exports.getLauncherDirectory(), 'config.json')
 const configPathLEGACY = path.join(dataPath, 'config.json')
 const firstLaunch = !fs.existsSync(configPath) && !fs.existsSync(configPathLEGACY)
 
+// カスタムDistribution URLを設定ファイルから読み込む
+const distributionUrlConfig = path.join(exports.getLauncherDirectory(), 'distribution.txt')
+const distributionUrl = fs.existsSync(distributionUrlConfig) ? fs.readFileSync(distributionUrlConfig, 'UTF-8').trim() : undefined
+// コマンドライン引数から --distro= の値を取得
+const argDistributionUrl = require('@electron/remote').process.argv.find(arg => arg.startsWith('--distro='))?.split('=')[1]
+// --distro= が指定されていれば優先する
+exports.getDistributionUrl = function(){
+    return argDistributionUrl || distributionUrl
+}
+
 exports.getAbsoluteMinRAM = function(ram){
     if(ram?.minimum != null) {
         return ram.minimum/1024

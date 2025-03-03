@@ -41,6 +41,10 @@ const launch_details_text     = document.getElementById('launch_details_text')
 const server_selection_button = document.getElementById('server_selection_button')
 const user_text               = document.getElementById('user_text')
 
+// カスタムDistroを表示
+const customDistroLabel       = document.getElementById('frameCustomDistro')
+customDistroLabel.innerText   = ConfigManager.getDistributionUrl() ?? ''
+
 const loggerLanding = LoggerUtil.getLogger('Landing')
 
 /* Launch Progress Wrapper Functions */

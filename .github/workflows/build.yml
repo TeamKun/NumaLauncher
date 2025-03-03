@@ -69,7 +69,7 @@ jobs:
         shell: bash
 
       ##Upload Artifact
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         name: Action-Upload
         with:
           name: ${{ matrix.os }}-release
@@ -91,7 +91,7 @@ jobs:
         uses: battila7/get-version-action@v2
 
       ##Download Artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         name: Action-Download
         with:
           path: dist

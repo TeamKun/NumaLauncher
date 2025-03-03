@@ -16,21 +16,16 @@ jobs:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
 
-    defaults:
-      run:
-        working-directory: ./launcher
-
     steps:
-      - name: Check out Git repository (helios-core)
-        uses: actions/checkout@v3
-        with:
-          repository: KamePowerWorld/helios-core
-          path: ./helios-core
-
       - name: Check out Git repository
         uses: actions/checkout@v3
         with:
-          path: ./launcher
+          submodules: recursive
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
 
       - name: Build (helios-core)
         run: |
@@ -38,11 +33,6 @@ jobs:
           npm run build
         shell: bash
         working-directory: ./helios-core
-
-      - name: Set up Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
 
       ##Tag Number input
       - name: Get latest release version tag number
@@ -52,11 +42,6 @@ jobs:
       ##Set npm Version
       - name: Set npm version
         run: npm version ${{ steps.get_version.outputs.version-without-v }} --no-git-tag-version
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.x
 
       - name: Install Dependencies
         run: npm ci
@@ -74,8 +59,8 @@ jobs:
         with:
           name: ${{ matrix.os }}-release
           path: |
-            launcher/dist/latest*.yml
-            launcher/dist/KamePowerLauncher-setup-${{ steps.get_version.outputs.version-without-v }}*
+            dist/latest*.yml
+            dist/KamePowerLauncher-setup-${{ steps.get_version.outputs.version-without-v }}*
 
 
   release:

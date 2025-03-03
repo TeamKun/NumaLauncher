@@ -1,0 +1,3 @@
+[submodule "helios-core"]
+	path = helios-core
+	url = https://github.com/KamePowerWorld/helios-core.git

@@ -263,7 +263,8 @@ async function createWindow() {
 
     const data = {
         bkid: background,
-        lang: (str, placeHolders) => LangLoader.queryEJS(str, placeHolders)
+        lang: (str, placeHolders) => LangLoader.queryEJS(str, placeHolders),
+        appver: app.getVersion()
     }
     Object.entries(data).forEach(([key, val]) => ejse.data(key, val))
 

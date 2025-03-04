@@ -77,7 +77,7 @@ class ProcessBuilder {
 
         logger.info('Launch Arguments:', loggableArgs)
 
-        const child = child_process.spawn(ConfigManager.getJavaExecutable(this.server.rawServer.id), args, {
+        const child = child_process.spawn(ConfigManager.getEffectiveJavaExecutable(this.server.rawServer.id), args, {
             cwd: this.gameDir,
             detached: ConfigManager.getLaunchDetached()
         })

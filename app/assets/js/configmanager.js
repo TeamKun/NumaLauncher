@@ -113,6 +113,7 @@ const DEFAULT_CONFIG = {
 }
 
 let config = null
+const tempJavaConfig = {}
 
 // Persistance Utility Functions
 
@@ -533,7 +534,6 @@ function defaultJavaConfig8(ram) {
     return {
         minRAM: resolveSelectedRAM(ram),
         maxRAM: resolveSelectedRAM(ram),
-        executable: null,
         jvmOptions: [
             '-XX:+UseConcMarkSweepGC',
             '-XX:+CMSIncrementalMode',
@@ -547,7 +547,6 @@ function defaultJavaConfig17(ram) {
     return {
         minRAM: resolveSelectedRAM(ram),
         maxRAM: resolveSelectedRAM(ram),
-        executable: null,
         jvmOptions: [
             '-XX:+UnlockExperimentalVMOptions',
             '-XX:+UseG1GC',
@@ -622,13 +621,11 @@ exports.setMaxRAM = function(serverid, maxRAM){
 /**
  * Retrieve the path of the Java Executable.
  * 
- * This is a resolved configuration value and defaults to null until externally assigned.
- * 
  * @param {string} serverid The server id.
  * @returns {string} The path of the Java Executable.
  */
 exports.getJavaExecutable = function(serverid){
-    return config.javaConfig[serverid].executable
+    return config.javaConfig[serverid].customExecutable || null
 }
 
 /**
@@ -638,7 +635,41 @@ exports.getJavaExecutable = function(serverid){
  * @param {string} executable The new path of the Java Executable.
  */
 exports.setJavaExecutable = function(serverid, executable){
-    config.javaConfig[serverid].executable = executable
+    config.javaConfig[serverid].customExecutable = executable || undefined
+}
+
+/**
+ * Retrieve the temporary Java executable for a server. This value is not saved
+ * to the configuration file and is only used for the current session.
+ * 
+ * @param {string} serverid The server id.
+ * @returns {string} The path of the Java Executable.
+ */
+exports.getRuntimeJavaExecutable = function(serverid){
+    return tempJavaConfig[serverid] || null
+}
+
+/**
+ * Set the temporary Java executable for a server. This value is not saved
+ * to the configuration file and is only used for the current session.
+ * 
+ * @param {string} serverid The server id.
+ * @param {string} executable The new path of the Java Executable.
+ */
+exports.setRuntimeJavaExecutable = function(serverid, executable){
+    tempJavaConfig[serverid] = executable || undefined
+}
+
+/**
+ * Retrieve the runtime Java executable for a server.
+ * 
+ * This is a resolved configuration value and defaults to null until externally assigned.
+ * 
+ * @param {string} serverid The server id.
+ * @returns {string} The path of the Java Executable.
+ */
+exports.getEffectiveJavaExecutable = function(serverid){
+    return tempJavaConfig[serverid] || config.javaConfig[serverid].customExecutable || null
 }
 
 /**

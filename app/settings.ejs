@@ -242,8 +242,9 @@
                                 </g>
                             </svg>
                         </div>
-                        <input class="settingsFileSelVal" id="settingsJavaExecVal" type="text" value="null" cValue="JavaExecutable" serverDependent disabled>
+                        <input class="settingsFileSelVal" id="settingsJavaExecVal" type="text" value="null" cValue="JavaExecutable" placeholder="ランチャー付属のJavaランタイム" serverDependent disabled>
                         <button class="settingsFileSelButton" id="settingsJavaExecSel" dialogTitle="<%- lang('settings.javaExecSelDialogTitle') %>" dialogDirectory="false"><%- lang('settings.javaExecSelButtonText') %></button>
+                        <button class="settingsFileSelButton" id="settingsJavaExecReset">リセット</button>
                     </div>
                 </div>
                 <div class="settingsFileSelDesc"><%- lang('settings.javaExecDesc') %> <strong id="settingsJavaReqDesc"><!-- Requires Java 8 x64. --></strong><br><%- lang('settings.javaPathDesc', {'pathSuffix': `bin${process.platform === 'win32' ? '\\javaw.exe' : '/java'}`}) %></div>

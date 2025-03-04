@@ -108,7 +108,7 @@ document.getElementById('launch_button').addEventListener('click', async e => {
     loggerLanding.info('Launching game..')
     try {
         const server = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer())
-        const jExe = ConfigManager.getJavaExecutable(ConfigManager.getSelectedServer())
+        const jExe = ConfigManager.getEffectiveJavaExecutable(ConfigManager.getSelectedServer())
         if(jExe == null){
             await asyncSystemScan(server.effectiveJavaOptions)
         } else {
@@ -359,7 +359,7 @@ async function asyncSystemScan(effectiveJavaOptions, launchAfter = true){
     } else {
         // Java installation found, use this to launch the game.
         const javaExec = javaExecFromRoot(jvmDetails.path)
-        ConfigManager.setJavaExecutable(ConfigManager.getSelectedServer(), javaExec)
+        ConfigManager.setRuntimeJavaExecutable(ConfigManager.getSelectedServer(), javaExec)
         ConfigManager.save()
 
         // We need to make sure that the updated value is on the settings UI.
@@ -428,7 +428,7 @@ async function downloadJava(effectiveJavaOptions, launchAfter = true) {
     remote.getCurrentWindow().setProgressBar(-1)
 
     // Extraction completed successfully.
-    ConfigManager.setJavaExecutable(ConfigManager.getSelectedServer(), newJavaExec)
+    ConfigManager.setRuntimeJavaExecutable(ConfigManager.getSelectedServer(), newJavaExec)
     ConfigManager.save()
 
     clearInterval(extractListener)
@@ -570,7 +570,7 @@ async function dlAsync(login = true) {
     loggerLaunchSuite.info('Installing Forge.')
     setLaunchDetails('Installing Forge..')
     setLaunchPercentage(0)
-    const jExe = ConfigManager.getJavaExecutable(ConfigManager.getSelectedServer())
+    const jExe = ConfigManager.getEffectiveJavaExecutable(ConfigManager.getSelectedServer())
     await distributionIndexProcessor.installForge(jExe, wrapperPath, percent => {
         setDownloadPercentage(percent)
     })

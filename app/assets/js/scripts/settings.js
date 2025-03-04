@@ -44,10 +44,18 @@ bindSettingsSelect()
 function bindFileSelectors(){
     for(let ele of document.getElementsByClassName('settingsFileSelButton')){
         
+        const inputEle = ele.parentElement.querySelector('.settingsFileSelVal')
         ele.onclick = async e => {
+            const isJavaExecReset = ele.id === 'settingsJavaExecReset'
             const isJavaExecSel = ele.id === 'settingsJavaExecSel'
             const directoryDialog = ele.hasAttribute('dialogDirectory') && ele.getAttribute('dialogDirectory') == 'true'
             const properties = directoryDialog ? ['openDirectory', 'createDirectory'] : ['openFile']
+
+            if(isJavaExecReset) {
+                inputEle.value = ''
+                await populateJavaExecDetails(inputEle.value)
+                return
+            }
 
             const options = {
                 properties
@@ -66,9 +74,9 @@ function bindFileSelectors(){
 
             const res = await remote.dialog.showOpenDialog(remote.getCurrentWindow(), options)
             if(!res.canceled) {
-                ele.previousElementSibling.value = res.filePaths[0]
+                inputEle.value = res.filePaths[0]
                 if(isJavaExecSel) {
-                    await populateJavaExecDetails(ele.previousElementSibling.value)
+                    await populateJavaExecDetails(inputEle.value)
                 }
             }
         }

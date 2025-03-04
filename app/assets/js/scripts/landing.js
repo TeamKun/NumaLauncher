@@ -669,6 +669,17 @@ async function dlAsync(login = true) {
 }
 
 /**
+ * Bind functionality to the file system button for the selected
+ * server configuration.
+ */
+document.getElementById('settingsFileSystemButton').onclick = async () => {
+    const serv = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer())
+    const CACHE_SETTINGS_MODS_DIR = path.join(ConfigManager.getInstanceDirectory(), serv.rawServer.id)
+    DropinModUtil.validateDir(CACHE_SETTINGS_MODS_DIR)
+    shell.openPath(CACHE_SETTINGS_MODS_DIR)
+}
+
+/**
  * News Loading Functions
  */
 

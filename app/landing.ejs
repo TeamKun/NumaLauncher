@@ -27,6 +27,18 @@
                                 <div id="settingsTooltip"><%- lang('landing.settingsTooltip') %></div>
                             </button>
                         </div>
+                        <div class="mediaContainer" id="settingsMediaContainer">
+                            <button class="mediaButton" id="settingsFileSystemButton">
+                                <svg id="settingsFileSystemSVG" class="mediaSVG" viewBox="-2 0 25 21">
+                                    <g>
+                                        <path fill="gray" d="m10.044745,5c0,0.917174 -0.746246,1.667588 -1.667588,1.667588l-4.168971,0l-2.501382,0c-0.921009,0 -1.667588,0.750415 -1.667588,1.667588l0,6.670353l0,2.501382c0,0.917174 0.746604,1.667588 1.667588,1.667588l16.675882,0c0.921342,0 1.667588,-0.750415 1.667588,-1.667588l0,-2.501382l0,-8.337941c0,-0.917174 -0.746246,-1.667588 -1.667588,-1.667588l-8.337941,0z"/>
+                                        <path fill="gray" d="m1.627815,1.6c-0.921009,0 -1.667588,0.746579 -1.667588,1.667588l0,4.168971l8.337941,0l0,0.833794l11.673118,0l0,-4.168971c0,-0.921009 -0.746246,-1.667588 -1.667588,-1.667588l-8.572237,0c-0.288493,-0.497692 -0.816284,-0.833794 -1.433292,-0.833794l-6.670353,0z"/>
+                                        <path fill="lightgray" d="m10.025276,4c0,0.918984 -0.747719,1.670879 -1.670879,1.670879l-4.177198,0l-2.506319,0c-0.922827,0 -1.670879,0.751896 -1.670879,1.670879l0,6.683517l0,2.506319c0,0.918984 0.748078,1.670879 1.670879,1.670879l16.708794,0c0.923161,0 1.670879,-0.751896 1.670879,-1.670879l0,-2.506319l0,-8.354397c0,-0.918984 -0.747719,-1.670879 -1.670879,-1.670879l-8.354397,0z"/>
+                                    </g>
+                                </svg>
+                                <div id="settingsTooltip">保存場所</div>
+                            </button>
+                        </div>
                     </div>
                     <div class="mediaDivider"></div>
                     <div id="externalMedia">
@@ -121,6 +133,23 @@
             </div>
         </div>
 
+        <div id="center" style="display: none;">
+            <div class="bot_wrapper">
+                <div id="content">
+                    <button id="newsButton">
+                        <!--<img src="assets/images/icons/arrow.svg" id="newsButtonSVG"/>-->
+                        <div id="newsButtonAlert" style="display: none;"></div>
+                        <svg id="newsButtonSVG" viewBox="0 0 24.87 13.97">
+                            <defs>
+                                <style>.arrowLine{fill:none;stroke:#FFF;stroke-width:2px;}</style>
+                            </defs>
+                            <polyline class="arrowLine" points="0.71 13.26 12.56 1.41 24.16 13.02"/>
+                        </svg>
+                        &#10;<span id="newsButtonText"><%- lang('landing.newsButton') %></span>
+                    </button>
+                </div>
+            </div>
+        </div>
         <div id="right">
             <div class="bot_wrapper">
                 <div id="launch_content">

@@ -274,7 +274,7 @@ async function populateServerListings(){
     let htmlString = ''
     for(const serv of servers){
         htmlString += `<button class="serverListing" servid="${serv.rawServer.id}" ${serv.rawServer.id === giaSel ? 'selected' : ''}>
-            <img class="serverListingImg" src="${serv.rawServer.icon}"/>
+            ${genelateIcon(serv.rawServer.icon, serv.rawServer.name)}
             <div class="serverListingDetails">
                 <span class="serverListingName">${serv.rawServer.name}</span>
                 <span class="serverListingDescription">${serv.rawServer.description}</span>
@@ -297,6 +297,35 @@ async function populateServerListings(){
     }
     document.getElementById('serverSelectListScrollable').innerHTML = htmlString
 
+}
+
+/**
+ * 文字列からシンプルなハッシュ値を計算する関数
+ */
+function stringToColor(str) {
+    let hash = 0
+    for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash)
+    }
+    const hue = Math.abs(hash) % 360 // 0〜359の範囲
+    return `hsl(${hue}, 100%, 50%)`
+}
+
+/**
+ * サーバー情報をもとにアイコンのHTMLタグを生成する
+ */
+function genelateIcon(iconPath, packName) {
+    if (iconPath) {
+        return `<img class="serverListingImg" src="${iconPath}"/>`
+    } else {
+        return `<div class="altIconContainer">
+            <div class="altIcon" style="border-color: ${stringToColor(packName)};">
+                <div class="altIconChar" style="color: ${stringToColor(packName)};">
+                        ${packName.charAt(0)}
+                </div>
+            </div>
+        </div>`
+    }
 }
 
 function populateAccountListings(){

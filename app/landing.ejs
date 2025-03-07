@@ -27,7 +27,7 @@
                                 <div id="settingsTooltip"><%- lang('landing.settingsTooltip') %></div>
                             </button>
                         </div>
-                        <div class="mediaContainer" id="settingsMediaContainer">
+                        <div class="mediaContainer" id="settingsFileSystemContainer">
                             <button class="mediaButton" id="settingsFileSystemButton">
                                 <svg id="settingsFileSystemSVG" class="mediaSVG" viewBox="-2 0 25 21">
                                     <g>
@@ -38,64 +38,6 @@
                                 </svg>
                                 <div id="settingsTooltip">保存場所</div>
                             </button>
-                        </div>
-                    </div>
-                    <div class="mediaDivider"></div>
-                    <div id="externalMedia">
-                        <div class="mediaContainer">
-                            <a href="<%- lang('landing.mediaGitHubURL') %>" class="mediaURL" id="linkURL">
-                                <svg id="linkSVG" class="mediaSVG" viewBox="35.34 34.3575 70.68 68.71500">
-                                    <g>
-                                        <path d="M75.37,65.51a3.85,3.85,0,0,0-1.73.42,8.22,8.22,0,0,1,.94,3.76A8.36,8.36,0,0,1,66.23,78H46.37a8.35,8.35,0,1,1,0-16.7h9.18a21.51,21.51,0,0,1,6.65-8.72H46.37a17.07,17.07,0,1,0,0,34.15H66.23A17,17,0,0,0,82.77,65.51Z"/>
-                                        <path d="M66,73.88a3.85,3.85,0,0,0,1.73-.42,8.22,8.22,0,0,1-.94-3.76,8.36,8.36,0,0,1,8.35-8.35H95A8.35,8.35,0,1,1,95,78H85.8a21.51,21.51,0,0,1-6.65,8.72H95a17.07,17.07,0,0,0,0-34.15H75.13A17,17,0,0,0,58.59,73.88Z"/>
-                                    </g>
-                                </svg>
-                            </a>
-                        </div>
-                        <div class="mediaContainer">
-                            <a href="<%- lang('landing.mediaTwitterURL') %>" class="mediaURL" id="twitterURL">
-                                <svg id="twitterSVG" class="mediaSVG" viewBox="0 0 5000 4060" preserveAspectRatio="xMidYMid meet">	
-                                    <g>
-                                        <path d="M1210 4048 c-350 -30 -780 -175 -1124 -378 -56 -33 -86 -57 -86 -68 0 -16 7 -17 83 -9 114 12 349 1 493 -22 295 -49 620 -180 843 -341 l54 -38 -49 -7 c-367 -49 -660 -256 -821 -582 -30 -61 -53 -120 -51 -130 3 -16 12 -17 73 -13 97 7 199 5 270 -4 l60 -9 -65 -22 c-341 -117 -609 -419 -681 -769 -18 -88 -26 -226 -13 -239 4 -3 32 7 63 22 68 35 198 77 266 86 28 4 58 9 68 12 10 2 -22 -34 -72 -82 -240 -232 -353 -532 -321 -852 15 -149 79 -347 133 -418 16 -20 17 -19 49 20 377 455 913 795 1491 945 160 41 346 74 485 86 l82 7 -7 -59 c-5 -33 -7 -117 -6 -189 2 -163 31 -286 103 -430 141 -285 422 -504 708 -550 112 -19 333 -19 442 0 180 30 335 108 477 239 l58 54 95 -24 c143 -36 286 -89 427 -160 70 -35 131 -60 135 -56 19 19 -74 209 -151 312 -50 66 -161 178 -216 217 l-30 22 73 -14 c111 -21 257 -63 353 -101 99 -39 99 -39 99 -19 0 57 -237 326 -412 468 l-88 71 6 51 c4 28 1 130 -5 226 -30 440 -131 806 -333 1202 -380 745 -1036 1277 -1823 1477 -243 62 -430 81 -786 78 -134 0 -291 -5 -349 -10z"/>
-                                    </g>
-                                </svg>
-                            </a>
-                        </div>
-                        <div class="mediaContainer">
-                            <a href="<%- lang('landing.mediaInstagramURL') %>" class="mediaURL" id="instagramURL">
-                                <svg id="instagramSVG" class="mediaSVG" viewBox="0 0 5040 5040">
-                                    <defs>
-                                        <radialGradient id="instaFill" cx="30%" cy="107%" r="150%">
-                                            <stop offset="0%" stop-color="#fdf497"/>
-                                            <stop offset="5%" stop-color="#fdf497"/>
-                                            <stop offset="45%" stop-color="#fd5949"/>
-                                            <stop offset="60%" stop-color="#d6249f"/>
-                                            <stop offset="90%" stop-color="#285AEB"/>
-                                        </radialGradient>
-                                    </defs>
-                                    <g transform="matrix(210,0,0,210,0,62.1356)">
-                                        <path d="M12,0C5.374,0 0,5.373 0,12C0,17.302 3.438,21.8 8.207,23.387C8.806,23.498 9,23.126 9,22.81L9,20.576C5.662,21.302 4.967,19.16 4.967,19.16C4.421,17.773 3.634,17.404 3.634,17.404C2.545,16.659 3.717,16.675 3.717,16.675C4.922,16.759 5.556,17.912 5.556,17.912C6.626,19.746 8.363,19.216 9.048,18.909C9.155,18.134 9.466,17.604 9.81,17.305C7.145,17 4.343,15.971 4.343,11.374C4.343,10.063 4.812,8.993 5.579,8.153C5.455,7.85 5.044,6.629 5.696,4.977C5.696,4.977 6.704,4.655 8.997,6.207C9.954,5.941 10.98,5.808 12,5.803C13.02,5.808 14.047,5.941 15.006,6.207C17.297,4.655 18.303,4.977 18.303,4.977C18.956,6.63 18.545,7.851 18.421,8.153C19.191,8.993 19.656,10.064 19.656,11.374C19.656,15.983 16.849,16.998 14.177,17.295C14.607,17.667 15,18.397 15,19.517L15,22.81C15,23.129 15.192,23.504 15.801,23.386C20.566,21.797 24,17.3 24,12C24,5.373 18.627,0 12,0Z" style="fill-rule:nonzero;"/>
-                                    </g>
-                                </svg>                                
-                            </a>
-                        </div>
-                        <div class="mediaContainer">
-                            <a href="<%- lang('landing.mediaYouTubeURL') %>" class="mediaURL" id="youtubeURL">
-                                <svg id="youtubeSVG" class="mediaSVG" viewBox="35.34 34.3575 70.68 68.71500">
-                                    <g>
-                                        <path d="M84.8,69.52,65.88,79.76V59.27Zm23.65.59c0-5.14-.79-17.63-3.94-20.57S99,45.86,73.37,45.86s-28,.73-31.14,3.68S38.29,65,38.29,70.11s.79,17.63,3.94,20.57,5.52,3.68,31.14,3.68,28-.74,31.14-3.68,3.94-15.42,3.94-20.57"/>
-                                    </g>
-                                </svg>
-                            </a>
-                        </div>
-                        <div class="mediaContainer">
-                            <a href="<%- lang('landing.mediaDiscordURL') %>" class="mediaURL" id="discordURL">
-                                <svg id="discordSVG" class="mediaSVG" viewBox="35.34 34.3575 70.68 68.71500">
-                                    <g>
-                                        <path d="M81.23,78.48a6.14,6.14,0,1,1,6.14-6.14,6.14,6.14,0,0,1-6.14,6.14M60,78.48a6.14,6.14,0,1,1,6.14-6.14A6.14,6.14,0,0,1,60,78.48M104.41,73c-.92-7.7-8.24-22.9-8.24-22.9A43,43,0,0,0,88,45.59a17.88,17.88,0,0,0-8.38-1.27l-.13,1.06a23.52,23.52,0,0,1,5.8,1.95,87.59,87.59,0,0,1,8.17,4.87s-10.32-5.63-22.27-5.63a51.32,51.32,0,0,0-23.2,5.63,87.84,87.84,0,0,1,8.17-4.87,23.57,23.57,0,0,1,5.8-1.95l-.13-1.06a17.88,17.88,0,0,0-8.38,1.27,42.84,42.84,0,0,0-8.21,4.56S37.87,65.35,37,73s-.37,11.54-.37,11.54,4.22,5.68,9.9,7.14,7.7,1.47,7.7,1.47l3.75-4.68a21.22,21.22,0,0,1-4.65-2A24.47,24.47,0,0,1,47.93,82S61.16,88.4,70.68,88.4c10,0,22.75-6.44,22.75-6.44a24.56,24.56,0,0,1-5.35,4.56,21.22,21.22,0,0,1-4.65,2l3.75,4.68s2,0,7.7-1.47,9.89-7.14,9.89-7.14.55-3.85-.37-11.54"/>
-                                    </g>
-                                </svg>
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -117,7 +59,6 @@
                         <div id="mojangStatusTooltip">
                             <div id="mojangStatusTooltipTitle"><%- lang('landing.mojangStatusTooltipTitle') %></div>
                             <div id="mojangStatusEssentialContainer">
-                                <!-- Essential Mojang services are populated here. -->
                             </div>
                             <div id="mojangStatusNEContainer">
                                 <div class="mojangStatusNEBar"></div>
@@ -125,7 +66,6 @@
                                 <div class="mojangStatusNEBar"></div>
                             </div>
                             <div id="mojangStatusNonEssentialContainer">
-                                <!-- Non Essential Mojang services are populated here. -->
                             </div>
                         </div>
                     </div>
@@ -133,19 +73,17 @@
             </div>
         </div>
 
-        <div id="center" style="display: none;">
+        <div id="center">
             <div class="bot_wrapper">
                 <div id="content">
-                    <button id="newsButton">
-                        <!--<img src="assets/images/icons/arrow.svg" id="newsButtonSVG"/>-->
-                        <div id="newsButtonAlert" style="display: none;"></div>
-                        <svg id="newsButtonSVG" viewBox="0 0 24.87 13.97">
+                    <button id="newsButton" class="newsButton">
+                        <svg class="newsButtonSVG" viewBox="0 0 24.87 13.97">
                             <defs>
                                 <style>.arrowLine{fill:none;stroke:#FFF;stroke-width:2px;}</style>
                             </defs>
                             <polyline class="arrowLine" points="0.71 13.26 12.56 1.41 24.16 13.02"/>
                         </svg>
-                        &#10;<span id="newsButtonText"><%- lang('landing.newsButton') %></span>
+                        &#10;<span class="newsButtonText">SKIN</span>
                     </button>
                 </div>
             </div>
@@ -171,60 +109,270 @@
         </div>
     </div>
     <div id="newsContainer">
-        <div id="newsContent" article="-1" style="display: none;">
-            <div id="newsStatusContainer">
-                <div id="newsStatusContent">
-                    <div id="newsTitleContainer">
-                        <a id="newsArticleTitle" href="#">Lorem Ipsum</a>
-                    </div>
-                    <div id="newsMetaContainer">
-                        <div id="newsArticleDateWrapper">
-                            <span id="newsArticleDate">Mar 15, 44 BC, 9:14 AM</span>
-                        </div>
-                        <div id="newsArticleAuthorWrapper">
-                            <span id="newsArticleAuthor">by Cicero</span>
-                        </div>
-                        <a href="#" id="newsArticleComments">0 Comments</a>
-                    </div>
+        <div id="newsContent" article="-1">
+            <div class="accept__slideIn accept__slideIn--skin">
+                <div class="accept__slideIn__ico">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                    y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                    <style type="text/css">
+                        .st1--green{fill:#008542;}
+                    </style>
+                    <g>
+                        <g>
+                            <path class="st1--green" d="M271,0c9.5,1.3,19.2,2,28.6,4.1c17,3.8,33.9,8.5,50.8,12.8c0.9,0.3,1.8,0.8,2.7,1.3c-10,10-20.3,19-29,29.4
+                                c-7.5,8.9-14.7,10.5-26.3,8C188.8,32.3,80.7,102.5,56.1,211.5C31,322.6,104,434.7,215.6,456.8c110.7,21.9,218.4-49.5,241-160.1
+                                c2.7-13.1,3.5-26.7,5.2-40.7H512v16c-0.4,1.3-0.7,2.5-0.8,3.9c-1.3,18.3-4.3,36.4-10.2,53.8c-33.1,97.9-100.1,157.6-201.5,178.5
+                                c-9.1,1.9-18.4,2.6-27.5,3.9h-32c-1.3-0.3-2.5-0.6-3.8-0.9c-16-2.8-32.6-3.8-48-8.6C87.2,471.1,25.4,403.4,3.9,299.6
+                                C2,290.5,1.3,281.2,0,272v-32c0.3-1.4,0.6-2.9,0.9-4.4c2.8-16,3.9-32.6,8.7-48C41.2,86.9,108.8,25.3,212.4,3.9
+                                C221.5,2,230.8,1.3,240,0H271z"/>
+                            <path class="st1--green" d="M116.4,243c11.4-11.2,23.1-22.9,35.2-34.8l78.3,78.5l220-219.9l35.4,35.4L230.5,357L116.4,243z"/>
+                        </g>
+                    </g>
+                    </svg>
                 </div>
-                <div id="newsNavigationContainer">
-                    <button id="newsNavigateLeft">
-                        <svg id="newsNavigationLeftSVG" viewBox="0 0 24.87 13.97">
-                            <defs>
-                                <style>.arrowLine{fill:none;stroke:#FFF;stroke-width:2px;transition: 0.25s ease;}</style>
-                            </defs>
-                            <polyline class="arrowLine" points="0.71 13.26 12.56 1.41 24.16 13.02"/>
-                        </svg>
-                    </button>
-                    <span id="newsNavigationStatus"><%- lang('landing.newsNavigationStatus', { currentPage: 1, totalPages: 1 }) %></span>
-                    <button id="newsNavigateRight">
-                        <svg id="newsNavigationRightSVG" viewBox="0 0 24.87 13.97">
-                            <defs>
-                                <style>.arrowLine{fill:none;stroke:#FFF;stroke-width:2px;transition: 0.25s ease;}</style>
-                            </defs>
-                            <polyline class="arrowLine" points="0.71 13.26 12.56 1.41 24.16 13.02"/>
-                        </svg>
-                    </button>
+                <p>スキンのコピーが無事完了しました！</p>
+            </div>
+            <div class="decnine__slideIn decnine__slideIn--skin">
+                <div class="decnine__slideIn__ico">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                    y="0px" viewBox="0 0 426.5 426.6" style="enable-background:new 0 0 426.5 426.6;" xml:space="preserve">
+                    <style type="text/css">
+                        .st0--red{fill:#9B1F1F;}
+                    </style>
+                    <g>
+                        <g>
+                            <path class="st0--red" d="M0,213.3C0,95.7,96.2-0.3,213.5,0c117.6,0.3,213,96,213,213.3c0,117.6-96.2,213.7-213.6,213.3
+                                C95.4,426.3,0,330.6,0,213.3z M317.8,286.8L243.1,212l73.3-73.3c-9.6-9.6-19.3-19.3-29.6-29.6l-74.3,74.3l-73.6-73.7l-29.7,29.8
+                                l74.2,74.1l-74,74l30.3,30.2l74.4-74.4l73.6,73.6L317.8,286.8z"/>
+                        </g>
+                    </g>
+                    </svg>
+                </div>
+                <p>スキンのコピーに失敗しました…</p>
+            </div>
+            <div class="accept__slideIn accept__slideIn--sync">
+                <div class="accept__slideIn__ico">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                    y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                    <style type="text/css">
+                        .st1--green{fill:#008542;}
+                    </style>
+                    <g>
+                        <g>
+                            <path class="st1--green" d="M271,0c9.5,1.3,19.2,2,28.6,4.1c17,3.8,33.9,8.5,50.8,12.8c0.9,0.3,1.8,0.8,2.7,1.3c-10,10-20.3,19-29,29.4
+                                c-7.5,8.9-14.7,10.5-26.3,8C188.8,32.3,80.7,102.5,56.1,211.5C31,322.6,104,434.7,215.6,456.8c110.7,21.9,218.4-49.5,241-160.1
+                                c2.7-13.1,3.5-26.7,5.2-40.7H512v16c-0.4,1.3-0.7,2.5-0.8,3.9c-1.3,18.3-4.3,36.4-10.2,53.8c-33.1,97.9-100.1,157.6-201.5,178.5
+                                c-9.1,1.9-18.4,2.6-27.5,3.9h-32c-1.3-0.3-2.5-0.6-3.8-0.9c-16-2.8-32.6-3.8-48-8.6C87.2,471.1,25.4,403.4,3.9,299.6
+                                C2,290.5,1.3,281.2,0,272v-32c0.3-1.4,0.6-2.9,0.9-4.4c2.8-16,3.9-32.6,8.7-48C41.2,86.9,108.8,25.3,212.4,3.9
+                                C221.5,2,230.8,1.3,240,0H271z"/>
+                            <path class="st1--green" d="M116.4,243c11.4-11.2,23.1-22.9,35.2-34.8l78.3,78.5l220-219.9l35.4,35.4L230.5,357L116.4,243z"/>
+                        </g>
+                    </g>
+                    </svg>
+                </div>
+                <p>スキンの同期設定が無事完了しました！</p>
+            </div>
+            <div class="decnine__slideIn decnine__slideIn--sync">
+                <div class="decnine__slideIn__ico">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                    y="0px" viewBox="0 0 426.5 426.6" style="enable-background:new 0 0 426.5 426.6;" xml:space="preserve">
+                    <style type="text/css">
+                        .st0--red{fill:#9B1F1F;}
+                    </style>
+                    <g>
+                        <g>
+                            <path class="st0--red" d="M0,213.3C0,95.7,96.2-0.3,213.5,0c117.6,0.3,213,96,213,213.3c0,117.6-96.2,213.7-213.6,213.3
+                                C95.4,426.3,0,330.6,0,213.3z M317.8,286.8L243.1,212l73.3-73.3c-9.6-9.6-19.3-19.3-29.6-29.6l-74.3,74.3l-73.6-73.7l-29.7,29.8
+                                l74.2,74.1l-74,74l30.3,30.2l74.4-74.4l73.6,73.6L317.8,286.8z"/>
+                        </g>
+                    </g>
+                    </svg>
+                </div>
+                <p>スキンの同期設定に失敗しました…</p>
+            </div>
+            <div class="changeSkin__overlay is-hide">
+                <div class="changeSkin__overlay__inner">
+                    <p>スキンの反映中…</p>
+                    <div class="sk-cube-grid">
+                        <div class="sk-cube sk-cube1"></div>
+                        <div class="sk-cube sk-cube2"></div>
+                        <div class="sk-cube sk-cube3"></div>
+                        <div class="sk-cube sk-cube4"></div>
+                        <div class="sk-cube sk-cube5"></div>
+                        <div class="sk-cube sk-cube6"></div>
+                        <div class="sk-cube sk-cube7"></div>
+                        <div class="sk-cube sk-cube8"></div>
+                        <div class="sk-cube sk-cube9"></div>
+                    </div>
                 </div>
             </div>
-            <div id="newsArticleContainer">
-                <div id="newsArticleContent">
-                    <div id="newsArticleContentScrollable">
-                        <!-- Article Content -->
+            <div class="editLauncherSkin__btn openSettingSkinEditor">
+                <svg version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve">
+                    <style type="text/css">
+
+                        .st0{fill:#ffffff;}
+
+                    </style>
+                    <g>
+                        <path class="st0" d="M496,293.984c9.031-0.703,16-8.25,16-17.297v-41.375c0-9.063-6.969-16.594-16-17.313l-54.828-4.281
+                            c-3.484-0.266-6.484-2.453-7.828-5.688l-18.031-43.516c-1.344-3.219-0.781-6.906,1.5-9.547l35.75-41.813
+                            c5.875-6.891,5.5-17.141-0.922-23.547l-29.25-29.25c-6.406-6.406-16.672-6.813-23.547-0.922l-41.813,35.75
+                            c-2.641,2.266-6.344,2.844-9.547,1.516l-43.531-18.047c-3.219-1.328-5.422-4.375-5.703-7.828l-4.266-54.813
+                            C293.281,6.969,285.75,0,276.688,0h-41.375c-9.063,0-16.594,6.969-17.297,16.016l-4.281,54.813c-0.266,3.469-2.469,6.5-5.688,7.828
+                            l-43.531,18.047c-3.219,1.328-6.906,0.75-9.563-1.516l-41.797-35.75c-6.875-5.891-17.125-5.484-23.547,0.922l-29.25,29.25
+                            c-6.406,6.406-6.797,16.656-0.922,23.547l35.75,41.813c2.25,2.641,2.844,6.328,1.5,9.547l-18.031,43.516
+                            c-1.313,3.234-4.359,5.422-7.813,5.688L16,218c-9.031,0.719-16,8.25-16,17.313v41.359c0,9.063,6.969,16.609,16,17.313l54.844,4.266
+                            c3.453,0.281,6.5,2.484,7.813,5.703l18.031,43.516c1.344,3.219,0.75,6.922-1.5,9.563l-35.75,41.813
+                            c-5.875,6.875-5.484,17.125,0.922,23.547l29.25,29.25c6.422,6.406,16.672,6.797,23.547,0.906l41.797-35.75
+                            c2.656-2.25,6.344-2.844,9.563-1.5l43.531,18.031c3.219,1.344,5.422,4.359,5.688,7.844l4.281,54.813
+                            c0.703,9.031,8.234,16.016,17.297,16.016h41.375c9.063,0,16.594-6.984,17.297-16.016l4.266-54.813
+                            c0.281-3.484,2.484-6.5,5.703-7.844l43.531-18.031c3.203-1.344,6.922-0.75,9.547,1.5l41.813,35.75
+                            c6.875,5.891,17.141,5.5,23.547-0.906l29.25-29.25c6.422-6.422,6.797-16.672,0.922-23.547l-35.75-41.813
+                            c-2.25-2.641-2.844-6.344-1.5-9.563l18.031-43.516c1.344-3.219,4.344-5.422,7.828-5.703L496,293.984z M256,342.516
+                            c-23.109,0-44.844-9-61.188-25.328c-16.344-16.359-25.344-38.078-25.344-61.203c0-23.109,9-44.844,25.344-61.172
+                            c16.344-16.359,38.078-25.344,61.188-25.344c23.125,0,44.844,8.984,61.188,25.344c16.344,16.328,25.344,38.063,25.344,61.172
+                            c0,23.125-9,44.844-25.344,61.203C300.844,333.516,279.125,342.516,256,342.516z" style="fill: rgb(255, 255, 255);"></path>
+                    </g>
+                    </svg>
+            </div>
+            <div class="skinView">
+                <div class="skinView__inner">
+                    <div class="skinView__ttl">現在の設定</div>
+                    <canvas id="skin_container"></canvas>
+                </div>
+            </div>
+            <div class="skinlLibrary">
+                <div class="skinlLibrary__ttl">ライブラリ</div>
+                <div class="selectSkin__Wrap">
+                    <div class="selectSkin__item selectSkin__addNew">
+                        <div class="selectSkin__addNew__btn__wrap">
+                            <div class="selectSkin__addNew__btn"></div>
+                            <p class="selectSkin__item__text">新しいスキン</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="newsErrorContainer">
-            <div id="newsErrorLoading">
-                <span id="nELoadSpan" class="newsErrorContent"><%- lang('landing.newsErrorLoadSpan') %></span>
+        <div id="addNewSkinContent" style="display: none;">
+            <div class="addNewSkinContent__closeBtn__wrap">
+                <div class="addNewSkinContent__closeBtn closeAddNewSkin">
+
+                </div>
             </div>
-            <div id="newsErrorFailed" style="display: none;">
-                <span id="nEFailedSpan" class="newsErrorContent"><%- lang('landing.newsErrorFailedSpan') %></span>
-                <button id="newsErrorRetry"><%- lang('landing.newsErrorRetryButton') %></button>
+            <div class="addNewSkinContent__ttl">スキンの新規追加</div>
+            <div class="addNewSkinContent__inner">
+                <div class="addNewSkin__edit__wrap">
+                    <div class="addNewSkin__edit__viewer">
+                        <canvas id="skin_container--New"></canvas>
+                    </div>
+                    <div class="addNewSkin__edit__editor">
+                        <form>
+                            <div class="addNewSkin__edit__ttl">名前</div>
+                            <div class="addNewSkin__edit__inputArea">
+                                <input name="skinAddName" id="skinNewName" type="text" placeholder="名前のないスキン">
+                            </div>
+                            <div class="addNewSkin__edit__ttl">プレイヤーモデル</div>
+                            <div class="addNewSkin__edit__inputArea">
+                                <div class="addNewSkin__edit__inputArea__inner">
+                                    <input type="radio" name="skinAddModel" value="classic" id="skinAddModelClassic" checked required><label for="skinAddModelClassic" class="radio__skin__text">クラシック</label>
+                                    <input type="radio" name="skinAddModel" value="slim" id="skinAddModelSlim"><label for="skinAddModelSlim" class="radio__skin__text">スリム</label>
+                                </div>
+                            </div>
+                            <div class="addNewSkin__edit__ttl">スキンファイル</div>
+                            <div class="addNewSkin__edit__inputArea">
+                                <input type="file" id="skinAddBox" name="skinAddBoxName" accept="image/png">
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div id="newsErrorNone" style="display: none;">
-                <span id="nENoneSpan" class="newsErrorContent"><%- lang('landing.newsErrorNoneSpan') %></span>
+            <div class="addNewSkin__edit__buttonArea">
+                <input type="button" class="addNewSkin__edit__button addNewSkin__edit__button--cancel closeAddNewSkin" value="キャンセル">
+                <input type="button" class="addNewSkin__edit__button addNewSkin__edit__button--save addSave" value="保存">
+                <input type="button" class="addNewSkin__edit__button addNewSkin__edit__button--saveAndUse addSaveAndUse" value="保存して使用">
+            </div>
+        </div>
+        <div id="editSkinContent" style="display: none;">
+            <div class="addNewSkinContent__closeBtn__wrap">
+                <div class="addNewSkinContent__closeBtn closeEdit">
+                </div>
+            </div>
+            <div class="addNewSkinContent__ttl">スキンの編集</div>
+            <div class="addNewSkinContent__inner">
+                <div class="addNewSkin__edit__wrap">
+                    <div class="addNewSkin__edit__viewer">
+                        <canvas id="skin_container--Edit"></canvas>
+                    </div>
+                    <div class="addNewSkin__edit__editor">
+                        <form action="" method="post">
+                            <div class="addNewSkin__edit__ttl">名前</div>
+                            <div class="addNewSkin__edit__inputArea">
+                                <input name="skinEditName" id="skinEditName" type="text" placeholder="名前のないスキン">
+                            </div>
+                            <div class="addNewSkin__edit__ttl">プレイヤーモデル</div>
+                            <div class="addNewSkin__edit__inputArea">
+                                <div class="addNewSkin__edit__inputArea__inner">
+                                    <input type="radio" name="skinEditModel" value="classic" id="skinEditModelClassic" required>
+                                    <label for="skinEditModelClassic" class="radio__skin__text">クラシック</label>
+                                    <input type="radio" name="skinEditModel" value="slim" id="skinEditModelSlim">
+                                    <label for="skinEditModelSlim" class="radio__skin__text">スリム</label>
+                                </div>
+                            </div>
+                            <div class="addNewSkin__edit__ttl">スキンファイル</div>
+                            <div class="addNewSkin__edit__inputArea">
+                                <input type="file" id="skinEditBox" name="skinEditBoxName" accept="image/png">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="addNewSkin__edit__buttonArea">
+                <input type="button" class="addNewSkin__edit__button addNewSkin__edit__button--cancel closeEdit" value="キャンセル">
+                <input type="button" class="addNewSkin__edit__button addNewSkin__edit__button--save editSave" value="保存">
+                <input type="button" class="addNewSkin__edit__button addNewSkin__edit__button--saveAndUse editSaveAndUse" value="保存して使用">
+            </div>
+        </div>
+        <div id="settingSkinData" style="display: none;">
+            <div class="addNewSkinContent__closeBtn__wrap">
+                <div class="addNewSkinContent__closeBtn closeSettingSkinData">
+                </div>
+            </div>
+            <div class="">
+                <div class="settingSkinData__inner">
+                    <div class="ImportOriginJSONBox--exist settingSkinData__inner--sect">
+                        <p class="importJSON__text--bold">沼ランチャーでスキン変更ができるようになりました！</p>
+                        <p class="importJSON__text">公式ランチャーからスキン情報をインポート！</p>
+                        <input type="button" name="ImportSkinJSON" value="公式ランチャーからスキン情報をコピーする" class="firstImportSkinBox__btn importSkin">
+                    </div>
+                    <!-- <div class="ImportOriginJSONBox--notExist settingSkinData__inner--sect">
+                        <p class="importJSON__text">公式ランチャーからスキン情報をインポート！</p>
+                        <p class="settingSkinData__inner--sect">マイクラランチャーの格納フォルダ指定してください。</p>
+                        <div>
+                            <input type="text" name="importOriginSkinPath" id="resultMyOriginSkinPath" class="firstImportSkinBox__txtArea" onKeyUp="addValue()" />
+                            <input type="button" name="importOriginSkinPath" value="ファイルを参照" id="selectMyOriginSkinPath" class="firstImportSkinBox__txtArea">
+                        </div>
+                        <div class="red-text errMessage--inputPath" style="display: none;">
+                            マインクラフトのファイルを入力してください
+                        </div>
+                        <div class="addedSkinPath">
+                            <input type="button" name="importMyOriginSkinJSON" value="自分で設定した保存先からコピーする" class="firstImportSkinBox__btn importMyOriginSkin">
+                        </div>
+                    </div> -->
+                </div>
+                <p class="syncSetting__text settingSkinData__inner--sect">スキンライブラリを公式と沼ランチャーで同期しますか？</p>
+                <div>
+                    <div class="settingSkinData__inner--checksync addNewSkin__edit__inputArea__inner">
+                        <input type="radio" name="syncSkin" value="true" id="syncSkinTrue"><label for="syncSkinTrue" class="radio__skin__text">常に同期する</label>
+                        <input type="radio" name="syncSkin" value="false" id="syncSkinFalse"><label for="syncSkinFalse" class="radio__skin__text">同期しない</label>
+                    </div>
+                    <div class="">
+                        <input type="button" name="saveSettingSkin" value="スキンの同期・非同期設定を保存する" class="saveSettingSkin firstImportSkinBox__btn">
+                    </div>
+                </div>
+                <div class="settingSkinData__noticeText">
+                    <strong>スキンの削除について</strong><br />
+                    ・公式ランチャーで削除したスキンは復活してしまうので、沼ランチャーから消してください
+                </div>
             </div>
         </div>
     </div>

@@ -60,7 +60,7 @@ jobs:
           name: ${{ matrix.os }}-release
           path: |
             dist/latest*.yml
-            dist/KamePowerLauncher-setup-${{ steps.get_version.outputs.version-without-v }}*
+            dist/NumaLauncher-setup-${{ steps.get_version.outputs.version-without-v }}*
 
 
   release:
@@ -87,12 +87,12 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.get_version.outputs.version }}
-          name: KamePowerLauncher - ${{ steps.get_version.outputs.version }}
+          name: NumaLauncher - ${{ steps.get_version.outputs.version }}
           body: |
             ### ▼ご使用のOSのインストーラーをダウンロードしてください。
-            [Windows](https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.version }}/KamePowerLauncher-setup-${{ steps.get_version.outputs.version-without-v }}.exe)
-            [Mac OS X](https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.version }}/KamePowerLauncher-setup-${{ steps.get_version.outputs.version-without-v }}.dmg)
-            [Linux](https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.version }}/KamePowerLauncher-setup-${{ steps.get_version.outputs.version-without-v }}.AppImage)
+            [Windows](https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.version }}/NumaLauncher-setup-${{ steps.get_version.outputs.version-without-v }}.exe)
+            [Mac OS X](https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.version }}/NumaLauncher-setup-${{ steps.get_version.outputs.version-without-v }}.dmg)
+            [Linux](https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.version }}/NumaLauncher-setup-${{ steps.get_version.outputs.version-without-v }}.AppImage)
 
             ### ビルド情報
             ${{ steps.get_version.outputs.version }} by ${{ github.actor }}
@@ -100,4 +100,4 @@ jobs:
           prerelease: false
           files: |
             dist/**/latest*.yml
-            dist/**/KamePowerLauncher-setup-${{ steps.get_version.outputs.version-without-v }}*
+            dist/**/NumaLauncher-setup-${{ steps.get_version.outputs.version-without-v }}*

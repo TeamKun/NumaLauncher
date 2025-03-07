@@ -1,8 +1,8 @@
-appId: 'kamepowerlauncher'
-productName: 'KamePowerLauncher'
+appId: 'numalauncher'
+productName: 'NumaLauncher'
 artifactName: '${productName}-setup-${version}.${ext}'
 
-copyright: 'Copyright © 2018-2024 Daniel Scalzi, 2023-2024 Kamesuta'
+copyright: 'Copyright © 2018-2024 Daniel Scalzi, 2025 TeamKun'
 
 asar: true
 compression: 'maximum'
@@ -14,8 +14,8 @@ extraResources:
   - 'libraries'
 
 # Windows Configuration
-win: 
-  target: 
+win:
+  target:
     - target: 'nsis'
       arch: 'x64'
 
@@ -34,12 +34,12 @@ mac:
   category: 'public.app-category.games'
 
 # Linux Configuration
-linux: 
+linux:
   target: 'AppImage'
-  maintainer: 'Kamesuta'
-  vendor: 'Daniel Scalzi, Kamesuta'
+  maintainer: 'TeamKun'
+  vendor: 'Daniel Scalzi, TeamKun'
   synopsis: 'Minecraft Modランチャー'
-  description: 'Modの知識がなくてもMod導入ができる、かめぱわぁ～るど専用のランチャーです。'
+  description: '沼な人でもModが導入できる、そんなランチャーです。'
   category: 'Game'
 
 

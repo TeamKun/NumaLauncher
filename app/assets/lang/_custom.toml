@@ -1,20 +1,15 @@
 # Custom Language File for Launcher Customizer
 
 [ejs.app]
-title = "かめぱわぁ～るどランチャー"
+title = "沼ランチャー"
 
 [ejs.landing]
-mediaGitHubURL = "https://www.kamesuta.com/"
-mediaTwitterURL = "https://twitter.com/hashtag/%E3%81%8B%E3%82%81%E3%81%B1%E3%82%8F%E3%81%81%EF%BD%9E%E3%82%8B%E3%81%A9?src=hashtag_click"
-mediaInstagramURL = "https://github.com/KamePowerWorld/KamePowerLauncher"
-mediaYouTubeURL = "https://www.youtube.com/@Kamesuta"
-mediaDiscordURL = "https://discord.gg/uuHpBcZSXj"
 
 [ejs.settings]
-sourceGithubLink = "https://github.com/KamePowerWorld/KamePowerLauncher"
+sourceGithubLink = "https://github.com/TeamKun/NumaLauncher"
 supportLink = "https://discord.gg/kyefhuY5Rd"
 
 [ejs.welcome]
-welcomeHeader = "ようこそ、かめぱわぁ～るどへ"
-welcomeDescription = "Modの知識がなくてもMod導入ができる、かめぱわぁ～るど専用のランチャーです。"
-welcomeDescCTA = "数クリックでかめぱわぁ～るどのMod鯖へ参加する準備が整います。"
+welcomeHeader = "ようこそ、沼ランチャーへ"
+welcomeDescription = "沼な人でもModが導入できる、そんなランチャーです。"
+welcomeDescCTA = "数クリックでマイクラ参加型へ参加する準備が整います。"

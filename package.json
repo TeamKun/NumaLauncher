@@ -1,13 +1,13 @@
 {
-  "name": "kamepowerlauncher",
-  "version": "2.3.1",
-  "productName": "KamePowerLauncher",
-  "description": "Modの知識がなくてもMod導入ができる「かめぱわぁ～るど」専用のランチャーです。",
-  "author": "Daniel Scalzi (https://github.com/dscalzi/), Kamesuta (https://github.com/Kamesuta/)",
+  "name": "numalauncher",
+  "version": "4.0.0",
+  "productName": "NumaLauncher",
+  "description": "沼でも使えるMinecraftランチャー",
+  "author": "Daniel Scalzi (https://github.com/dscalzi/), TeamKUN (https://github.com/TeamKun/)",
   "license": "UNLICENSED",
-  "homepage": "https://github.com/KamePowerWorld/KamePowerLauncher",
+  "homepage": "https://github.com/TeamKun/NumaLauncher",
   "bugs": {
-    "url": "https://discord.gg/kyefhuY5Rd"
+      "url": "https://github.com/TeamKun/NumaLauncher/issues"
   },
   "private": true,
   "main": "index.js",
@@ -46,6 +46,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KamePowerWorld/KamePowerLauncher.git"
+    "url": "git+https://github.com/TeamKun/NumaLauncher.git"
   }
 }

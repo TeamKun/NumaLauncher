@@ -112,6 +112,7 @@ ipcMain.on('get-home-path', (event) => {
     event.returnValue = app.getPath('home');
 });
 
+
 // Disable hardware acceleration.
 // https://electronjs.org/docs/tutorial/offscreen-rendering
 app.disableHardwareAcceleration()
@@ -260,7 +261,7 @@ async function createWindow() {
     remoteMain.enable(win.webContents)
 
     // 背景画像を取得
-    const url = 'https://raw.githubusercontent.com/KamePowerWorld/ModPacks/deploy/backgrounds'
+    const url = 'https://raw.githubusercontent.com/TeamKun/ModPacks/deploy/backgrounds'
     const backgrounds = await got.get(`${url}/list.json`, { responseType: 'json' })
         .then(res => res.body?.map(name => `${url}/${name}`))
         .catch(err => {

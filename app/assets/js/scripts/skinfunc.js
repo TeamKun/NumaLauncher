@@ -74,7 +74,7 @@ async function getTextureID() {
         }
     } catch (error) {
         console.log(error)
-    } 
+    }
     return textureID
 
 }
@@ -85,46 +85,51 @@ APIへの反映 PUT
 
 // 編集・追加したスキンに着替えるAPI
 async function uploadSkin(variant, file) {
-    await AuthManager.validateSelected()
-    const account = ConfigManager.getAuthAccount(ConfigManager.getSelectedAccount().uuid)
-    const config = {
-        headers: {
-            Authorization:
-                'Bearer ' +
-                account.accessToken,
-        },
-    }
-    try {
-        const reader = new FileReader()
-        reader.addEventListener(
-            'load',
-            function () {
-                const skinURL = reader.result
-                nowSkinPreview(variant, skinURL)
-            },
-            false
-        )
-        if (file) {
-            reader.readAsDataURL(file)
-        }
-    } catch (error) {
-        console.log(error)
+    await AuthManager.validateSelected();
+    const account = ConfigManager.getAuthAccount(ConfigManager.getSelectedAccount().uuid);
+
+    if (!file) {
+        console.error("File is undefined or null.");
+        return;
     }
 
-    const param = new FormData()
-    console.log('file', file)
-    if (variant === 'slim') {
-        param.append('variant', variant)
-    } else {
-        param.append('variant', 'classic')
-    }
-    param.append('file', file, 'skin.png')
-    await axios.post(
-        'https://api.minecraftservices.com/minecraft/profile/skins',
-        param,
-        config
-    )
+    // ファイルのデータを Base64 に変換し、プレビューを更新する
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = async function () {
+        const skinURL = reader.result;
+        nowSkinPreview(variant, skinURL); // ここでプレビューを更新
+
+        // FormData の作成
+        const param = new FormData();
+        param.append('variant', variant === 'slim' ? 'slim' : 'classic');
+        param.append('file', file, 'skin.png');
+
+        console.log('Uploading file:', file);
+
+        try {
+            const response = await axios.post(
+                'https://api.minecraftservices.com/minecraft/profile/skins',
+                param,
+                {
+                    headers: {
+                        Authorization: `Bearer ${account.accessToken}`,
+                        "Content-Type": "multipart/form-data" // 明示的に指定
+                    }
+                }
+            );
+            console.log('Skin uploaded successfully:', response.data);
+        } catch (error) {
+            console.error('Upload error:', error.response ? error.response.data : error.message);
+        }
+    };
+
+    reader.onerror = function () {
+        console.error("Error reading file.");
+    };
 }
+
 
 /*----------------------
 3dViewer / modelImage表示反映
@@ -327,83 +332,78 @@ JSONファイルの読み込み・書き出し
 
 // 沼ランチャーのスキンデータパスを取得する
 function getLauncherSkinPath() {
-    const { remote: remoteElectron } = require('electron')
-    const app = remoteElectron.app
-    const appPath = app.getPath('appData')
-    const homePath = app.getPath('home')
-    let numaPath
+    const appPath = ipcRenderer.sendSync('get-launcher-skin-path');
+    const homePath = ipcRenderer.sendSync('get-home-path');
+    let numaPath;
+
     switch (process.platform) {
         case 'win32':
-            numaPath = `${appPath}\\.minecraft\\numa_skins.json`
-            break
+            numaPath = `${appPath}\\.minecraft\\numa_skins.json`;
+            break;
         case 'darwin':
-            numaPath = `${appPath}/minecraft/numa_skins.json`
-            break
+            numaPath = `${appPath}/minecraft/numa_skins.json`;
+            break;
         case 'linux':
-            numaPath = `${homePath}/.minecraft/numa_skins.json`
-            break
+            numaPath = `${homePath}/.minecraft/numa_skins.json`;
+            break;
         default:
-            console.error('Cannot resolve current platform!')
-            numaPath = ''
-            break
+            console.error('Cannot resolve current platform!');
+            numaPath = '';
+            break;
     }
 
-    return numaPath
-
+    return numaPath;
 }
 
 // 公式ランチャー内のスキンデータパスを取得する
 function getLauncherSkinPathOrigin() {
-    const { remote: remoteElectron } = require('electron')
-    const app = remoteElectron.app
-    const appPath = app.getPath('appData')
-    const homePath = app.getPath('home')
-    let defaultOriginPath
+    const appPath = ipcRenderer.sendSync('get-launcher-skin-path');
+    const homePath = ipcRenderer.sendSync('get-home-path');
+    let defaultOriginPath;
+
     switch (process.platform) {
         case 'win32':
-            defaultOriginPath = `${appPath}\\.minecraft\\launcher_skins.json`
-            break
+            defaultOriginPath = `${appPath}\\.minecraft\\launcher_skins.json`;
+            break;
         case 'darwin':
-            defaultOriginPath = `${appPath}/minecraft/launcher_skins.json`
-            break
+            defaultOriginPath = `${appPath}/minecraft/launcher_skins.json`;
+            break;
         case 'linux':
-            defaultOriginPath = `${homePath}/.minecraft/launcher_skins.json`
-            break
+            defaultOriginPath = `${homePath}/.minecraft/launcher_skins.json`;
+            break;
         default:
-            console.error('Cannot resolve current platform!')
-            defaultOriginPath = ''
-            break
+            console.error('Cannot resolve current platform!');
+            defaultOriginPath = '';
+            break;
     }
 
-    return defaultOriginPath
+    return defaultOriginPath;
 }
 
 // 沼ランチャーとの同期設定JSON
 function getSkinSettingPath() {
-    const { remote: remoteElectron } = require('electron')
-    const app = remoteElectron.app
-    const appPath = app.getPath('appData')
-    const homePath = app.getPath('home')
-    let SkinSettingPath
+    const appPath = ipcRenderer.sendSync('get-launcher-skin-path');
+    const homePath = ipcRenderer.sendSync('get-home-path');
+    let skinSettingPath;
+
     switch (process.platform) {
         case 'win32':
-            SkinSettingPath = `${appPath}\\.minecraft\\skinSetting.json`
-            break
+            skinSettingPath = `${appPath}\\.minecraft\\skinSetting.json`;
+            break;
         case 'darwin':
-            SkinSettingPath = `${appPath}/minecraft/skinSetting.json`
-            break
+            skinSettingPath = `${appPath}/minecraft/skinSetting.json`;
+            break;
         case 'linux':
-            SkinSettingPath = `${homePath}/.minecraft/skinSetting.json`
-            break
+            skinSettingPath = `${homePath}/.minecraft/skinSetting.json`;
+            break;
         default:
-            console.error('Cannot resolve current platform!')
-            SkinSettingPath = ''
-            break
+            console.error('Cannot resolve current platform!');
+            skinSettingPath = '';
+            break;
     }
 
-    return SkinSettingPath
+    return skinSettingPath;
 }
-
 // デフォルトの場所にマイクラフォルダが存在する場合
 // function existsDefalutSkinPath() {
 //     const defaultOriginPath = getLauncherSkinPathOrigin();
@@ -602,16 +602,16 @@ function importOriginalSkinJSON() {
     try {
         fs.copyFileSync(src, dest)
         saveImportSkins()
-        $('.accept__slideIn--skin').addClass('is-view')
-        setTimeout(function () {
-            $('.accept__slideIn--skin').removeClass('is-view')
-        }, 3000)
+        // $('.accept__slideIn--skin').addClass('is-view')
+        // setTimeout(function () {
+        //     $('.accept__slideIn--skin').removeClass('is-view')
+        // }, 3000)
     } catch (error) {
         console.log(error)
-        $('.decnine__slideIn--skin').addClass('is-view')
-        setTimeout(function () {
-            $('.accept__slideIn--skin').removeClass('is-view')
-        }, 3000)
+        // $('.decnine__slideIn--skin').addClass('is-view')
+        // setTimeout(function () {
+        //     $('.accept__slideIn--skin').removeClass('is-view')
+        // }, 3000)
     }
 }
 
@@ -651,15 +651,15 @@ function saveSkinSetting(sync) {
     settingJSONObject['settings']['sync'] = sync
     saveSettingSkin(settingJSONObject)
     try {
-        $('.accept__slideIn--sync').addClass('is-view')
-        setTimeout(function () {
-            $('.accept__slideIn--sync').removeClass('is-view')
-        }, 3000)
+        // $('.accept__slideIn--sync').addClass('is-view')
+        // setTimeout(function () {
+        //     $('.accept__slideIn--sync').removeClass('is-view')
+        // }, 3000)
     } catch (error) {
-        $('.decnine__slideIn--sync').addClass('is-view')
-        setTimeout(function () {
-            $('.accept__slideIn--sync').removeClass('is-view')
-        }, 3000)
+        // $('.decnine__slideIn--sync').addClass('is-view')
+        // setTimeout(function () {
+        //     $('.accept__slideIn--sync').removeClass('is-view')
+        // }, 3000)
     }
 }
 

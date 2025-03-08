@@ -104,6 +104,14 @@ ipcMain.handle(SHELL_OPCODE.TRASH_ITEM, async (event, ...args) => {
     }
 })
 
+ipcMain.on('get-launcher-skin-path', (event) => {
+    event.returnValue = app.getPath('appData');
+});
+
+ipcMain.on('get-home-path', (event) => {
+    event.returnValue = app.getPath('home');
+});
+
 // Disable hardware acceleration.
 // https://electronjs.org/docs/tutorial/offscreen-rendering
 app.disableHardwareAcceleration()

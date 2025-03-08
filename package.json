@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "homepage": "https://github.com/TeamKun/NumaLauncher",
   "bugs": {
-      "url": "https://github.com/TeamKun/NumaLauncher/issues"
+    "url": "https://github.com/TeamKun/NumaLauncher/issues"
   },
   "private": true,
   "main": "index.js",
@@ -25,6 +25,7 @@
   "dependencies": {
     "@electron/remote": "^2.1.2",
     "adm-zip": "^0.5.16",
+    "axios": "^1.8.2",
     "discord-rpc-patch": "^4.0.1",
     "ejs": "^3.1.10",
     "ejs-electron": "^3.0.0",
@@ -37,6 +38,7 @@
     "jquery": "^3.7.1",
     "lodash.merge": "^4.6.2",
     "semver": "^7.6.3",
+    "skinview3d": "^2.0.0-beta.1",
     "toml": "^3.0.0"
   },
   "devDependencies": {

@@ -1092,10 +1092,11 @@ async function loadSelectedServerOnModsTab(){
     const serv = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer())
 
     for(const el of document.getElementsByClassName('settingsSelServContent')) {
+        let serverName = removeOrderNumber(serv.rawServer.name)
         el.innerHTML = `
-            ${generateIcon(serv.rawServer.icon, serv.rawServer.name)}
+            ${generateIcon(serv.rawServer.icon, serverName)}
             <div class="serverListingDetails">
-                <span class="serverListingName">${serv.rawServer.name}</span>
+                <span class="serverListingName">${serverName}</span>
                 <span class="serverListingDescription">${serv.rawServer.description}</span>
                 <div class="serverListingInfo">
                     <div class="serverListingVersion">${serv.rawServer.minecraftVersion}</div>

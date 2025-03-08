@@ -170,7 +170,7 @@ function updateSelectedServer(serv){
     }
     ConfigManager.setSelectedServer(serv != null ? serv.rawServer.id : null)
     ConfigManager.save()
-    server_selection_button.innerHTML = '&#8226; ' + (serv != null ? serv.rawServer.name : Lang.queryJS('landing.noSelection'))
+    server_selection_button.innerHTML = '&#8226; ' + (serv != null ? removeOrderNumber(serv.rawServer.name) : Lang.queryJS('landing.noSelection'))
     if(getCurrentView() === VIEWS.settings){
         animateSettingsTabRefresh()
     }
@@ -1067,3 +1067,14 @@ function displayArticle(articleObject, index){
 
 //     return await promise
 // }
+    /**
+      * サーバー名からオーダー番号取り除く
+      * */
+    function removeOrderNumber(serverName) {
+        let reg = /^%*%/
+        if (!reg.test(serverName)) {
+            return serverName
+        }
+
+        return serverName.split('%')[2]
+    }

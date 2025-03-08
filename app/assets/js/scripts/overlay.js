@@ -6,7 +6,7 @@
 
 /**
  * Check to see if the overlay is visible.
- * 
+ *
  * @returns {boolean} Whether or not the overlay is visible.
  */
 function isOverlayVisible(){
@@ -17,7 +17,7 @@ let overlayHandlerContent
 
 /**
  * Overlay keydown handler for a non-dismissable overlay.
- * 
+ *
  * @param {KeyboardEvent} e The keydown event.
  */
 function overlayKeyHandler (e){
@@ -27,7 +27,7 @@ function overlayKeyHandler (e){
 }
 /**
  * Overlay keydown handler for a dismissable overlay.
- * 
+ *
  * @param {KeyboardEvent} e The keydown event.
  */
 function overlayKeyDismissableHandler (e){
@@ -40,10 +40,10 @@ function overlayKeyDismissableHandler (e){
 
 /**
  * Bind overlay keydown listeners for escape and exit.
- * 
+ *
  * @param {boolean} state Whether or not to add new event listeners.
  * @param {string} content The overlay content which will be shown.
- * @param {boolean} dismissable Whether or not the overlay is dismissable 
+ * @param {boolean} dismissable Whether or not the overlay is dismissable
  */
 function bindOverlayKeys(state, content, dismissable){
     overlayHandlerContent = content
@@ -60,7 +60,7 @@ function bindOverlayKeys(state, content, dismissable){
 
 /**
  * Toggle the visibility of the overlay.
- * 
+ *
  * @param {boolean} toggleState True to display, false to hide.
  * @param {boolean} dismissable Optional. True to show the dismiss option, otherwise false.
  * @param {string} content Optional. The content div to be shown.
@@ -124,7 +124,7 @@ async function toggleServerSelection(toggleState){
 
 /**
  * Set the content of the overlay.
- * 
+ *
  * @param {string} title Overlay title text.
  * @param {string} description Overlay description text.
  * @param {string} acknowledge Acknowledge button text.
@@ -140,8 +140,8 @@ function setOverlayContent(title, description, acknowledge, dismiss = Lang.query
 /**
  * Set the onclick handler of the overlay acknowledge button.
  * If the handler is null, a default handler will be added.
- * 
- * @param {function} handler 
+ *
+ * @param {function} handler
  */
 function setOverlayHandler(handler){
     if(handler == null){
@@ -156,8 +156,8 @@ function setOverlayHandler(handler){
 /**
  * Set the onclick handler of the overlay dismiss button.
  * If the handler is null, a default handler will be added.
- * 
- * @param {function} handler 
+ *
+ * @param {function} handler
  */
 function setDismissHandler(handler){
     if(handler == null){
@@ -274,7 +274,7 @@ async function populateServerListings(){
     let htmlString = ''
     for(const serv of servers){
         htmlString += `<button class="serverListing" servid="${serv.rawServer.id}" ${serv.rawServer.id === giaSel ? 'selected' : ''}>
-            ${genelateIcon(serv.rawServer.icon, serv.rawServer.name)}
+            ${generateIcon(serv.rawServer.icon, serv.rawServer.name)}
             <div class="serverListingDetails">
                 <span class="serverListingName">${serv.rawServer.name}</span>
                 <span class="serverListingDescription">${serv.rawServer.description}</span>
@@ -314,7 +314,7 @@ function stringToColor(str) {
 /**
  * サーバー情報をもとにアイコンのHTMLタグを生成する
  */
-function genelateIcon(iconPath, packName) {
+function generateIcon(iconPath, packName) {
     if (iconPath) {
         return `<img class="serverListingImg" src="${iconPath}"/>`
     } else {

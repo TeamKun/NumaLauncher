@@ -173,6 +173,7 @@ function setDismissHandler(handler){
 
 document.getElementById('serverSelectConfirm').addEventListener('click', async () => {
     const listings = document.getElementsByClassName('serverListing')
+    document.getElementById('filterInput').value = ''
     for(let i=0; i<listings.length; i++){
         if(listings[i].hasAttribute('selected')){
             const serv = (await DistroAPI.getDistribution()).getServerById(listings[i].getAttribute('servid'))
@@ -220,6 +221,7 @@ document.getElementById('accountSelectConfirm').addEventListener('click', async 
 
 // Bind server select cancel button.
 document.getElementById('serverSelectCancel').addEventListener('click', () => {
+    document.getElementById('filterInput').value = ''
     toggleOverlay(false)
 })
 
@@ -228,6 +230,33 @@ document.getElementById('accountSelectCancel').addEventListener('click', () => {
         $('#overlayContent').fadeIn(250)
     })
 })
+
+document.getElementById('filterInput').addEventListener('input', async (e) => {
+    let value = kanaToHira(document.getElementById('filterInput').value.toLowerCase())
+    const distro = await DistroAPI.getDistribution()
+    const servers = distro.servers
+
+    let searchedList = []
+
+    servers.forEach((server) => {
+        let serverName = kanaToHira(removeOrderNumber(server.rawServer.name).toLowerCase())
+        if (serverName.indexOf(value) >= 0) {
+            searchedList.push(server)
+        }
+    })
+    createServerHtml(searchedList)
+    setServerListingHandlers()
+})
+
+/**
+ * カタカナをひらがなに変換
+ * */
+function kanaToHira(str) {
+    return str.replace(/[\u30a1-\u30f6]/g, function(match) {
+        let chr = match.charCodeAt(0) - 0x60;
+        return String.fromCharCode(chr);
+    });
+}
 
 function setServerListingHandlers(){
     const listings = Array.from(document.getElementsByClassName('serverListing'))

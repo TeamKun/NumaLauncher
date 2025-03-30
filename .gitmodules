@@ -1,3 +1,6 @@
 [submodule "helios-core"]
 	path = helios-core
 	url = https://github.com/TeamKun/helios-core.git
+[submodule "helios-distribution-types"]
+	path = helios-distribution-types
+	url = https://github.com/TeamKun/helios-distribution-types.git

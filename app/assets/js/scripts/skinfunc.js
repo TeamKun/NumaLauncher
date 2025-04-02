@@ -136,15 +136,16 @@ async function uploadSkin(variant, file) {
 ----------------------*/
 
 // 今着ているスキンのプレビュー
-function nowSkinPreview(variant, skinURL) {
+async function nowSkinPreview(variant, skinURL) {
     let skinViewer = new skinview3d.SkinViewer({
         canvas: document.getElementById('skin_container'),
         width: 300,
         height: 400,
         skin: skinURL,
+        renderPaused: true,
     })
     const skinModel = variant == 'classic' ? 'default' : 'slim'
-    skinViewer.loadSkin(skinURL, skinModel)
+    await skinViewer.loadSkin(skinURL, skinModel)
 
     // Control objects with your mouse!
     let control = skinview3d.createOrbitControls(skinViewer)
@@ -152,21 +153,25 @@ function nowSkinPreview(variant, skinURL) {
     control.enableZoom = false
     control.enablePan = false
 
-    // Add an animation
-    const walk = skinViewer.animations.add(skinview3d.WalkingAnimation)
-    walk.speed = 0.55
+    // マウス操作があったときだけ再描画するように設定
+    control.addEventListener('change', () => {
+        skinViewer.render();
+    });
+
+    skinViewer.render()
 }
 
 // 新規追加画面のプレビュー
-function addSkinPreview(variant, skinURL) {
+async function addSkinPreview(variant, skinURL) {
     let skinViewer = new skinview3d.SkinViewer({
         canvas: document.getElementById('skin_container--New'),
         width: 300,
         height: 400,
         skin: skinURL,
+        renderPaused: true,
     })
     const skinModel = variant == 'classic' ? 'default' : 'slim'
-    skinViewer.loadSkin(skinURL, skinModel)
+    await skinViewer.loadSkin(skinURL, skinModel)
 
     // Control objects with your mouse!
     let control = skinview3d.createOrbitControls(skinViewer)
@@ -174,21 +179,25 @@ function addSkinPreview(variant, skinURL) {
     control.enableZoom = false
     control.enablePan = false
 
-    // Add an animation
-    const walk = skinViewer.animations.add(skinview3d.WalkingAnimation)
-    walk.speed = 0.55
+    // マウス操作があったときだけ再描画するように設定
+    control.addEventListener('change', () => {
+        skinViewer.render();
+    });
+
+    skinViewer.render()
 }
 
 // 編集画面のプレビュー
-function editSkinPreview(variant, skinURL) {
+async function editSkinPreview(variant, skinURL) {
     let skinViewer = new skinview3d.SkinViewer({
         canvas: document.getElementById('skin_container--Edit'),
         width: 300,
         height: 400,
         skin: skinURL,
+        renderPaused: true,
     })
     const skinModel = variant == 'classic' ? 'default' : 'slim'
-    skinViewer.loadSkin(skinURL, skinModel)
+    await skinViewer.loadSkin(skinURL, skinModel)
 
     // Control objects with your mouse!
     let control = skinview3d.createOrbitControls(skinViewer)
@@ -196,9 +205,12 @@ function editSkinPreview(variant, skinURL) {
     control.enableZoom = false
     control.enablePan = false
 
-    // Add an animation
-    const walk = skinViewer.animations.add(skinview3d.WalkingAnimation)
-    walk.speed = 0.55
+    // マウス操作があったときだけ再描画するように設定
+    control.addEventListener('change', () => {
+        skinViewer.render();
+    });
+
+    skinViewer.render()
 }
 
 // ライブラリ一覧 モデルスキン生成
@@ -213,10 +225,6 @@ async function generateSkinModel(imageURL) {
     setCamera(skinViewer.camera)
 
     // Add an animation
-    const walk = skinViewer.animations.add(skinview3d.WalkingAnimation)
-    walk.paused = true
-    walk.progress = 5
-
     await skinViewer.loadSkin(imageURL)
     skinViewer.render()
     const image = skinViewer.canvas.toDataURL()

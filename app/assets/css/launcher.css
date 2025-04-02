@@ -4571,13 +4571,19 @@ form[name='submitSecretQuestion'] p {
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.50);
 }
 
+#serverSelectListScrollable {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2列固定 */
+    gap: 10px;
+}
+
 /* Content container for a server listing. */
 
 .altIconContainer {
     margin: 0px 10px 0px 5px;
     border: 2px solid #fff;
-    height: 50px;
-    width: 50px;
+    height: 25px;
+    width: 25px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4599,7 +4605,7 @@ form[name='submitSecretQuestion'] p {
     align-items: center;
     justify-content: center;
     transform: rotate(3deg);
-    font-size: 28px;
+    font-size: 14px;
     font-weight: bolder;
     color: white
 }
@@ -4607,8 +4613,8 @@ form[name='submitSecretQuestion'] p {
 .serverListing {
     border: none;
     padding: 0px;
-    width: 375px;
-    min-height: 60px;
+    width: 300px;
+    min-height: 25px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -4678,8 +4684,8 @@ form[name='submitSecretQuestion'] p {
 .serverListingImg {
     margin: 0px 10px 0px 5px;
     border: 1px solid #fff;
-    height: 50px;
-    width: 50px;
+    height: 25px;
+    width: 25px;
 }
 
 /* Content container for the server listing's details. */
@@ -4688,7 +4694,7 @@ form[name='submitSecretQuestion'] p {
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
-    height: 50px;
+    height: 25px;
 }
 
 /* The name of the server listing. */

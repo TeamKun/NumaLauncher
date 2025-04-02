@@ -4978,3 +4978,7 @@ form[name='submitSecretQuestion'] p {
     border-width: 2px;
     border-color: rgba(255, 255, 255, 0.75);
 }
+
+.omit {
+    opacity: 0;
+}

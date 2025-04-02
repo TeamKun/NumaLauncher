@@ -703,6 +703,48 @@ document.getElementById('settingsFileSystemButton').onclick = async () => {
 }
 
 /**
+ * Bind functionality to the delete file system button for the selected
+ */
+document.getElementById('deleteFileSystemSVG').onclick = async () => {
+    const serv = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer());
+    const CACHE_SETTINGS_MODS_DIR = path.join(ConfigManager.getInstanceDirectory(), serv.rawServer.id);
+
+    setOverlayContent(
+        "フォルダを削除しますか?",
+        `${serv.rawServer.name}の関連フォルダを削除します。ドロップインMODやスクリーンショットも削除されます。この操作は元に戻せません。`,
+        "キャンセル",
+        "削除する"
+    )
+    setOverlayHandler(null)
+    setDismissHandler(() => {
+        (async () => {
+            try {
+                await fs.remove(CACHE_SETTINGS_MODS_DIR);
+                setOverlayContent(
+                    "完了",
+                    "ディレクトリの削除に成功しました",
+                    "閉じる"
+                )
+                toggleOverlay(true)
+                setOverlayHandler(null)
+                toggleLaunchArea(false)
+            } catch (err) {
+                setOverlayContent(
+                    "エラー",
+                    "ディレクトリの削除に失敗しました",
+                    "閉じる"
+                )
+                toggleOverlay(true)
+                setOverlayHandler(null)
+                toggleLaunchArea(false)
+            }
+        })();
+    })
+    toggleOverlay(true,true)
+    toggleLaunchArea(false)
+}
+
+/**
  * News Loading Functions
  */
 

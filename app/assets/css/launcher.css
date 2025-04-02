@@ -3998,6 +3998,19 @@ form[name='submitSecretQuestion'] p {
     height: 40px;
 }
 
+#deleteFileSystemSVG {
+    stroke: #ffffff;
+    height: 30px;
+    width: 30px;
+}
+
+.mediaButton:hover #deleteFileSystemSVG,
+.mediaButton:focus #deleteFileSystemSVG,
+.mediaButton:active #deleteFileSystemSVG {
+    width: 35px;
+    height: 35px;
+}
+
 /* Settings tooltip styles. */
 #settingsTooltip {
     visibility: hidden;

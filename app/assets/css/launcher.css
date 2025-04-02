@@ -2489,6 +2489,7 @@ input:checked + .toggleSwitchSlider:before {
 }
 
 #landingContainer>#lower>#left {
+    opacity: 0;
     position: relative;
     transition: top 2s ease;
     top: 0px;

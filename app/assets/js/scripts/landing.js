@@ -245,34 +245,33 @@ const refreshMojangStatuses = async function(){
 }
 
 const refreshServerStatus = async (fade = false) => {
-    loggerLanding.info('Refreshing Server Status')
-    const serv = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer())
+    // loggerLanding.info('Refreshing Server Status')
+    // const serv = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer())
 
-    let pLabel = Lang.queryJS('landing.serverStatus.server')
-    let pVal = Lang.queryJS('landing.serverStatus.offline')
+    // let pLabel = Lang.queryJS('landing.serverStatus.server')
+    // let pVal = Lang.queryJS('landing.serverStatus.offline')
 
-    try {
+    // try {
 
-        const servStat = await getServerStatus(47, serv.hostname, serv.port)
-        console.log(servStat)
-        pLabel = Lang.queryJS('landing.serverStatus.players')
-        pVal = servStat.players.online + '/' + servStat.players.max
+    //     const servStat = await getServerStatus(47, serv.hostname, serv.port)
+    //     console.log(servStat)
+    //     pLabel = Lang.queryJS('landing.serverStatus.players')
+    //     pVal = servStat.players.online + '/' + servStat.players.max
 
-    } catch (err) {
-        loggerLanding.warn('Unable to refresh server status, assuming offline.')
-        loggerLanding.debug(err)
-    }
-    if(fade){
-        $('#server_status_wrapper').fadeOut(250, () => {
-            document.getElementById('landingPlayerLabel').innerHTML = pLabel
-            document.getElementById('player_count').innerHTML = pVal
-            $('#server_status_wrapper').fadeIn(500)
-        })
-    } else {
-        document.getElementById('landingPlayerLabel').innerHTML = pLabel
-        document.getElementById('player_count').innerHTML = pVal
-    }
-
+    // } catch (err) {
+    //     loggerLanding.warn('Unable to refresh server status, assuming offline.')
+    //     loggerLanding.debug(err)
+    // }
+    // if(fade){
+    //     $('#server_status_wrapper').fadeOut(250, () => {
+    //         document.getElementById('landingPlayerLabel').innerHTML = pLabel
+    //         document.getElementById('player_count').innerHTML = pVal
+    //         $('#server_status_wrapper').fadeIn(500)
+    //     })
+    // } else {
+    //     document.getElementById('landingPlayerLabel').innerHTML = pLabel
+    //     document.getElementById('player_count').innerHTML = pVal
+    // }
 }
 
 refreshMojangStatuses()

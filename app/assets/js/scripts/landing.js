@@ -28,6 +28,8 @@ const {
     extractJdk
 }                             = require('helios-core/java')
 
+const fs                      = require('fs-extra')
+
 // Internal Requirements
 const DiscordWrapper          = require('./assets/js/discordwrapper')
 const ProcessBuilder          = require('./assets/js/processbuilder')
@@ -515,11 +517,11 @@ async function dlAsync(login = true) {
         })
         setLaunchPercentage(100)
     } catch (err) {
+
         loggerLaunchSuite.error('Error during file validation.')
         showLaunchFailure(Lang.queryJS('landing.dlAsync.errorDuringFileVerificationTitle'), err.displayable || Lang.queryJS('landing.dlAsync.seeConsoleForDetails'))
         return
     }
-
 
     if(invalidFileCount > 0) {
         loggerLaunchSuite.info('Downloading files.')
@@ -537,6 +539,26 @@ async function dlAsync(login = true) {
         }
     } else {
         loggerLaunchSuite.info('No invalid files, skipping download.')
+    }
+
+    // マニュアルダウンロード判定
+    const manualData = await loadManualData(serv)
+
+    if (manualData.length > 0) {
+        //マニュアルダウンロード開始
+        showLaunchFailure(
+            "手動でのインストールが必要です",
+            "開かれたウィンドウのMODをすべてダウンロードし、再度PLAYボタンを押してください。"
+          )
+
+        ipcRenderer.send("openManualWindow", {
+            versionData: null,
+            forgeData: null,
+            manualData,
+            error: 'Manual Installation Required'
+        })
+
+        return
     }
 
     // Remove download bar.
@@ -1077,4 +1099,60 @@ function displayArticle(articleObject, index){
         }
 
         return serverName.split('%')[2]
+    }
+
+    /**
+     * 手動ダウンロードのファイルをリストアップし、ユーザーにダウンロードを促します
+     *
+     * @param {string} server The Server to load Forge data for.
+     * @returns {Promise.<Object>} A promise which resolves to Forge's version.json data.
+     */
+    function loadManualData(server) {
+        return new Promise(async(resolve, reject) => {
+            function isModEnabled(modCfg, required = null) {
+                return modCfg != null ? ((typeof modCfg === 'boolean' && modCfg) || (typeof modCfg === 'object' && (typeof modCfg.value !== 'undefined' ? modCfg.value : true))) : required != null ? required.def : true
+            }
+
+            // 有効化されているかチェックするために必要
+            const modCfg = ConfigManager.getModConfiguration(server.rawServer.id).mods
+            const mdls = server.modules
+
+
+            // 手動ダウンロードMod候補
+            let manualModsCandidate = []
+                // ON以外の手動Modは除外する
+            let removeCandidate = []
+            mdls.forEach((mdl, index, object) => {
+                if(!fs.existsSync(mdl.localPath)) {
+                    const artifact = mdl.rawModule.artifact
+                    const manual = artifact.manual
+                        // 手動Modかどうか
+                    if (manual !== undefined) {
+                        // ONかどうか
+                        const o = !mdl.required.value
+                        const e = isModEnabled(modCfg[mdl.getVersionlessMavenIdentifier()], mdl.required.value)
+                        if (!o || (o && e)) {
+                            manualModsCandidate.push(mdl)
+                        } else {
+                            removeCandidate.push(index)
+                        }
+                    }
+                }
+            })
+                // 除外された手動Modはリストから削除
+            for (let i = removeCandidate.length - 1; i >= 0; i--)
+                mdls.splice(removeCandidate[i], 1)
+
+            // 手動候補のModは存在を確認し、手動Modリストに追加
+            let manualMods = []
+            for (const mdl of manualModsCandidate) {
+                const artifact = mdl.rawModule.artifact
+                if (!(await fs.pathExists(artifact.url))) {
+                    artifact.path = mdl.localPath
+                    manualMods.push(artifact)
+                }
+            }
+
+            resolve(manualMods)
+        })
     }

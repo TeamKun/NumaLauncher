@@ -749,6 +749,9 @@ async function resolveModsForUI(){
  */
 function parseModulesForUI(mdls, submodules, servConf){
 
+    // 降順でソート
+    mdls.sort((a, b) => a.rawModule.name.localeCompare(b.rawModule.name));
+
     let reqMods = ''
     let optMods = ''
 

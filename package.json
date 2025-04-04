@@ -50,5 +50,15 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TeamKun/NumaLauncher.git"
+  },
+  "build": {
+    "mac": {
+      "protocols": [
+        {
+          "name": "MyApp Protocol",
+          "schemes": ["numalauncher"]
+        }
+      ]
+    }
   }
 }

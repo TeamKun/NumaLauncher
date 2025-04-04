@@ -373,6 +373,11 @@ document.getElementById('settingsAddMicrosoftAccountMsMcLauncherAuth').onclick =
     })
 }
 
+ipcRenderer.on('deeplink-id', (event, id) => {
+  console.log("Received ID:", id);
+  // ここで画面に表示したり処理したりできる
+});
+
 // Bind reply for Microsoft Login.
 ipcRenderer.on(MSFT_OPCODE.REPLY_LOGIN, (_, ...arguments_) => {
     if (arguments_[0] === MSFT_REPLY_TYPE.ERROR) {

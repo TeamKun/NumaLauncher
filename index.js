@@ -16,6 +16,38 @@ const fs                                = require('fs')
 const fsExtra                           = require('fs-extra')
 const crypto                            = require('crypto')
 
+app.setAsDefaultProtocolClient('numlauncher');
+
+let deepLinkUrl = null;
+
+app.on('open-url', (event, url) => {
+  event.preventDefault();
+  deepLinkUrl = url; // ← 一時保存
+});
+
+// アプリ準備ができたら
+app.whenReady().then(() => {
+
+  // ページの読み込み完了後に処理
+  win.webContents.once('did-finish-load', () => {
+    if (deepLinkUrl) {
+      handleDeepLink(deepLinkUrl);
+      deepLinkUrl = null;
+    }
+  });
+});
+
+  
+  function handleDeepLink(url) {
+    const parsedUrl = new URL(url);
+    const id = parsedUrl.searchParams.get("id");
+  
+    if (win && win.webContents) {
+      win.webContents.send('deeplink-id', id);
+    }
+  }
+  
+  
 // Setup Lang
 LangLoader.setupLanguage()
 

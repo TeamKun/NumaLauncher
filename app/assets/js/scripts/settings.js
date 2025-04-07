@@ -4,6 +4,7 @@ const semver = require('semver')
 
 const DropinModUtil  = require('./assets/js/dropinmodutil')
 const { MSFT_OPCODE, MSFT_REPLY_TYPE, MSFT_ERROR } = require('./assets/js/ipcconstants')
+const ServerOptionQuery = require('./assets/js/scripts/serverOptionQuery')
 
 const settingsState = {
     invalid: new Set()
@@ -373,9 +374,23 @@ document.getElementById('settingsAddMicrosoftAccountMsMcLauncherAuth').onclick =
     })
 }
 
-ipcRenderer.on('deeplink-id', (event, id) => {
-  console.log("Received ID:", id);
-  // ここで画面に表示したり処理したりできる
+ipcRenderer.on('setServerOption', async (event, queryString) => {
+  const query = ServerOptionQuery.decodeUrlToJson(queryString)
+  if (!query) {
+    setOverlayContent(
+        "サーバーオプションのロードに失敗しました",
+        "URLが不完全な可能性があります",
+        Lang.queryJS('landing.launch.okay')
+    )
+    setOverlayHandler(null)
+    toggleOverlay(true)
+    toggleLaunchArea(false)
+    return
+  }
+
+  const serv = (await DistroAPI.getDistribution()).getServerById(query.id)
+  updateSelectedServer(serv)
+  ConfigManager.setModConfiguration(query.id, query)
 });
 
 // Bind reply for Microsoft Login.
@@ -1091,6 +1106,75 @@ function bindShaderpackButton() {
     }
 }
 
+function bindGenerateURLButton() {
+    const spBtn = document.getElementById('copyURLButton')
+    spBtn.onclick = () => {
+        saveModConfiguration();
+
+        const url = ServerOptionQuery.generateURL();
+
+        // クリップボードにコピー
+        navigator.clipboard.writeText(url)
+            .then(() => {
+                setOverlayContent(
+                    "URLをクリップボードにコピーしました",
+                    "みんなに共有しましょう！",
+                    Lang.queryJS('landing.launch.okay')
+                )
+                setOverlayHandler(null)
+                toggleOverlay(true)
+                toggleLaunchArea(false)
+                return
+            })
+            .catch(err => {
+                setOverlayContent(
+                    "失敗",
+                    "コピーに失敗しました。",
+                    Lang.queryJS('landing.launch.okay')
+                )
+                setOverlayHandler(null)
+                toggleOverlay(true)
+                toggleLaunchArea(false)
+                return
+            });
+    }
+}
+
+function bindGenerateDiscordStringButton() {
+    const spBtn = document.getElementById('copyDisicordStringButton')
+    spBtn.onclick = () => {
+        saveModConfiguration();
+
+        const msg = ServerOptionQuery.generateDiscordString();
+
+        // クリップボードにコピー
+        navigator.clipboard.writeText(msg)
+            .then(() => {
+                setOverlayContent(
+                    "メッセージをクリップボードにコピーしました",
+                    "Discordでみんなに共有しましょう！",
+                    Lang.queryJS('landing.launch.okay')
+                )
+                setOverlayHandler(null)
+                toggleOverlay(true)
+                toggleLaunchArea(false)
+                return
+            })
+            .catch(err => {
+                setOverlayContent(
+                    "失敗",
+                    "コピーに失敗しました。",
+                    Lang.queryJS('landing.launch.okay')
+                )
+                setOverlayHandler(null)
+                toggleOverlay(true)
+                toggleLaunchArea(false)
+                return
+            });
+    }
+}
+
+
 // Server status bar functions.
 
 /**
@@ -1166,6 +1250,8 @@ async function prepareModsTab(first){
     bindDropinModFileSystemButton()
     bindShaderpackButton()
     bindModsToggleSwitch()
+    bindGenerateURLButton()
+    bindGenerateDiscordStringButton()
     await loadSelectedServerOnModsTab()
 }
 

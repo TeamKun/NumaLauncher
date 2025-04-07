@@ -20,14 +20,20 @@ app.setAsDefaultProtocolClient('numlauncher');
 
 let deepLinkUrl = null;
 
+// URI起動mac用
 app.on('open-url', (event, url) => {
   event.preventDefault();
-  deepLinkUrl = url; // ← 一時保存
+  deepLinkUrl = url;
+});
+
+// URI起動win用
+app.on('ready', () => {
+    const args = process.argv;
+    deepLinkUrl = args.find(arg => arg.startsWith('numalauncher://'));
 });
 
 // アプリ準備ができたら
 app.whenReady().then(() => {
-
   // ページの読み込み完了後に処理
   win.webContents.once('did-finish-load', () => {
     if (deepLinkUrl) {
@@ -37,17 +43,16 @@ app.whenReady().then(() => {
   });
 });
 
-  
   function handleDeepLink(url) {
     const parsedUrl = new URL(url);
-    const id = parsedUrl.searchParams.get("id");
-  
+    const query = parsedUrl.searchParams.get("query");
+
     if (win && win.webContents) {
-      win.webContents.send('deeplink-id', id);
+      win.webContents.send('setServerOption', query);
     }
   }
-  
-  
+
+
 // Setup Lang
 LangLoader.setupLanguage()
 

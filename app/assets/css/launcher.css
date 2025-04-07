@@ -1708,7 +1708,8 @@ input:checked + .toggleSwitchSlider:before {
 /* Mod elements sub-containers. */
 #settingsReqModsContainer,
 #settingsOptModsContainer,
-#settingsDropinModsContainer {
+#settingsDropinModsContainer,
+#settingsShadersContainer {
     padding-bottom: 25px;
 }
 
@@ -1865,7 +1866,9 @@ input:checked + .toggleSwitchSlider:before {
 }
 
 /* Button to add shaderpacks. */
-#settingsShaderpackButton {
+#settingsShaderpackButton,
+#copyDisicordStringButton,
+#copyURLButton {
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(126, 126, 126, 0.57);
     border-radius: 3px;
@@ -1878,6 +1881,8 @@ input:checked + .toggleSwitchSlider:before {
 }
 #settingsShaderpackButton:hover,
 #settingsShaderpackButton:focus,
+#copyDisicordStringButton:hover,
+#copyURLButton:hover
 #settingsShaderpackButton[drag] {
     background: rgba(54, 54, 54, 0.25);
     text-shadow: 0px 0px 20px white;
@@ -2090,7 +2095,9 @@ input:checked + .toggleSwitchSlider:before {
 }
 
 /* JVM options title. */
-#settingsJVMOptsTitle {
+#settingsJVMOptsTitle,
+#settingsEventNameTitle,
+#settingsServerIPTitle {
     margin-bottom: 10px;
 }
 
@@ -2101,12 +2108,16 @@ input:checked + .toggleSwitchSlider:before {
 }
 
 /* Text field to input the JVM options. */
-#settingsJVMOptsVal {
+#settingsJVMOptsVal,
+#settingsEventNameVal,
+#settingsServerIPVal {
     border-radius: 0px 3px 3px 0px !important;
     width: 100%;
     padding: 5px 10px;
     font-size: 12px;
+    margin-bottom: 10px;
 }
+
 #settingsJVMOptsContent:focus-within > .settingsJavaIcon {
     background: rgba(126, 126, 126, 0.87);
 }

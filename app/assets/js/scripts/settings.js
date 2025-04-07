@@ -391,6 +391,14 @@ ipcRenderer.on('setServerOption', async (event, queryString) => {
   const serv = (await DistroAPI.getDistribution()).getServerById(query.id)
   updateSelectedServer(serv)
   ConfigManager.setModConfiguration(query.id, query)
+  setOverlayContent(
+    "MODオプションロード成功!",
+    `${serv.rawServer.name}のオプションをロードしました。ドロップ・イン MODの指定がある場合は手動で設定してからゲームを起動してください`,
+    Lang.queryJS('landing.launch.okay')
+  )
+  setOverlayHandler(null)
+  toggleOverlay(true)
+  toggleLaunchArea(false)
 });
 
 // Bind reply for Microsoft Login.

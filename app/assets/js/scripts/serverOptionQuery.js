@@ -2,7 +2,7 @@ const LZString = require('lz-string')
 
 function generateURL() {
     const serv = ConfigManager.getSelectedServer()
-    return `numalauncher://?query=${encodeJsonToUrl(ConfigManager.getModConfiguration(serv))}`
+    return `https://teamkun.github.io/NumaLauncherRedirectPage/?query=${encodeJsonToUrl(ConfigManager.getModConfiguration(serv))}`
 }
 
 function generateDiscordString() {

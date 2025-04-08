@@ -7,14 +7,10 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
 
     permissions:
       contents: write
-
-    strategy:
-      matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
       - name: Check out Git repository
@@ -34,14 +30,20 @@ jobs:
         shell: bash
         working-directory: ./helios-core
 
-      ##Tag Number input
       - name: Get latest release version tag number
         id: get_version
         uses: battila7/get-version-action@v2
 
-      ##Set npm Version
-      - name: Set npm version
-        run: npm version ${{ steps.get_version.outputs.version-without-v }} --no-git-tag-version
+      - name: Set npm version (only if different)
+        shell: bash
+        run: |
+          CURRENT=$(node -p "require('./package.json').version")
+          TARGET="${{ steps.get_version.outputs.version-without-v }}"
+          if [ "$CURRENT" != "$TARGET" ]; then
+            npm version "$TARGET" --no-git-tag-version
+          else
+            echo "Version already $TARGET, skipping"
+          fi
 
       - name: Install Dependencies
         run: npm ci
@@ -53,35 +55,29 @@ jobs:
         run: npm run dist
         shell: bash
 
-      ##Upload Artifact
       - uses: actions/upload-artifact@v4
         name: Action-Upload
         with:
-          name: ${{ matrix.os }}-release
+          name: windows-release
           path: |
             dist/latest*.yml
             dist/NumaLauncher-setup-${{ steps.get_version.outputs.version-without-v }}*
 
-
   release:
     runs-on: ubuntu-latest
-
     needs:
       - build
 
     steps:
-      ##Tag Number input
       - name: Get latest release version tag number
         id: get_version
         uses: battila7/get-version-action@v2
 
-      ##Download Artifact
       - uses: actions/download-artifact@v4
         name: Action-Download
         with:
           path: dist
 
-      ##ReleaseChannel - go!
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v1
@@ -91,8 +87,6 @@ jobs:
           body: |
             ### ▼ご使用のOSのインストーラーをダウンロードしてください。
             [Windows](https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.version }}/NumaLauncher-setup-${{ steps.get_version.outputs.version-without-v }}.exe)
-            [Mac OS X](https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.version }}/NumaLauncher-setup-${{ steps.get_version.outputs.version-without-v }}.dmg)
-            [Linux](https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.version }}/NumaLauncher-setup-${{ steps.get_version.outputs.version-without-v }}.AppImage)
 
             ### ビルド情報
             ${{ steps.get_version.outputs.version }} by ${{ github.actor }}

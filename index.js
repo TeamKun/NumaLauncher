@@ -16,7 +16,7 @@ const fs                                = require('fs')
 const fsExtra                           = require('fs-extra')
 const crypto                            = require('crypto')
 
-app.setAsDefaultProtocolClient('numlauncher');
+app.setAsDefaultProtocolClient('numalauncher');
 
 let deepLinkUrl = null;
 

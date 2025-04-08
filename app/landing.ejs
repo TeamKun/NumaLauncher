@@ -183,8 +183,19 @@
             </div>
             <div class="skinlLibrary">
                 <div class="skinlLibrary__ttl">ライブラリ</div>
+                <div class="sortControl">
+                    <label class="skinSortSelectLabel" for="skinSortSelect">並び順:</label>
+                    <select id="skinSortSelect" class="custom-select-style">
+                        <option value="custom">カスタム</option>
+                        <option value="updated_desc">追加順（新しい順）</option>
+                        <option value="updated_asc">追加順（古い順）</option>
+                        <option value="name_asc">名前順（A→Z）</option>
+                        <option value="name_desc">名前順（Z→A）</option>
+                    </select>
+                  </div>
+
                 <div class="selectSkin__Wrap">
-                    <div class="selectSkin__item selectSkin__addNew">
+                    <div class="selectSkin__addNew">
                         <div class="selectSkin__addNew__btn__wrap">
                             <div class="selectSkin__addNew__btn"></div>
                             <p class="selectSkin__item__text">新しいスキン</p>

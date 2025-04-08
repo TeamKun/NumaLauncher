@@ -1,5 +1,6 @@
 const skinOriginImg = require('./skinoriginimg')
 const fs = require('fs')
+const Sortable = require('sortablejs')
 
 function setCamera(camera) {
     camera.rotation.x = 0.0684457336043845
@@ -56,7 +57,6 @@ async function getTextureID() {
         const response = await axios.get(
             `https://sessionserver.mojang.com/session/minecraft/profile/${ConfigManager.getSelectedAccount().uuid}`
         )
-        console.log(response)
         let base64Textures = ''
         response.data.properties.forEach((element) => {
             if (element.name == 'textures') {
@@ -216,68 +216,132 @@ async function editSkinPreview(variant, skinURL) {
 // ライブラリ一覧 モデルスキン生成
 async function generateSkinModel(imageURL) {
     const skinViewer = new skinview3d.SkinViewer({
-        width: 102,
-        height: 172,
+        width: 288,
+        height: 384,
         renderPaused: true,
     })
-    skinViewer.width = 288
-    skinViewer.height = 384
+
     setCamera(skinViewer.camera)
 
-    // Add an animation
     await skinViewer.loadSkin(imageURL)
     skinViewer.render()
+
     const image = skinViewer.canvas.toDataURL()
     skinViewer.dispose()
 
     return image
 }
 
+
 /*----------------------
 ライブラリへのDOM表示関連
 ----------------------*/
 
-// 一覧のDOM反映
-async function exportLibrary() {
-    const response = await fetch(getLauncherSkinPath())
-    const data = await response.json()
-    const datatArray = Object.keys(data).map(function (key) {
-        return data[key]
-    })
-    datatArray.sort(function (a, b) {
-        if (a.updated > b.updated) return -1
-        if (a.updated < b.updated) return 1
-        return 0
-    })
+let sortableInstance = null; // ← グローバルで保持
 
-    $('.skinLibraryItem').remove()
-    datatArray.forEach(function (val) {
-        const id = val.id
-        const modelImage = val.modelImage
-        let name = val.name
-        if (name == null) {
-            name = '<名前のないスキン>'
+async function exportLibrary() {
+    const response = await fetch(getLauncherSkinPath());
+    const data = await response.json();
+
+    let datatArray = Object.keys(data).map(key => data[key]);
+    const sortMode = document.getElementById('skinSortSelect')?.value || 'custom';
+    const skinOrder = ConfigManager.getSkinOrder() || [];
+
+    // 並び替え処理
+    datatArray.sort((a, b) => {
+        switch (sortMode) {
+            case 'custom': {
+                const aIndex = skinOrder.indexOf(a.id);
+                const bIndex = skinOrder.indexOf(b.id);
+                const aInOrder = aIndex !== -1;
+                const bInOrder = bIndex !== -1;
+                if (aInOrder && bInOrder) return aIndex - bIndex;
+                if (aInOrder) return -1;
+                if (bInOrder) return 1;
+                return new Date(b.updated) - new Date(a.updated);
+            }
+            case 'updated_desc':
+                return new Date(b.updated) - new Date(a.updated);
+            case 'updated_asc':
+                return new Date(a.updated) - new Date(b.updated);
+            case 'name_asc':
+                return a.name?.localeCompare(b.name || '') || 0;
+            case 'name_desc':
+                return b.name?.localeCompare(a.name || '') || 0;
+            default:
+                return 0;
         }
-        const skinItem = `<div class="selectSkin__item skinLibraryItem" data-id="${id}">
-            <p class="selectSkin__item__ttl">${name}</p>
-            <div class="selectSkin__item__skinimg"><img src="${modelImage}" data-id="${id}" class="libraryListImg" /></div>
-            <div class="selectSkin__item__hover" style="display: none;">
-                <div class="selectSkin__btn--use useSelectSkin" data-id="${id}">使用する</div>
-                <div class="selectSkin__btn--other__wrap">
-                    <div class="selectSkin__btn--other skinEditPanel">…</div>
-                    <div class="selectSkin__btn__inner">
-                        <div class="selectSkin__btn__inner--delete deleteSkinBox" data-id="${id}" data-name="${name}">削除</div>
-                        <div class="selectSkin__btn__inner--copy copySkinBox" data-id="${id}" data-name="${name}">複製</div>
-                        <div class="selectSkin__btn__inner--edit editSkinBox" data-id="${id}">編集</div>
+    });
+
+    // DOM初期化
+    $('.skinLibraryItem').remove();
+
+    // 各スキンをDOMに追加
+    datatArray.forEach(val => {
+        const id = val.id;
+        const modelImage = val.modelImage;
+        const name = val.name || '<名前のないスキン>';
+
+        const skinItem = `
+            <div class="selectSkin__item skinLibraryItem" data-id="${id}">
+                <p class="selectSkin__item__ttl">${name}</p>
+                <div class="selectSkin__item__skinimg">
+                    <img src="${modelImage}" data-id="${id}" class="libraryListImg" />
+                </div>
+                <div class="selectSkin__item__hover" style="display: none;">
+                    <div class="selectSkin__btn--use useSelectSkin" data-id="${id}">使用する</div>
+                    <div class="selectSkin__btn--other__wrap">
+                        <div class="selectSkin__btn--other skinEditPanel">…</div>
+                        <div class="selectSkin__btn__inner">
+                            <div class="selectSkin__btn__inner--delete deleteSkinBox" data-id="${id}" data-name="${name}">削除</div>
+                            <div class="selectSkin__btn__inner--copy copySkinBox" data-id="${id}" data-name="${name}">複製</div>
+                            <div class="selectSkin__btn__inner--edit editSkinBox" data-id="${id}">編集</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>`
+        `;
 
-        $('.selectSkin__Wrap').append(skinItem)
-    }, data)
-    countCheck()
+        $('.selectSkin__Wrap').append(skinItem);
+    });
+
+    countCheck(); // 名前の長さ調整など
+
+    // Sortable切り替え処理
+    const wrapEl = document.querySelector('.selectSkin__Wrap');
+
+    // 既存Sortableがあれば破棄
+    if (sortableInstance) {
+        sortableInstance.destroy();
+        sortableInstance = null;
+    }
+
+    if (sortMode === 'custom') {
+        sortableInstance = Sortable.create(wrapEl, {
+            animation: 150,
+            ghostClass: 'sortable-ghost',
+            draggable: '.selectSkin__item:not(.selectSkin__addNew)',
+            scroll: true,
+            scrollSensitivity: 100,
+            scrollSpeed: 15,
+            onEnd: function (evt) {
+                const sortedIds = [...document.querySelectorAll('.selectSkin__item:not(.selectSkin__addNew)')]
+                    .map(el => el.dataset.id);
+                ConfigManager.setSkinOrder(sortedIds);
+                ConfigManager.save();
+            }
+        });
+
+        // カーソル変更（任意）
+        document.body.classList.add('drag-enabled');
+    } else {
+        document.body.classList.remove('drag-enabled');
+    }
 }
+
+
+document.getElementById('skinSortSelect').addEventListener('change', exportLibrary);
+
 
 // 一覧のスキン名省略or空欄の代替
 function countCheck() {

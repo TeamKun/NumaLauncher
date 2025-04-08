@@ -109,7 +109,8 @@ const DEFAULT_CONFIG = {
     selectedAccount: null,
     authenticationDatabase: {},
     modConfigurations: [],
-    javaConfig: {}
+    javaConfig: {},
+    skinOrder: []
 }
 
 let config = null
@@ -274,6 +275,10 @@ exports.getInstanceDirectory = function(){
  */
 exports.getClientToken = function(){
     return config.clientToken
+}
+
+exports.getSkinOrder = function(){
+    return config.skinOrder
 }
 
 /**
@@ -516,6 +521,10 @@ exports.setModConfiguration = function(serverid, configuration){
         }
     }
     cfgs.push(configuration)
+}
+
+exports.setSkinOrder = function(skinIds){
+    config.skinOrder = skinIds
 }
 
 // User Configurable Settings

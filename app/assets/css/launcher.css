@@ -2874,6 +2874,35 @@ input:checked + .toggleSwitchSlider:before {
     text-shadow: 0px 0px 20px #c7c7c7;
 }
 
+select.custom-select-style {
+    border-radius: 0px 3px 3px 0px;
+    width: 130px;
+    padding: 5px 10px;
+    font-size: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    background: transparent;
+    color: white;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    cursor: pointer;
+}
+
+select.custom-select-style option {
+    background-color: rgba(0, 0, 0, 0.8); /* 半透明ブラック背景 */
+    color: white;
+}
+
+.skinSortSelectLabel {
+    font-size: 12px;
+}
+
+
 .skinView {
     width: 50%;
     margin: 0 auto;
@@ -3086,6 +3115,13 @@ input:checked + .toggleSwitchSlider:before {
     font-size: 11px;
 }
 
+.drag-enabled .selectSkin__item {
+    cursor: move;
+}
+.selectSkin__item {
+    cursor: default;
+}
+
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -3099,6 +3135,10 @@ input:checked + .toggleSwitchSlider:before {
     border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.5);
 }
+
+.sortable-ghost {
+    opacity: 0.4;
+  }
 
 #addNewSkinContent,
 #editSkinContent,

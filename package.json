@@ -41,6 +41,7 @@
     "lz-string": "^1.5.0",
     "semver": "^7.6.3",
     "skinview3d": "^2.0.0-beta.1",
+    "sortablejs": "^1.15.6",
     "toml": "^3.0.0"
   },
   "devDependencies": {

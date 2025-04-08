@@ -1,4 +1,4 @@
-appId: 'numalauncher'
+appId: 'numaLauncher'
 productName: 'NumaLauncher'
 artifactName: '${productName}-setup-${version}.${ext}'
 
@@ -12,6 +12,11 @@ files:
 
 extraResources:
   - 'libraries'
+
+protocols:
+  - name: 'NumaLauncher Protocol'
+    schemes:
+      - 'numalauncher'
 
 # Windows Configuration
 win:
@@ -31,7 +36,7 @@ mac:
   target:
     - target: 'dmg'
       arch: 'x64'
-  category: 'public.app-category.games'
+  category: 'public.app-category.utilities'
 
 # Linux Configuration
 linux:
@@ -41,7 +46,6 @@ linux:
   synopsis: 'Minecraft Modランチャー'
   description: '沼な人でもModが導入できる、そんなランチャーです。'
   category: 'Game'
-
 
 directories:
   buildResources: 'build'

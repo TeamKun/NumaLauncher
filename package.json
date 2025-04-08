@@ -17,7 +17,8 @@
     "dist:win": "npm run dist -- -w",
     "dist:mac": "npm run dist -- -m",
     "dist:linux": "npm run dist -- -l",
-    "lint": "eslint --config .eslintrc.json ."
+    "lint": "eslint --config .eslintrc.json .",
+    "lint:fix": "eslint --config .eslintrc.json . --fix"
   },
   "engines": {
     "node": "20.x.x"
@@ -53,26 +54,7 @@
     "type": "git",
     "url": "git+https://github.com/TeamKun/NumaLauncher.git"
   },
-  "build": {
-    "productName": "NumaLauncher",
-    "appId": "com.teamkun.numalauncher",
-    "protocols": [
-      {
-        "name": "NumaLauncher Protocol",
-        "schemes": [
-          "numalauncher"
-        ]
-      }
-    ],
-    "mac": {
-      "category": "public.app-category.utilities",
-      "target": [
-        "dmg",
-        "zip"
-      ]
-    },
-    "win": {
-      "target": "nsis"
-    }
-  }
+  "files": [
+    "dist"
+  ]
 }

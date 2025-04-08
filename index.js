@@ -19,6 +19,27 @@ const crypto                            = require('crypto')
 app.setAsDefaultProtocolClient('numalauncher');
 
 let deepLinkUrl = null;
+let win
+const gotLock = app.requestSingleInstanceLock();
+
+if (!gotLock) {
+  app.quit();
+} else {
+    app.on('second-instance', (event, argv, workingDirectory) => {
+        const deeplinkArg = argv.find(arg => arg.startsWith('numalauncher://'));
+
+        if (deeplinkArg) {
+          if (win) {
+            if (win.isMinimized()) win.restore();
+            win.focus();
+
+            handleDeepLink(deeplinkArg);
+          } else {
+            deepLinkUrl = deeplinkArg;
+          }
+        }
+      });
+}
 
 // URI起動mac用
 app.on('open-url', (event, url) => {
@@ -43,14 +64,14 @@ app.whenReady().then(() => {
   });
 });
 
-  function handleDeepLink(url) {
-    const parsedUrl = new URL(url);
-    const query = parsedUrl.searchParams.get("query");
+function handleDeepLink(url) {
+  const parsedUrl = new URL(url);
+  const query = parsedUrl.searchParams.get("query");
 
-    if (win && win.webContents) {
-      win.webContents.send('setServerOption', query);
-    }
+  if (win && win.webContents) {
+    win.webContents.send('setServerOption', query);
   }
+}
 
 
 // Setup Lang
@@ -443,7 +464,6 @@ ipcMain.on(MSFT_OPCODE.OPEN_LOGOUT, (ipcEvent, uuid, isLastAccount) => {
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win
 
 async function createWindow() {
 

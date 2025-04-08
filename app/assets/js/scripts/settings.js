@@ -843,6 +843,20 @@ function parseModulesForUI(mdls, submodules, servConf){
 
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleAll = document.getElementById('toggleAllOptionalMods')
+    if (!toggleAll) return
+
+    toggleAll.addEventListener('change', () => {
+      const optModToggles = document.querySelectorAll('input[type="checkbox"][formod]')
+      optModToggles.forEach(input => {
+        input.checked = toggleAll.checked
+        input.dispatchEvent(new Event('change'))
+      })
+    })
+  })
+
+
 /**
  * Bind functionality to mod config toggle switches. Switching the value
  * will also switch the status color on the left of the mod UI.

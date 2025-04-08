@@ -1723,6 +1723,17 @@ input:checked + .toggleSwitchSlider:before {
     color: white;
 }
 
+.settingsModBulkToggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: bold;
+  }
+
+
 /* Mod elements. */
 .settingsMod,
 .settingsDropinMod {

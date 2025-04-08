@@ -16,61 +16,61 @@ const fs                                = require('fs')
 const fsExtra                           = require('fs-extra')
 const crypto                            = require('crypto')
 
-app.setAsDefaultProtocolClient('numalauncher');
+app.setAsDefaultProtocolClient('numalauncher')
 
-let deepLinkUrl = null;
+let deepLinkUrl = null
 let win
-const gotLock = app.requestSingleInstanceLock();
+const gotLock = app.requestSingleInstanceLock()
 
 if (!gotLock) {
-  app.quit();
+    app.quit()
 } else {
     app.on('second-instance', (event, argv, workingDirectory) => {
-        const deeplinkArg = argv.find(arg => arg.startsWith('numalauncher://'));
+        const deeplinkArg = argv.find(arg => arg.startsWith('numalauncher://'))
 
         if (deeplinkArg) {
-          if (win) {
-            if (win.isMinimized()) win.restore();
-            win.focus();
+            if (win) {
+                if (win.isMinimized()) win.restore()
+                win.focus()
 
-            handleDeepLink(deeplinkArg);
-          } else {
-            deepLinkUrl = deeplinkArg;
-          }
+                handleDeepLink(deeplinkArg)
+            } else {
+                deepLinkUrl = deeplinkArg
+            }
         }
-      });
+    })
 }
 
 // URI起動mac用
 app.on('open-url', (event, url) => {
-  event.preventDefault();
-  deepLinkUrl = url;
-});
+    event.preventDefault()
+    deepLinkUrl = url
+})
 
 // URI起動win用
 app.on('ready', () => {
-    const args = process.argv;
-    deepLinkUrl = args.find(arg => arg.startsWith('numalauncher://'));
-});
+    const args = process.argv
+    deepLinkUrl = args.find(arg => arg.startsWith('numalauncher://'))
+})
 
 // アプリ準備ができたら
 app.whenReady().then(() => {
-  // ページの読み込み完了後に処理
-  win.webContents.once('did-finish-load', () => {
-    if (deepLinkUrl) {
-      handleDeepLink(deepLinkUrl);
-      deepLinkUrl = null;
-    }
-  });
-});
+    // ページの読み込み完了後に処理
+    win.webContents.once('did-finish-load', () => {
+        if (deepLinkUrl) {
+            handleDeepLink(deepLinkUrl)
+            deepLinkUrl = null
+        }
+    })
+})
 
 function handleDeepLink(url) {
-  const parsedUrl = new URL(url);
-  const query = parsedUrl.searchParams.get("query");
+    const parsedUrl = new URL(url)
+    const query = parsedUrl.searchParams.get('query')
 
-  if (win && win.webContents) {
-    win.webContents.send('setServerOption', query);
-  }
+    if (win && win.webContents) {
+        win.webContents.send('setServerOption', query)
+    }
 }
 
 
@@ -155,28 +155,28 @@ ipcMain.on('distributionIndexDone', (event, res) => {
     // ウィンドウID管理
     let manualWindowIndex = 0
     let manualWindows = []
-        // ダウンロードID管理
+    // ダウンロードID管理
     let downloadIndex = 0
-        // ダウンロードフォルダ
+    // ダウンロードフォルダ
     const downloadDirectory = path.join(app.getPath('temp'), 'NumaLauncher', 'ManualDownloads')
-        // IDでウィンドウを閉じる
+    // IDでウィンドウを閉じる
     ipcMain.on('closeManualWindow', (ipcEvent, index) => {
-            // IDを探してウィンドウを閉じる
-            const window = manualWindows[index]
-            if (window !== undefined) {
-                window.win.close()
-                manualWindows[index] = undefined
-            }
-        })
-        // IDでウィンドウを閉じる
+        // IDを探してウィンドウを閉じる
+        const window = manualWindows[index]
+        if (window !== undefined) {
+            window.win.close()
+            manualWindows[index] = undefined
+        }
+    })
+    // IDでウィンドウを閉じる
     ipcMain.on('preventManualWindowRedirect', (ipcEvent, index, prevent) => {
-            // IDを探してリダイレクト可否フラグ変更
-            const window = manualWindows[index]
-            if (window !== undefined) {
-                window.preventRedirect = prevent
-            }
-        })
-        // 手動ダウンロード用のウィンドウを開く
+        // IDを探してリダイレクト可否フラグ変更
+        const window = manualWindows[index]
+        if (window !== undefined) {
+            window.preventRedirect = prevent
+        }
+    })
+    // 手動ダウンロード用のウィンドウを開く
     ipcMain.on('openManualWindow', (ipcEvent, result) => {
         // ハッシュチェック
         function validateLocal(filePath, algo, hash) {
@@ -226,81 +226,81 @@ ipcMain.on('distributionIndexDone', (event, res) => {
 
             // ウィンドウ開いた直後(ページ遷移時を除く)のみ最初のダイアログ表示
             win.webContents.send('manual-first')
-                // ロードが終わったら案内情報のデータをレンダープロセスに送る
+            // ロードが終わったら案内情報のデータをレンダープロセスに送る
             win.webContents.on('dom-ready', (event, args) => {
-                    if (win.isDestroyed())
-                        return
-                    win.webContents.send('manual-data', manual, index)
-                })
-                // リダイレクトキャンセル
+                if (win.isDestroyed())
+                    return
+                win.webContents.send('manual-data', manual, index)
+            })
+            // リダイレクトキャンセル
             win.webContents.on('will-navigate', (event, args) => {
-                    if (win.isDestroyed())
-                        return
-                    const window = manualWindows[index]
-                    if (window !== undefined) {
-                        if (window.preventRedirect)
-                            event.preventDefault()
-                    }
-                })
-                // ダウンロードされたらファイル名をすり替え、ハッシュチェックする
+                if (win.isDestroyed())
+                    return
+                const window = manualWindows[index]
+                if (window !== undefined) {
+                    if (window.preventRedirect)
+                        event.preventDefault()
+                }
+            })
+            // ダウンロードされたらファイル名をすり替え、ハッシュチェックする
             win.webContents.session.on('will-download', (event, item, webContents) => {
+                if (win.isDestroyed())
+                    return
+
+                downloadIndex++
+
+                // 一時フォルダに保存
+                item.setSavePath(path.join(downloadDirectory, item.getFilename()))
+
+                // 進捗を送信 (開始)
+                win.webContents.send('download-start', {
+                    index: downloadIndex,
+                    name: manual.manual.name,
+                    received: item.getReceivedBytes(),
+                    total: item.getTotalBytes(),
+                })
+                // 進捗を送信 (進行中)
+                item.on('updated', (event, state) => {
                     if (win.isDestroyed())
                         return
-
-                    downloadIndex++
-
-                    // 一時フォルダに保存
-                    item.setSavePath(path.join(downloadDirectory, item.getFilename()))
-
-                    // 進捗を送信 (開始)
-                    win.webContents.send('download-start', {
-                            index: downloadIndex,
-                            name: manual.manual.name,
-                            received: item.getReceivedBytes(),
-                            total: item.getTotalBytes(),
-                        })
-                        // 進捗を送信 (進行中)
-                    item.on('updated', (event, state) => {
-                            if (win.isDestroyed())
-                                return
-                            win.webContents.send('download-progress', {
-                                index: downloadIndex,
-                                name: manual.manual.name,
-                                received: item.getReceivedBytes(),
-                                total: item.getTotalBytes(),
-                            })
-                        })
-                        // 進捗を送信 (完了)
-                    item.once('done', (event, state) => {
-                        if (win.isDestroyed())
-                            return
-                            // ファイルが正しいかチェックする
-                        const v = item.getTotalBytes() === manual.size &&
-                            validateLocal(item.getSavePath(), 'md5', manual.MD5)
-                        if (!v) {
-                            // 違うファイルをダウンロードしてしまった場合
-                            win.webContents.send('download-end', {
-                                index: downloadIndex,
-                                name: manual.manual.name,
-                                state: 'hash-failed',
-                            })
-                        } else if (fsExtra.existsSync(manual.path)) {
-                            // ファイルが既にあったら閉じる
-                            win.close()
-                        } else {
-
-                            // ファイルを正しい位置に移動
-                            fsExtra.moveSync(item.getSavePath(), manual.path)
-                                // 完了を通知
-                            win.webContents.send('download-end', {
-                                index: downloadIndex,
-                                name: manual.manual.name,
-                                state,
-                            })
-                        }
+                    win.webContents.send('download-progress', {
+                        index: downloadIndex,
+                        name: manual.manual.name,
+                        received: item.getReceivedBytes(),
+                        total: item.getTotalBytes(),
                     })
                 })
-                // ダウンロードサイトを表示
+                // 進捗を送信 (完了)
+                item.once('done', (event, state) => {
+                    if (win.isDestroyed())
+                        return
+                    // ファイルが正しいかチェックする
+                    const v = item.getTotalBytes() === manual.size &&
+                            validateLocal(item.getSavePath(), 'md5', manual.MD5)
+                    if (!v) {
+                        // 違うファイルをダウンロードしてしまった場合
+                        win.webContents.send('download-end', {
+                            index: downloadIndex,
+                            name: manual.manual.name,
+                            state: 'hash-failed',
+                        })
+                    } else if (fsExtra.existsSync(manual.path)) {
+                        // ファイルが既にあったら閉じる
+                        win.close()
+                    } else {
+
+                        // ファイルを正しい位置に移動
+                        fsExtra.moveSync(item.getSavePath(), manual.path)
+                        // 完了を通知
+                        win.webContents.send('download-end', {
+                            index: downloadIndex,
+                            name: manual.manual.name,
+                            state,
+                        })
+                    }
+                })
+            })
+            // ダウンロードサイトを表示
             win.loadURL(manual.manual.url)
         }
     })
@@ -327,12 +327,12 @@ ipcMain.handle(SHELL_OPCODE.TRASH_ITEM, async (event, ...args) => {
 })
 
 ipcMain.on('get-launcher-skin-path', (event) => {
-    event.returnValue = app.getPath('appData');
-});
+    event.returnValue = app.getPath('appData')
+})
 
 ipcMain.on('get-home-path', (event) => {
-    event.returnValue = app.getPath('home');
-});
+    event.returnValue = app.getPath('home')
+})
 
 
 // Disable hardware acceleration.

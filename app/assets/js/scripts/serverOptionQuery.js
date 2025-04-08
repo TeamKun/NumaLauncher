@@ -6,8 +6,8 @@ function generateURL() {
 }
 
 function generateDiscordString() {
-    const eventName = document.getElementById("settingsEventNameVal").value
-    const settingsServer = document.getElementById("settingsServerIPVal").value
+    const eventName = document.getElementById('settingsEventNameVal').value
+    const settingsServer = document.getElementById('settingsServerIPVal').value
 
     const message = [
         `# ${eventName}`,
@@ -17,24 +17,24 @@ function generateDiscordString() {
         '```',
         '### 起動リンク:',
         generateURL()
-      ].join('\n');
+    ].join('\n')
     return message
 }
 
 function encodeJsonToUrl(jsonObj) {
-    return LZString.compressToEncodedURIComponent(JSON.stringify(jsonObj));
+    return LZString.compressToEncodedURIComponent(JSON.stringify(jsonObj))
 }
 
 function decodeUrlToJson(encodedStr) {
     try {
-        const decompressed = LZString.decompressFromEncodedURIComponent(encodedStr);
+        const decompressed = LZString.decompressFromEncodedURIComponent(encodedStr)
         if (!decompressed) {
-            throw new Error("Decompression failed or returned null.");
+            throw new Error('Decompression failed or returned null.')
         }
-        return JSON.parse(decompressed);
+        return JSON.parse(decompressed)
     } catch (err) {
-        console.error("JSON decode error:", err);
-        return null;
+        console.error('JSON decode error:', err)
+        return null
     }
 }
 

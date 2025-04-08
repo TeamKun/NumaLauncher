@@ -546,11 +546,11 @@ async function dlAsync(login = true) {
     if (manualData.length > 0) {
         //マニュアルダウンロード開始
         showLaunchFailure(
-            "手動でのインストールが必要です",
-            "開かれたウィンドウのMODをすべてダウンロードし、再度PLAYボタンを押してください。"
-          )
+            '手動でのインストールが必要です',
+            '開かれたウィンドウのMODをすべてダウンロードし、再度PLAYボタンを押してください。'
+        )
 
-        ipcRenderer.send("openManualWindow", {
+        ipcRenderer.send('openManualWindow', {
             versionData: null,
             forgeData: null,
             manualData,
@@ -706,39 +706,39 @@ document.getElementById('settingsFileSystemButton').onclick = async () => {
  * Bind functionality to the delete file system button for the selected
  */
 document.getElementById('deleteFileSystemSVG').onclick = async () => {
-    const serv = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer());
-    const CACHE_SETTINGS_MODS_DIR = path.join(ConfigManager.getInstanceDirectory(), serv.rawServer.id);
+    const serv = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer())
+    const CACHE_SETTINGS_MODS_DIR = path.join(ConfigManager.getInstanceDirectory(), serv.rawServer.id)
 
     setOverlayContent(
-        "フォルダを削除しますか?",
-        `${serv.rawServer.name}の関連フォルダを削除します。ドロップインMODやスクリーンショットも削除されます。この操作は元に戻せません。`,
-        "キャンセル",
-        "削除する"
+        'フォルダを削除しますか?',
+        `${removeOrderNumber(serv.rawServer.name)}の関連フォルダを削除します。ドロップインMODやスクリーンショットも削除されます。この操作は元に戻せません。`,
+        'キャンセル',
+        '削除する'
     )
     setOverlayHandler(null)
     setDismissHandler(() => {
         (async () => {
             try {
-                await fs.remove(CACHE_SETTINGS_MODS_DIR);
+                await fs.remove(CACHE_SETTINGS_MODS_DIR)
                 setOverlayContent(
-                    "完了",
-                    "ディレクトリの削除に成功しました",
-                    "閉じる"
+                    '完了',
+                    'ディレクトリの削除に成功しました',
+                    '閉じる'
                 )
                 toggleOverlay(true)
                 setOverlayHandler(null)
                 toggleLaunchArea(false)
             } catch (err) {
                 setOverlayContent(
-                    "エラー",
-                    "ディレクトリの削除に失敗しました",
-                    "閉じる"
+                    'エラー',
+                    'ディレクトリの削除に失敗しました',
+                    '閉じる'
                 )
                 toggleOverlay(true)
                 setOverlayHandler(null)
                 toggleLaunchArea(false)
             }
-        })();
+        })()
     })
     toggleOverlay(true,true)
     toggleLaunchArea(false)
@@ -1130,70 +1130,70 @@ function displayArticle(articleObject, index){
 
 //     return await promise
 // }
-    /**
+/**
       * サーバー名からオーダー番号取り除く
       * */
-    function removeOrderNumber(serverName) {
-        let reg = /^%*%/
-        if (!reg.test(serverName)) {
-            return serverName
-        }
-
-        return serverName.split('%')[2]
+function removeOrderNumber(serverName) {
+    let reg = /^%*%/
+    if (!reg.test(serverName)) {
+        return serverName
     }
 
-    /**
+    return serverName.split('%')[2]
+}
+
+/**
      * 手動ダウンロードのファイルをリストアップし、ユーザーにダウンロードを促します
      *
      * @param {string} server The Server to load Forge data for.
      * @returns {Promise.<Object>} A promise which resolves to Forge's version.json data.
      */
-    function loadManualData(server) {
-        return new Promise(async(resolve, reject) => {
-            function isModEnabled(modCfg, required = null) {
-                return modCfg != null ? ((typeof modCfg === 'boolean' && modCfg) || (typeof modCfg === 'object' && (typeof modCfg.value !== 'undefined' ? modCfg.value : true))) : required != null ? required.def : true
-            }
+function loadManualData(server) {
+    return new Promise(async(resolve, reject) => {
+        function isModEnabled(modCfg, required = null) {
+            return modCfg != null ? ((typeof modCfg === 'boolean' && modCfg) || (typeof modCfg === 'object' && (typeof modCfg.value !== 'undefined' ? modCfg.value : true))) : required != null ? required.def : true
+        }
 
-            // 有効化されているかチェックするために必要
-            const modCfg = ConfigManager.getModConfiguration(server.rawServer.id).mods
-            const mdls = server.modules
+        // 有効化されているかチェックするために必要
+        const modCfg = ConfigManager.getModConfiguration(server.rawServer.id).mods
+        const mdls = server.modules
 
 
-            // 手動ダウンロードMod候補
-            let manualModsCandidate = []
-                // ON以外の手動Modは除外する
-            let removeCandidate = []
-            mdls.forEach((mdl, index, object) => {
-                if(!fs.existsSync(mdl.localPath)) {
-                    const artifact = mdl.rawModule.artifact
-                    const manual = artifact.manual
-                        // 手動Modかどうか
-                    if (manual !== undefined) {
-                        // ONかどうか
-                        const o = !mdl.required.value
-                        const e = isModEnabled(modCfg[mdl.getVersionlessMavenIdentifier()], mdl.required.value)
-                        if (!o || (o && e)) {
-                            manualModsCandidate.push(mdl)
-                        } else {
-                            removeCandidate.push(index)
-                        }
+        // 手動ダウンロードMod候補
+        let manualModsCandidate = []
+        // ON以外の手動Modは除外する
+        let removeCandidate = []
+        mdls.forEach((mdl, index, object) => {
+            if(!fs.existsSync(mdl.localPath)) {
+                const artifact = mdl.rawModule.artifact
+                const manual = artifact.manual
+                // 手動Modかどうか
+                if (manual !== undefined) {
+                    // ONかどうか
+                    const o = !mdl.required.value
+                    const e = isModEnabled(modCfg[mdl.getVersionlessMavenIdentifier()], mdl.required.value)
+                    if (!o || (o && e)) {
+                        manualModsCandidate.push(mdl)
+                    } else {
+                        removeCandidate.push(index)
                     }
                 }
-            })
-                // 除外された手動Modはリストから削除
-            for (let i = removeCandidate.length - 1; i >= 0; i--)
-                mdls.splice(removeCandidate[i], 1)
-
-            // 手動候補のModは存在を確認し、手動Modリストに追加
-            let manualMods = []
-            for (const mdl of manualModsCandidate) {
-                const artifact = mdl.rawModule.artifact
-                if (!(await fs.pathExists(artifact.url))) {
-                    artifact.path = mdl.localPath
-                    manualMods.push(artifact)
-                }
             }
-
-            resolve(manualMods)
         })
-    }
+        // 除外された手動Modはリストから削除
+        for (let i = removeCandidate.length - 1; i >= 0; i--)
+            mdls.splice(removeCandidate[i], 1)
+
+        // 手動候補のModは存在を確認し、手動Modリストに追加
+        let manualMods = []
+        for (const mdl of manualModsCandidate) {
+            const artifact = mdl.rawModule.artifact
+            if (!(await fs.pathExists(artifact.url))) {
+                artifact.path = mdl.localPath
+                manualMods.push(artifact)
+            }
+        }
+
+        resolve(manualMods)
+    })
+}

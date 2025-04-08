@@ -85,28 +85,28 @@ APIへの反映 PUT
 
 // 編集・追加したスキンに着替えるAPI
 async function uploadSkin(variant, file) {
-    await AuthManager.validateSelected();
-    const account = ConfigManager.getAuthAccount(ConfigManager.getSelectedAccount().uuid);
+    await AuthManager.validateSelected()
+    const account = ConfigManager.getAuthAccount(ConfigManager.getSelectedAccount().uuid)
 
     if (!file) {
-        console.error("File is undefined or null.");
-        return;
+        console.error('File is undefined or null.')
+        return
     }
 
     // ファイルのデータを Base64 に変換し、プレビューを更新する
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
 
     reader.onload = async function () {
-        const skinURL = reader.result;
-        nowSkinPreview(variant, skinURL); // ここでプレビューを更新
+        const skinURL = reader.result
+        nowSkinPreview(variant, skinURL) // ここでプレビューを更新
 
         // FormData の作成
-        const param = new FormData();
-        param.append('variant', variant === 'slim' ? 'slim' : 'classic');
-        param.append('file', file, 'skin.png');
+        const param = new FormData()
+        param.append('variant', variant === 'slim' ? 'slim' : 'classic')
+        param.append('file', file, 'skin.png')
 
-        console.log('Uploading file:', file);
+        console.log('Uploading file:', file)
 
         try {
             const response = await axios.post(
@@ -115,19 +115,19 @@ async function uploadSkin(variant, file) {
                 {
                     headers: {
                         Authorization: `Bearer ${account.accessToken}`,
-                        "Content-Type": "multipart/form-data" // 明示的に指定
+                        'Content-Type': 'multipart/form-data' // 明示的に指定
                     }
                 }
-            );
-            console.log('Skin uploaded successfully:', response.data);
+            )
+            console.log('Skin uploaded successfully:', response.data)
         } catch (error) {
-            console.error('Upload error:', error.response ? error.response.data : error.message);
+            console.error('Upload error:', error.response ? error.response.data : error.message)
         }
-    };
+    }
 
     reader.onerror = function () {
-        console.error("Error reading file.");
-    };
+        console.error('Error reading file.')
+    }
 }
 
 
@@ -155,8 +155,8 @@ async function nowSkinPreview(variant, skinURL) {
 
     // マウス操作があったときだけ再描画するように設定
     control.addEventListener('change', () => {
-        skinViewer.render();
-    });
+        skinViewer.render()
+    })
 
     skinViewer.render()
 }
@@ -181,8 +181,8 @@ async function addSkinPreview(variant, skinURL) {
 
     // マウス操作があったときだけ再描画するように設定
     control.addEventListener('change', () => {
-        skinViewer.render();
-    });
+        skinViewer.render()
+    })
 
     skinViewer.render()
 }
@@ -207,8 +207,8 @@ async function editSkinPreview(variant, skinURL) {
 
     // マウス操作があったときだけ再描画するように設定
     control.addEventListener('change', () => {
-        skinViewer.render();
-    });
+        skinViewer.render()
+    })
 
     skinViewer.render()
 }
@@ -237,50 +237,50 @@ async function generateSkinModel(imageURL) {
 ライブラリへのDOM表示関連
 ----------------------*/
 
-let sortableInstance = null; // ← グローバルで保持
+let sortableInstance = null // ← グローバルで保持
 
 async function exportLibrary() {
-    const response = await fetch(getLauncherSkinPath());
-    const data = await response.json();
+    const response = await fetch(getLauncherSkinPath())
+    const data = await response.json()
 
-    let datatArray = Object.keys(data).map(key => data[key]);
-    const sortMode = document.getElementById('skinSortSelect')?.value || 'custom';
-    const skinOrder = ConfigManager.getSkinOrder() || [];
+    let datatArray = Object.keys(data).map(key => data[key])
+    const sortMode = document.getElementById('skinSortSelect')?.value || 'custom'
+    const skinOrder = ConfigManager.getSkinOrder() || []
 
     // 並び替え処理
     datatArray.sort((a, b) => {
         switch (sortMode) {
             case 'custom': {
-                const aIndex = skinOrder.indexOf(a.id);
-                const bIndex = skinOrder.indexOf(b.id);
-                const aInOrder = aIndex !== -1;
-                const bInOrder = bIndex !== -1;
-                if (aInOrder && bInOrder) return aIndex - bIndex;
-                if (aInOrder) return -1;
-                if (bInOrder) return 1;
-                return new Date(b.updated) - new Date(a.updated);
+                const aIndex = skinOrder.indexOf(a.id)
+                const bIndex = skinOrder.indexOf(b.id)
+                const aInOrder = aIndex !== -1
+                const bInOrder = bIndex !== -1
+                if (aInOrder && bInOrder) return aIndex - bIndex
+                if (aInOrder) return -1
+                if (bInOrder) return 1
+                return new Date(b.updated) - new Date(a.updated)
             }
             case 'updated_desc':
-                return new Date(b.updated) - new Date(a.updated);
+                return new Date(b.updated) - new Date(a.updated)
             case 'updated_asc':
-                return new Date(a.updated) - new Date(b.updated);
+                return new Date(a.updated) - new Date(b.updated)
             case 'name_asc':
-                return a.name?.localeCompare(b.name || '') || 0;
+                return a.name?.localeCompare(b.name || '') || 0
             case 'name_desc':
-                return b.name?.localeCompare(a.name || '') || 0;
+                return b.name?.localeCompare(a.name || '') || 0
             default:
-                return 0;
+                return 0
         }
-    });
+    })
 
     // DOM初期化
-    $('.skinLibraryItem').remove();
+    $('.skinLibraryItem').remove()
 
     // 各スキンをDOMに追加
     datatArray.forEach(val => {
-        const id = val.id;
-        const modelImage = val.modelImage;
-        const name = val.name || '<名前のないスキン>';
+        const id = val.id
+        const modelImage = val.modelImage
+        const name = val.name || '<名前のないスキン>'
 
         const skinItem = `
             <div class="selectSkin__item skinLibraryItem" data-id="${id}">
@@ -300,20 +300,20 @@ async function exportLibrary() {
                     </div>
                 </div>
             </div>
-        `;
+        `
 
-        $('.selectSkin__Wrap').append(skinItem);
-    });
+        $('.selectSkin__Wrap').append(skinItem)
+    })
 
-    countCheck(); // 名前の長さ調整など
+    countCheck() // 名前の長さ調整など
 
     // Sortable切り替え処理
-    const wrapEl = document.querySelector('.selectSkin__Wrap');
+    const wrapEl = document.querySelector('.selectSkin__Wrap')
 
     // 既存Sortableがあれば破棄
     if (sortableInstance) {
-        sortableInstance.destroy();
-        sortableInstance = null;
+        sortableInstance.destroy()
+        sortableInstance = null
     }
 
     if (sortMode === 'custom') {
@@ -326,21 +326,21 @@ async function exportLibrary() {
             scrollSpeed: 15,
             onEnd: function (evt) {
                 const sortedIds = [...document.querySelectorAll('.selectSkin__item:not(.selectSkin__addNew)')]
-                    .map(el => el.dataset.id);
-                ConfigManager.setSkinOrder(sortedIds);
-                ConfigManager.save();
+                    .map(el => el.dataset.id)
+                ConfigManager.setSkinOrder(sortedIds)
+                ConfigManager.save()
             }
-        });
+        })
 
         // カーソル変更（任意）
-        document.body.classList.add('drag-enabled');
+        document.body.classList.add('drag-enabled')
     } else {
-        document.body.classList.remove('drag-enabled');
+        document.body.classList.remove('drag-enabled')
     }
 }
 
 
-document.getElementById('skinSortSelect').addEventListener('change', exportLibrary);
+document.getElementById('skinSortSelect').addEventListener('change', exportLibrary)
 
 
 // 一覧のスキン名省略or空欄の代替
@@ -404,77 +404,77 @@ JSONファイルの読み込み・書き出し
 
 // 沼ランチャーのスキンデータパスを取得する
 function getLauncherSkinPath() {
-    const appPath = ipcRenderer.sendSync('get-launcher-skin-path');
-    const homePath = ipcRenderer.sendSync('get-home-path');
-    let numaPath;
+    const appPath = ipcRenderer.sendSync('get-launcher-skin-path')
+    const homePath = ipcRenderer.sendSync('get-home-path')
+    let numaPath
 
     switch (process.platform) {
         case 'win32':
-            numaPath = `${appPath}\\.minecraft\\numa_skins.json`;
-            break;
+            numaPath = `${appPath}\\.minecraft\\numa_skins.json`
+            break
         case 'darwin':
-            numaPath = `${appPath}/minecraft/numa_skins.json`;
-            break;
+            numaPath = `${appPath}/minecraft/numa_skins.json`
+            break
         case 'linux':
-            numaPath = `${homePath}/.minecraft/numa_skins.json`;
-            break;
+            numaPath = `${homePath}/.minecraft/numa_skins.json`
+            break
         default:
-            console.error('Cannot resolve current platform!');
-            numaPath = '';
-            break;
+            console.error('Cannot resolve current platform!')
+            numaPath = ''
+            break
     }
 
-    return numaPath;
+    return numaPath
 }
 
 // 公式ランチャー内のスキンデータパスを取得する
 function getLauncherSkinPathOrigin() {
-    const appPath = ipcRenderer.sendSync('get-launcher-skin-path');
-    const homePath = ipcRenderer.sendSync('get-home-path');
-    let defaultOriginPath;
+    const appPath = ipcRenderer.sendSync('get-launcher-skin-path')
+    const homePath = ipcRenderer.sendSync('get-home-path')
+    let defaultOriginPath
 
     switch (process.platform) {
         case 'win32':
-            defaultOriginPath = `${appPath}\\.minecraft\\launcher_skins.json`;
-            break;
+            defaultOriginPath = `${appPath}\\.minecraft\\launcher_skins.json`
+            break
         case 'darwin':
-            defaultOriginPath = `${appPath}/minecraft/launcher_skins.json`;
-            break;
+            defaultOriginPath = `${appPath}/minecraft/launcher_skins.json`
+            break
         case 'linux':
-            defaultOriginPath = `${homePath}/.minecraft/launcher_skins.json`;
-            break;
+            defaultOriginPath = `${homePath}/.minecraft/launcher_skins.json`
+            break
         default:
-            console.error('Cannot resolve current platform!');
-            defaultOriginPath = '';
-            break;
+            console.error('Cannot resolve current platform!')
+            defaultOriginPath = ''
+            break
     }
 
-    return defaultOriginPath;
+    return defaultOriginPath
 }
 
 // 沼ランチャーとの同期設定JSON
 function getSkinSettingPath() {
-    const appPath = ipcRenderer.sendSync('get-launcher-skin-path');
-    const homePath = ipcRenderer.sendSync('get-home-path');
-    let skinSettingPath;
+    const appPath = ipcRenderer.sendSync('get-launcher-skin-path')
+    const homePath = ipcRenderer.sendSync('get-home-path')
+    let skinSettingPath
 
     switch (process.platform) {
         case 'win32':
-            skinSettingPath = `${appPath}\\.minecraft\\skinSetting.json`;
-            break;
+            skinSettingPath = `${appPath}\\.minecraft\\skinSetting.json`
+            break
         case 'darwin':
-            skinSettingPath = `${appPath}/minecraft/skinSetting.json`;
-            break;
+            skinSettingPath = `${appPath}/minecraft/skinSetting.json`
+            break
         case 'linux':
-            skinSettingPath = `${homePath}/.minecraft/skinSetting.json`;
-            break;
+            skinSettingPath = `${homePath}/.minecraft/skinSetting.json`
+            break
         default:
-            console.error('Cannot resolve current platform!');
-            skinSettingPath = '';
-            break;
+            console.error('Cannot resolve current platform!')
+            skinSettingPath = ''
+            break
     }
 
-    return skinSettingPath;
+    return skinSettingPath
 }
 // デフォルトの場所にマイクラフォルダが存在する場合
 // function existsDefalutSkinPath() {

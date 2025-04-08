@@ -253,9 +253,9 @@ document.getElementById('filterInput').addEventListener('input', async (e) => {
  * */
 function kanaToHira(str) {
     return str.replace(/[\u30a1-\u30f6]/g, function(match) {
-        let chr = match.charCodeAt(0) - 0x60;
-        return String.fromCharCode(chr);
-    });
+        let chr = match.charCodeAt(0) - 0x60
+        return String.fromCharCode(chr)
+    })
 }
 
 function setServerListingHandlers(){
@@ -309,7 +309,7 @@ function createServerHtml(servers) {
     let htmlString = ''
 
     if (sortedServers.length < 1) {
-        htmlString += `<div style="width:375px;text-align:center">該当パックなし</div>`
+        htmlString += '<div style="width:375px;text-align:center">該当パックなし</div>'
     } else {
         for(const serv of sortedServers){
             const serverName = removeOrderNumber(serv.rawServer.name)

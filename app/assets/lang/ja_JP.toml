@@ -186,7 +186,7 @@ errorDuringFileDownloadTitle = "ファイルダウンロード中のエラー"
 preparingToLaunch = "起動の準備中.."
 launchingGame = "ゲームを起動中.."
 launchWrapperNotDownloaded = "重要なファイルであるLaunchWrapperのダウンロードに失敗しました。そのため、ゲームを起動できません。<br><br>この問題を解決するには、一時的にウイルス対策ソフトを無効にしてゲームを再起動してみてください。<br><br>時間がある場合は、<a href=\"https://github.com/dscalzi/HeliosLauncher/issues\">問題を報告</a>して、使用しているウイルス対策ソフトを教えていただければ幸いです。ウィルス対策ソフトの会社に連絡を取って問題を解決できるよう努力します。"
-doneEnjoyServer = "完了。よいマイクラ生活を！"
+doneEnjoyServer = "完了。参加勢集合！"
 checkConsoleForDetails = "詳細はコンソール（CTRL + Shift + i）をご確認ください。"
 
 [js.landing.news]

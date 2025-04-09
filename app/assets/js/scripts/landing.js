@@ -1171,7 +1171,12 @@ function loadManualData(server) {
                 if (manual !== undefined) {
                     // ONかどうか
                     const o = !mdl.required.value
-                    const e = isModEnabled(modCfg[mdl.getVersionlessMavenIdentifier()], mdl.required.value)
+                    let e = false
+                    if (mdl.rawModule.type === 'file') {
+                        e = mdl.required.value
+                    } else {
+                        e = isModEnabled(modCfg[mdl.getVersionlessMavenIdentifier()], mdl.required.value)
+                    }
                     if (!o || (o && e)) {
                         manualModsCandidate.push(mdl)
                     } else {

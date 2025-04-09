@@ -1172,7 +1172,7 @@ function loadManualData(server) {
                     // ONかどうか
                     const o = !mdl.required.value
                     let e = false
-                    if (mdl.rawModule.type === 'file') {
+                    if (mdl.rawModule.type.toLowerCase() === 'file') {
                         e = mdl.required.value
                     } else {
                         e = isModEnabled(modCfg[mdl.getVersionlessMavenIdentifier()], mdl.required.value)

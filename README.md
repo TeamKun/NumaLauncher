@@ -4,7 +4,11 @@
 
 <em><h5 align="center">(formerly Electron Launcher)</h5></em>
 
-[<p align="center"><img src="https://img.shields.io/github/downloads/dscalzi/HeliosLauncher/total.svg?style=for-the-badge" alt="downloads">](https://github.com/TeamKun/NumaLauncher/releases)</p>
+<p align="center">
+  <a href="https://github.com/TeamKun/NumaLauncher/releases">
+    <img src="https://img.shields.io/github/downloads/TeamKun/NumaLauncher/total.svg?style=for-the-badge" alt="downloads">
+  </a>
+</p>
 
 | Platform | File |
 | -------- | ---- |

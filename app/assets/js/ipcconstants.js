@@ -1,7 +1,7 @@
 // NOTE FOR THIRD-PARTY
 // REPLACE THIS CLIENT ID WITH YOUR APPLICATION ID.
 // SEE https://github.com/dscalzi/HeliosLauncher/blob/master/docs/MicrosoftAuth.md
-exports.AZURE_CLIENT_ID = '5b2d8e51-391a-483d-b9b4-71cfae677f50'
+exports.AZURE_CLIENT_ID = 'ce9c7ade-7cee-4c4c-83bc-0c0edafdcaea'
 // SEE NOTE ABOVE.
 
 // This is the client ID for the Minecraft Launcher.

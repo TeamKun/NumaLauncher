@@ -2,6 +2,7 @@ const fs        = require('fs-extra')
 const path      = require('path')
 const { ipcRenderer, shell } = require('electron')
 const { SHELL_OPCODE } = require('./ipcconstants')
+const { webUtils } = require('electron')
 
 // Group #1: File Name (without .disabled, if any)
 // Group #2: File Extension (jar, zip, or litemod)
@@ -81,7 +82,8 @@ exports.addDropinMods = function(files, modsdir) {
 
     for(let f of files) {
         if(MOD_REGEX.exec(f.name) != null) {
-            fs.moveSync(f.path, path.join(modsdir, f.name))
+            const filePath = webUtils.getPathForFile(f)
+            fs.moveSync(filePath, path.join(modsdir, f.name))
         }
     }
 

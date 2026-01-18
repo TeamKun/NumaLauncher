@@ -337,7 +337,7 @@ ipcMain.on('get-home-path', (event) => {
 
 // Disable hardware acceleration.
 // https://electronjs.org/docs/tutorial/offscreen-rendering
-app.disableHardwareAcceleration()
+// app.disableHardwareAcceleration()
 
 
 const REDIRECT_URI_PREFIX = 'https://login.microsoftonline.com/common/oauth2/nativeclient?'

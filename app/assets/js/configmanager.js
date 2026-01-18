@@ -96,7 +96,8 @@ const DEFAULT_CONFIG = {
         },
         launcher: {
             allowPrerelease: false,
-            dataDirectory: dataPath
+            dataDirectory: dataPath,
+            hardwareAcceleration: true
         }
     },
     newsCache: {
@@ -844,4 +845,23 @@ exports.getAllowPrerelease = function(def = false){
  */
 exports.setAllowPrerelease = function(allowPrerelease){
     config.settings.launcher.allowPrerelease = allowPrerelease
+}
+
+/**
+ * Check if hardware acceleration is enabled.
+ *
+ * @param {boolean} def Optional. If true, the default value will be returned.
+ * @returns {boolean} Whether or not hardware acceleration is enabled.
+ */
+exports.getHardwareAcceleration = function(def = false){
+    return !def ? config.settings.launcher.hardwareAcceleration : DEFAULT_CONFIG.settings.launcher.hardwareAcceleration
+}
+
+/**
+ * Change the status of hardware acceleration.
+ *
+ * @param {boolean} hardwareAcceleration Whether or not hardware acceleration is enabled.
+ */
+exports.setHardwareAcceleration = function(hardwareAcceleration){
+    config.settings.launcher.hardwareAcceleration = hardwareAcceleration
 }

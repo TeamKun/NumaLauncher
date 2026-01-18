@@ -378,22 +378,33 @@ ipcMain.on(MSFT_OPCODE.OPEN_LOGIN, (ipcEvent, ...arguments_) => {
     })
 
     msftAuthWindow.webContents.on('did-navigate', (_, uri) => {
+        // 二重処理防止
+        if (msftAuthSuccess) {
+            return
+        }
+
         const query = uri.startsWith(REDIRECT_URI_PREFIX) ? uri.substring(REDIRECT_URI_PREFIX.length)
             : uri.startsWith(REDIRECT_URI_PREFIX_LIVE) ? uri.substring(REDIRECT_URI_PREFIX_LIVE.length)
                 : undefined
 
         if (query) {
-            let queries = query.split('#', 1).toString().split('&')
-            let queryMap = {}
+            // 標準URLパーサを使用
+            const params = new URLSearchParams(query.split('#')[0])
+            const queryMap = {}
+            for (const [name, value] of params.entries()) {
+                queryMap[name] = value
+            }
 
-            queries.forEach(query => {
-                const [name, value] = query.split('=')
-                queryMap[name] = decodeURI(value)
-            })
-
-            ipcEvent.reply(MSFT_OPCODE.REPLY_LOGIN, MSFT_REPLY_TYPE.SUCCESS, queryMap, msftAuthViewSuccess, msftAuthViewMsMcLauncherAuth)
+            // デバッグログ
+            if (queryMap.code) {
+                const codeLen = queryMap.code.length
+                const codeMasked = queryMap.code.substring(0, 5) + '...' + queryMap.code.substring(codeLen - 5)
+                console.log(`[MSAuth] callback: code=${codeMasked}, len=${codeLen}, hasSpace=${queryMap.code.includes(' ')}`)
+            }
 
             msftAuthSuccess = true
+            ipcEvent.reply(MSFT_OPCODE.REPLY_LOGIN, MSFT_REPLY_TYPE.SUCCESS, queryMap, msftAuthViewSuccess, msftAuthViewMsMcLauncherAuth)
+
             msftAuthWindow.close()
             msftAuthWindow = null
         }

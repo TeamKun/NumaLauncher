@@ -375,7 +375,7 @@ document.getElementById('settingsAddMicrosoftAccountMsMcLauncherAuth').onclick =
 }
 
 ipcRenderer.on('setServerOption', async (event, queryString) => {
-    const query = ServerOptionQuery.decodeUrlToJson(queryString)
+    const query = await ServerOptionQuery.decodeUrlToJson(queryString)
     if (!query) {
         setOverlayContent(
             'サーバーオプションのロードに失敗しました',
@@ -1130,10 +1130,10 @@ function bindShaderpackButton() {
 
 function bindGenerateURLButton() {
     const spBtn = document.getElementById('copyURLButton')
-    spBtn.onclick = () => {
+    spBtn.onclick = async () => {
         saveModConfiguration()
 
-        const url = ServerOptionQuery.generateURL()
+        const url = await ServerOptionQuery.generateURL()
 
         // クリップボードにコピー
         navigator.clipboard.writeText(url)
@@ -1164,10 +1164,10 @@ function bindGenerateURLButton() {
 
 function bindGenerateDiscordStringButton() {
     const spBtn = document.getElementById('copyDisicordStringButton')
-    spBtn.onclick = () => {
+    spBtn.onclick = async () => {
         saveModConfiguration()
 
-        const msg = ServerOptionQuery.generateDiscordString()
+        const msg = await ServerOptionQuery.generateDiscordString()
 
         // クリップボードにコピー
         navigator.clipboard.writeText(msg)

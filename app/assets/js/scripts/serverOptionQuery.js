@@ -143,7 +143,7 @@ function rebuildModConfig(flatMap, modules) {
 
 /**
  * Encode mod configuration to a compact URL string.
- * Format: v2.<serverId>.<hash>:<0|1>,<hash>:<0|1>,...
+ * Format: v2~<serverId>~<hash>:<0|1>,<hash>:<0|1>,...
  * Only mods that differ from their distribution defaults are included.
  *
  * @param {Object} modConf  The mod configuration { id, mods }
@@ -165,7 +165,7 @@ function encodeModConfig(modConf, server) {
         }
     }
 
-    return `v2.${modConf.id}.${diffs.join(',')}`
+    return `v2~${modConf.id}~${diffs.join(',')}`
 }
 
 // ============================================================
@@ -181,11 +181,11 @@ function encodeModConfig(modConf, server) {
  */
 function decodeModConfig(encoded, distro) {
     try {
-        const parts = encoded.split('.')
+        const parts = encoded.split('~')
         if (parts.length < 3 || parts[0] !== 'v2') return null
 
         const serverId = parts[1]
-        const diffStr = parts.slice(2).join('.')  // Rejoin in case serverId has dots
+        const diffStr = parts.slice(2).join('~')
         const server = distro.getServerById(serverId)
         if (!server) return null
 
@@ -251,7 +251,7 @@ async function generateDiscordString() {
  */
 async function decodeUrlToJson(encodedStr) {
     // Try v2 format first
-    if (encodedStr.startsWith('v2.')) {
+    if (encodedStr.startsWith('v2~')) {
         const distro = await DistroAPI.getDistribution()
         const result = decodeModConfig(encodedStr, distro)
         if (result) return result

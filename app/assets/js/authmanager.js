@@ -388,7 +388,7 @@ async function validateSelectedMicrosoftAccount(){
             )
             ConfigManager.save()
             return true
-        } catch(err) {
+        } catch(_err) {
             return false
         }
     } else {
@@ -408,7 +408,7 @@ async function validateSelectedMicrosoftAccount(){
             ConfigManager.save()
             return true
         }
-        catch(err) {
+        catch(_err) {
             return false
         }
     }

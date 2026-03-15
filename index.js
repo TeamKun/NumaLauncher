@@ -395,17 +395,12 @@ ipcMain.on(MSFT_OPCODE.OPEN_LOGIN, (ipcEvent, ...arguments_) => {
             return
         }
 
-        const query = uri.startsWith(REDIRECT_URI_PREFIX) ? uri.substring(REDIRECT_URI_PREFIX.length)
-            : uri.startsWith(REDIRECT_URI_PREFIX_LIVE) ? uri.substring(REDIRECT_URI_PREFIX_LIVE.length)
-                : undefined
-
-        if (query) {
-            // 標準URLパーサを使用
-            const params = new URLSearchParams(query.split('#')[0])
+        if (uri.startsWith(REDIRECT_URI_PREFIX) || uri.startsWith(REDIRECT_URI_PREFIX_LIVE)) {
             const queryMap = {}
-            for (const [name, value] of params.entries()) {
-                queryMap[name] = value
-            }
+
+            new URL(uri).searchParams.forEach((v, k) => {
+                queryMap[k] = v
+            })
 
             // デバッグログ
             if (queryMap.code) {

@@ -33,8 +33,7 @@ ctrl + shift + i
 
 **System Requirements**
 
-* Install Dependencies: Node.js v12
-* Build Installers: Node.js v16
+* [Node.js][nodejs] v22
 
 ---
 

@@ -4393,6 +4393,36 @@ form[name='submitSecretQuestion'] p {
     pointer-events: none;
 }
 
+/* Smoke test button (dev mode only) */
+#smoke_test_button {
+    background: none;
+    border: 1px solid rgba(255, 165, 0, 0.6);
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: 12px;
+    padding: 2px 8px;
+    margin-left: 10px;
+    color: #ffa500;
+    transition: 0.25s ease;
+    outline: none;
+}
+#smoke_test_button:hover,
+#smoke_test_button:focus {
+    text-shadow: 0px 0px 10px rgba(255, 165, 0, 0.8);
+    border-color: #ffa500;
+}
+#smoke_test_button:active {
+    color: #cc8400;
+}
+#smoke_test_button:disabled {
+    color: #666;
+    border-color: #444;
+    cursor: default;
+    pointer-events: none;
+}
+
 /* Launch details main container, hidden until launch processing begins. */
 #launch_details {
     position: relative;

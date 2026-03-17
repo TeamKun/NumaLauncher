@@ -18,7 +18,9 @@
     "dist:mac": "npm run dist -- -m",
     "dist:linux": "npm run dist -- -l",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "smoke-test": "node scripts/launch.js --smoke-test",
+    "start:dev": "node scripts/launch.js --dev"
   },
   "engines": {
     "node": "22.x.x"

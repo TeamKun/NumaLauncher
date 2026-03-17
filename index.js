@@ -1,3 +1,12 @@
+// Smoke test mode — bypass GUI initialization entirely
+if (process.argv.includes('--smoke-test')) {
+    require('electron').app.on('ready', () => require('./smoke-test').run())
+    return
+}
+
+// Developer mode — expose to renderer via @electron/remote
+global.devMode = process.argv.includes('--dev')
+
 const remoteMain = require('@electron/remote/main')
 remoteMain.initialize()
 

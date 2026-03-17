@@ -49,6 +49,15 @@ customDistroLabel.innerText   = ConfigManager.getDistributionUrl() ?? ''
 
 const loggerLanding = LoggerUtil.getLogger('Landing')
 
+// Dev mode: show smoke test button
+const smoke_test_button = document.getElementById('smoke_test_button')
+const devMode = remote.getGlobal('devMode')
+const SMOKE_TEST_DISTRO_URL = 'https://raw.githubusercontent.com/TeamKUN/ModPacks/deploy-test/distribution.json'
+const SMOKE_TEST_TIMEOUT = 180
+if (devMode) {
+    smoke_test_button.style.display = 'inline-block'
+}
+
 let newsAlertShown = false
 
 /* Launch Progress Wrapper Functions */
@@ -135,6 +144,24 @@ document.getElementById('launch_button').addEventListener('click', async e => {
         showLaunchFailure(Lang.queryJS('landing.launch.failureTitle'), Lang.queryJS('landing.launch.failureText'))
     }
 })
+
+// Bind smoke test button (dev mode only)
+if (devMode) {
+    smoke_test_button.addEventListener('click', async e => {
+        loggerLanding.info('[SmokeTest] Starting GUI smoke test...')
+        smoke_test_button.disabled = true
+        setLaunchEnabled(false)
+        try {
+            await runGuiSmokeTest()
+        } catch (err) {
+            loggerLanding.error('[SmokeTest] Unhandled error:', err)
+            showLaunchFailure('Smoke Test Error', err.message || 'Unknown error during smoke test')
+        } finally {
+            smoke_test_button.disabled = false
+            setLaunchEnabled(true)
+        }
+    })
+}
 
 // Bind settings button
 document.getElementById('settingsMediaButton').onclick = async e => {
@@ -1201,4 +1228,266 @@ function loadManualData(server) {
 
         resolve(manualMods)
     })
+}
+
+// ============================================================================
+// GUI Smoke Test Runner (Dev Mode)
+// ============================================================================
+
+async function runGuiSmokeTest() {
+    const { DistributionAPI } = require('helios-core/common')
+    const child_process = require('child_process')
+    const loggerSmoke = LoggerUtil.getLogger('GUISmokeTest')
+
+    // 1. Create a separate DistributionAPI pointing to test branch
+    const testDistroApi = new DistributionAPI(
+        ConfigManager.getLauncherDirectory(),
+        ConfigManager.getCommonDirectory(),
+        ConfigManager.getInstanceDirectory(),
+        SMOKE_TEST_DISTRO_URL,
+        false
+    )
+
+    // 2. Load test distribution
+    toggleLaunchArea(true)
+    setLaunchDetails('Loading test distribution...')
+    setLaunchPercentage(0)
+
+    let testDistro
+    try {
+        testDistro = await testDistroApi.refreshDistributionOrFallback()
+    } catch (err) {
+        loggerSmoke.error('Failed to load test distribution', err)
+        showLaunchFailure('Smoke Test Failed', 'Could not load test distribution from deploy-test branch.')
+        return
+    }
+
+    if (!testDistro || !testDistro.servers || testDistro.servers.length === 0) {
+        showLaunchFailure('Smoke Test Failed', 'No servers found in test distribution.')
+        return
+    }
+
+    const servers = testDistro.servers
+    loggerSmoke.info(`Found ${servers.length} test server(s)`)
+
+    // 3. Validate auth
+    const authUser = ConfigManager.getSelectedAccount()
+    if (!authUser) {
+        showLaunchFailure('Smoke Test Failed', 'No account selected. Please log in first.')
+        return
+    }
+
+    // 4. Run each server sequentially
+    const results = []
+    for (let i = 0; i < servers.length; i++) {
+        const serv = servers[i]
+        const serverId = serv.rawServer.id
+        const mcVer = serv.rawServer.minecraftVersion
+
+        loggerSmoke.info(`[${i + 1}/${servers.length}] Testing: ${serverId} (MC ${mcVer})`)
+        setLaunchDetails(`Testing ${i + 1}/${servers.length}: ${serverId}`)
+        setLaunchPercentage(Math.round((i / servers.length) * 100))
+
+        try {
+            // Auto-discover Java (test servers have no ConfigManager entry)
+            let jExe
+            try {
+                jExe = ConfigManager.getEffectiveJavaExecutable(serverId)
+            } catch { /* server not in config */ }
+            if (!jExe) {
+                const jvmDetails = await discoverBestJvmInstallation(
+                    ConfigManager.getDataDirectory(),
+                    serv.effectiveJavaOptions.supported
+                )
+                if (!jvmDetails) {
+                    results.push({ serverId, mcVer, status: 'SKIP', error: 'No compatible Java', elapsed: 0 })
+                    continue
+                }
+                jExe = javaExecFromRoot(ensureJavaDirIsRoot(jvmDetails.path))
+            }
+
+            // Ensure ConfigManager entries exist for test server
+            if (!ConfigManager.getModConfiguration(serverId)) {
+                ConfigManager.setModConfiguration(serverId, { id: serverId, mods: {} })
+            }
+            ConfigManager.ensureJavaConfig(serverId, serv.effectiveJavaOptions, serv.effectiveJavaOptions.ram)
+            // Store discovered Java path so ProcessBuilder can find it
+            ConfigManager.setRuntimeJavaExecutable(serverId, jExe)
+
+            // Download missing module files directly
+            setLaunchDetails(`Testing ${i + 1}/${servers.length}: ${serverId} (downloading)`)
+            await smokeTestDownloadModules(serv.modules, loggerSmoke)
+
+            // Mod loader setup
+            const mojangIndexProcessor = new MojangIndexProcessor(
+                ConfigManager.getCommonDirectory(), mcVer)
+            const distributionIndexProcessor = new DistributionIndexProcessor(
+                ConfigManager.getCommonDirectory(), testDistro, serverId)
+
+            let wrapperPath
+            if (isDev) {
+                wrapperPath = join(process.cwd(), 'libraries', 'java', 'ForgeInstallerCLI.jar')
+            } else {
+                const exePath = remote.app.getPath('exe')
+                if (process.platform === 'darwin') {
+                    wrapperPath = join(exePath, '..', '..', 'Resources', 'libraries', 'java', 'ForgeInstallerCLI.jar')
+                } else {
+                    wrapperPath = join(exePath, '..', 'resources', 'libraries', 'java', 'ForgeInstallerCLI.jar')
+                }
+            }
+
+            setLaunchDetails(`Testing ${i + 1}/${servers.length}: ${serverId} (mod loader setup)`)
+            await distributionIndexProcessor.installForge(jExe, wrapperPath, () => {})
+            const modLoaderData = await distributionIndexProcessor.loadModLoaderVersionJson(serv)
+            const versionData = await mojangIndexProcessor.getVersionJson()
+
+            // Launch and monitor
+            setLaunchDetails(`Testing ${i + 1}/${servers.length}: ${serverId} (launching)`)
+            const result = await smokeTestLaunch(serv, versionData, modLoaderData, authUser)
+            results.push({ serverId, mcVer, ...result })
+            loggerSmoke.info(`Result: ${result.status} (${result.elapsed.toFixed(1)}s)`)
+
+        } catch (err) {
+            loggerSmoke.error(`Error testing ${serverId}:`, err)
+            results.push({ serverId, mcVer, status: 'ERROR', error: err.message, elapsed: 0 })
+        }
+    }
+
+    setLaunchPercentage(100)
+    toggleLaunchArea(false)
+
+    // 5. Show results
+    showSmokeTestResults(results)
+}
+
+function smokeTestLaunch(serv, versionData, modLoaderData, authUser) {
+    return new Promise((resolve) => {
+        const pb = new ProcessBuilder(serv, versionData, modLoaderData, authUser, remote.app.getVersion())
+        const startTime = Date.now()
+        let settled = false
+
+        let child
+        try {
+            child = pb.build()
+        } catch (err) {
+            resolve({ status: 'ERROR', error: err.message, elapsed: 0 })
+            return
+        }
+
+        const timeout = setTimeout(() => {
+            if (settled) return
+            settled = true
+            smokeTestKill(child)
+            resolve({ status: 'TIMEOUT', elapsed: (Date.now() - startTime) / 1000 })
+        }, SMOKE_TEST_TIMEOUT * 1000)
+
+        child.stdout.on('data', (data) => {
+            if (settled) return
+            const lines = data.toString().trim().split('\n')
+            for (const line of lines) {
+                if (GAME_LAUNCH_REGEX.test(line.trim())) {
+                    settled = true
+                    clearTimeout(timeout)
+                    smokeTestKill(child)
+                    resolve({ status: 'PASS', elapsed: (Date.now() - startTime) / 1000 })
+                    return
+                }
+            }
+        })
+
+        child.on('close', (code) => {
+            if (settled) return
+            settled = true
+            clearTimeout(timeout)
+            resolve({ status: 'CRASH', exitCode: code, elapsed: (Date.now() - startTime) / 1000 })
+        })
+
+        child.on('error', (err) => {
+            if (settled) return
+            settled = true
+            clearTimeout(timeout)
+            resolve({ status: 'ERROR', error: err.message, elapsed: (Date.now() - startTime) / 1000 })
+        })
+    })
+}
+
+async function smokeTestDownloadModules(modules, logger) {
+    const got = require('got')
+    const { pipeline } = require('stream/promises')
+    const { createWriteStream } = require('fs')
+    const expectedSize = (mod) => mod.rawModule.artifact.size || 0
+
+    for (const mod of modules) {
+        const localPath = mod.getPath()
+        const url = mod.rawModule.artifact.url
+        if (url) {
+            let needsDownload = false
+            if (!await fs.pathExists(localPath)) {
+                needsDownload = true
+            } else {
+                // Re-download if file is empty or wrong size
+                const stat = await fs.stat(localPath)
+                if (stat.size === 0 || (expectedSize(mod) > 0 && stat.size !== expectedSize(mod))) {
+                    needsDownload = true
+                }
+            }
+            if (needsDownload) {
+                logger.info(`Downloading: ${url}`)
+                await fs.ensureDir(require('path').dirname(localPath))
+                await pipeline(got.stream(url), createWriteStream(localPath))
+            }
+        }
+        if (mod.hasSubModules()) {
+            await smokeTestDownloadModules(mod.subModules, logger)
+        }
+    }
+}
+
+function smokeTestKill(child) {
+    if (!child || child.killed) return
+    if (process.platform === 'win32') {
+        require('child_process').exec(`taskkill /pid ${child.pid} /T /F`, () => {})
+    } else {
+        child.kill('SIGTERM')
+    }
+}
+
+function showSmokeTestResults(results) {
+    let passCount = 0
+    let tableRows = ''
+    for (const r of results) {
+        if (r.status === 'PASS') passCount++
+        const color = r.status === 'PASS' ? '#4CAF50' : (r.status === 'SKIP' ? '#FFC107' : '#F44336')
+        const time = r.elapsed != null ? `${r.elapsed.toFixed(1)}s` : '-'
+        const errMsg = r.error ? `<br><span style="color:#aaa;font-size:10px;">${r.error}</span>` : ''
+        tableRows += `<tr>
+            <td style="padding:4px 8px;">${r.mcVer}</td>
+            <td style="padding:4px 8px;">${r.serverId}${errMsg}</td>
+            <td style="padding:4px 8px;color:${color};font-weight:bold;">${r.status}</td>
+            <td style="padding:4px 8px;">${time}</td>
+        </tr>`
+    }
+
+    const html = `
+        <div style="text-align:left;max-height:300px;overflow-y:auto;">
+            <table style="width:100%;border-collapse:collapse;font-size:12px;">
+                <thead>
+                    <tr style="border-bottom:1px solid #555;">
+                        <th style="padding:4px 8px;text-align:left;">MC Ver</th>
+                        <th style="padding:4px 8px;text-align:left;">Server</th>
+                        <th style="padding:4px 8px;text-align:left;">Status</th>
+                        <th style="padding:4px 8px;text-align:left;">Time</th>
+                    </tr>
+                </thead>
+                <tbody>${tableRows}</tbody>
+            </table>
+        </div>`
+
+    setOverlayContent(
+        `Smoke Test: ${passCount}/${results.length} PASSED`,
+        html,
+        'Close'
+    )
+    setOverlayHandler(null)
+    toggleOverlay(true)
 }

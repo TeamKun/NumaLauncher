@@ -12,7 +12,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "cross-env ELECTRON_RUN_AS_NODE= electron .",
+    "start": "node scripts/start.js",
     "dist": "electron-builder build",
     "dist:win": "npm run dist -- -w",
     "dist:mac": "npm run dist -- -m",
@@ -47,8 +47,7 @@
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^5.6.1",
-    "cross-env": "^10.1.0",
-    "electron": "^33.4.11",
+    "electron": "^39.8.10",
     "electron-builder": "^26.4.0",
     "eslint": "^9.39.2"
   },

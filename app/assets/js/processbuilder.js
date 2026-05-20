@@ -67,8 +67,12 @@ class ProcessBuilder {
         let args = this.constructJVMArguments(uberModArr, tempNativePath)
 
         if(mcVersionAtLeast('1.13', this.server.rawServer.minecraftVersion)){
-            //args = args.concat(this.constructModArguments(modObj.fMods))
-            args = args.concat(this.constructModList(modObj.fMods))
+            if(!this.usingFabricLoader && mcVersionAtLeast('1.20.2', this.server.rawServer.minecraftVersion)){
+                // Forge/NeoForge 1.20.2+ loads mods from the mods/ folder directly.
+                this.setupModsFolder(modObj.fMods)
+            } else {
+                args = args.concat(this.constructModList(modObj.fMods))
+            }
         }
 
         // Hide access token
@@ -323,6 +327,46 @@ class ProcessBuilder {
             return []
         }
 
+    }
+
+    /**
+     * Copy enabled forge mods from modstore to the instance mods/ folder.
+     * Required for Forge/NeoForge 1.20.2+ which no longer supports --fml.mavenRoots/--fml.modLists.
+     *
+     * @param {Array.<Object>} mods An array of enabled forge mods.
+     */
+    setupModsFolder(mods) {
+        const modsDir = path.join(this.gameDir, 'mods')
+        fs.ensureDirSync(modsDir)
+
+        const managedListFile = path.join(modsDir, '.managed_mods')
+
+        // Clean up previously copied mods
+        if(fs.existsSync(managedListFile)) {
+            const previousFiles = fs.readFileSync(managedListFile, 'UTF-8').split('\n').filter(f => f)
+            for(const file of previousFiles) {
+                const filePath = path.join(modsDir, file)
+                if(fs.existsSync(filePath)) {
+                    fs.unlinkSync(filePath)
+                }
+            }
+        }
+
+        // Copy each enabled mod to the mods/ folder
+        const managedFiles = []
+        for(const mod of mods) {
+            const src = mod.getPath()
+            if(fs.existsSync(src)) {
+                const fileName = path.basename(src)
+                const dest = path.join(modsDir, fileName)
+                fs.copyFileSync(src, dest)
+                managedFiles.push(fileName)
+            }
+        }
+
+        // Save managed file list for next cleanup
+        fs.writeFileSync(managedListFile, managedFiles.join('\n'), 'UTF-8')
+        logger.info(`Copied ${managedFiles.length} mod(s) to ${modsDir}`)
     }
 
     _processAutoConnectArg(args){
@@ -873,7 +917,7 @@ class ProcessBuilder {
      * @returns {{[id: string]: string}} An object containing the paths of each library this module requires.
      */
     _resolveModuleLibraries(mdl){
-        if(!mdl.subModules.length > 0){
+        if(mdl.subModules.length === 0){
             return {}
         }
         let libs = {}
